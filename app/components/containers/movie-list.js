@@ -5,49 +5,52 @@ import React, {Component} from 'react';
 import * as actions from '../../actions/movie-list-actions';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux';
-import TabContent from './tab-content';
+
+import {
+	StyleSheet,
+	View,
+	Text,
+	Image,
+	ListView,
+	TouchableOpacity,
+	InteractionManager,
+	Animated,
+} from 'react-native';
 
 class MovieList extends Component {
 
 	constructor(props) {
 		super(props);
-		this.switchTab = this.switchTab.bind(this);
+		this.dataSource = new ListView.DataSource({
+			rowHasChanged: (row1, row2) => row1 !== row2
+		});
 	}
 
 	componentDidMount() {
-		let {dispatch, tab} = this.props;	// dispatch is injected by connect() call
- 		dispatch(actions.fetchMovieList(tab));
-	}
-
-	switchTab(nextTab) {
-		let {tab, dispatch} = this.props;
-		if (nextTab !== tab) {
-			dispatch(actions.switchTab(nextTab));
-		}
+		let {dispatch} = this.props;	// dispatch is injected by connect() call
+ 		dispatch(actions.fetchMovieList('all'));
 	}
 
 	render() {
-		let {movies, tab, dispatch} = this.props;
+		let {movies, dispatch} = this.props;
 		let movieActionCreators = bindActionCreators(actions, dispatch);
 
 		return (
-			<section>
-				<section>
-					<nav>
-						<ul>
-							<li onClick={this.switchTab.bind(this, 'all')}>All</li>
-							<li onClick={this.switchTab.bind(this, 'favourite')}>Favourite</li>
-							<li onClick={this.switchTab.bind(this, 'trending')}>Trending</li>
-						</ul>
-					</nav>
-				</section>
-				<section>
-					<TabContent
-						content={movies}
-						{...movieActionCreators}
-						/>
-				</section>
-			</section>
+			<ListView
+				dataSource={this.dataSource.cloneWithRows(movies)}
+				renderRow={this._renderRow}
+				//onEndReached={this.onEndReach.bind(this)}
+				onEndReachedThreshold={10}
+				//renderFooter={this.renderFooter.bind(this)}
+			/>
+		)
+	}
+
+	_renderRow(movie) {
+		return (
+			<View>
+				<Text>{movie.name}</Text>
+			</View>
 		)
 	}
 }
