@@ -12,6 +12,7 @@ import {
 	Text,
 	Image,
 	ListView,
+	RefreshControl,
 	TouchableOpacity,
 	InteractionManager,
 	Animated,
@@ -21,9 +22,15 @@ class MovieList extends Component {
 
 	constructor(props) {
 		super(props);
+		let {dispatch} = props;
+		// avoid binding action creators on renderRow method
+		this.bindedMovieActionCreators = bindActionCreators(actions, dispatch);
 		this.dataSource = new ListView.DataSource({
 			rowHasChanged: (row1, row2) => row1 !== row2
 		});
+		this.state = {
+			isRefreshing: false
+		}
 	}
 
 	componentDidMount() {
@@ -32,28 +39,54 @@ class MovieList extends Component {
 	}
 
 	render() {
-		let {movies, dispatch} = this.props;
-		let movieActionCreators = bindActionCreators(actions, dispatch);
+		let {movies} = this.props;
+		//let movieActionCreators = bindActionCreators(actions, dispatch);
 
 		return (
 			<ListView
 				dataSource={this.dataSource.cloneWithRows(movies)}
 				renderRow={this._renderRow}
-				//onEndReached={this.onEndReach.bind(this)}
-				onEndReachedThreshold={10}
+				renderSeparator={this._renderSeparator}
+				//onEndReachedThreshold={10}
 				//renderFooter={this.renderFooter.bind(this)}
-			/>
+				refreshControl={
+				<RefreshControl
+					refreshing={this.state.isRefreshing}
+					onRefresh={this._onRefresh.bind(this)}
+					colors={['#ff0000', '#00ff00', '#0000ff','#3ad564']}
+					progressBackgroundColor="#ffffff"/>}
+				/>
 		)
 	}
 
 	_renderRow(movie) {
+
 		return (
 			<View>
 				<Text>{movie.name}</Text>
 			</View>
 		)
 	}
+
+	_renderSeparator(sectionID, rowID) {
+		return (
+			<View style={styles.separator} key={rowID} />
+		)
+	}
+
+	_onRefresh() {
+		let {dispatch} = this.props;	// dispatch is injected by connect() call
+		dispatch(actions.fetchMovieList('all'));
+	}
 }
+
+const styles = StyleSheet.create({
+	separator: {
+		backgroundColor: '#eeeeee',
+		height: 1
+	}
+});
+
 
 function mapStateToProps(state) {
 	return state.movieListPage;
