@@ -1,38 +1,22 @@
-const movieList = [
-	{
-		"name": "The painted veil",
-		"viewCount": 181543,
-		"trending": 5555,
-		"imageUrl": "",
-		"url": ""
-	},
-	{
-		"name": "The painted veil",
-		"viewCount": 181543,
-		"trending": 5555,
-		"favourite": true,
-		"imageUrl": "",
-		"url": ""
-	},
-	{
-		"name": "The painted veil",
-		"viewCount": 181543,
-		"trending": 5555,
-		"imageUrl": "",
-		"url": ""
-	},
-	{
-		"name": "The painted veil",
-		"viewCount": 181543,
-		"trending": 5555,
-		"imageUrl": "",
-		"url": ""
-	}
-];
 
-function getMovieList(tab) {
+const randomMovie = () => {
+	return {
+		"name": `The painted veil ${Math.floor(Math.random()*100)}`,
+		"viewCount": 181543,
+		"trending": 5555,
+		"imageUrl": "",
+		"url": ""
+	};
+};
+
+function getMovieList(tab, count) {
 	switch(tab) {
 		case 'all':
+			let movieList = [];
+			let mCount = count || 10;
+			for (let i=0; i<mCount;i++) {
+				movieList.push(randomMovie());
+			}
 			return movieList;
 		case 'favourite':
 			return movieList.slice(0,3);
@@ -43,12 +27,16 @@ function getMovieList(tab) {
 	}
 }
 
-export const fetchMovie = (tab) => {
-	console.log('fetching movies for tab: ', tab);
+export const fetchMovie = (tab, count, order) => {
+	//console.log('fetching movies for with params: ', arguments);
 	return new Promise(function(resolve, reject) {
 		setTimeout(function() {
 			let init = { "status" : 200 , "statusText" : "movie list fetch success" };
-			let response = new Response(JSON.stringify(getMovieList(tab)),init);
+			let payload = {
+				movies: getMovieList(tab, count),
+				total: 100
+			};
+			let response = new Response(JSON.stringify(payload),init);
 			resolve(response);
 		}, 1500);
 	})

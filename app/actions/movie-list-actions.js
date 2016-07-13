@@ -5,11 +5,12 @@ export const fetchMovieList = (tab, count, order) => {
 		dispatch(refreshingFlag(true));
 		fetchMovie(tab, count, order).then(function(res) {
 			return res.json();
-		}).then(function(movies) {
-			console.log('movies fetched: ', movies);
+		}).then(function(result) {
+			//console.log('movies fetched: ', result);
 			dispatch({
 				type: 'MOVIE_FETCHED',
-				data: movies
+				movies: result.movies,
+				total: result.total
 			});
 			dispatch(refreshingFlag(false));
 		});
@@ -35,7 +36,6 @@ export const switchTab = (tab) => {
 		fetchMovie(tab).then(function(res) {
 			return res.json();
 		}).then(function(movies) {
-			console.log('movies fetched: ', movies);
 			dispatch({
 				type: 'MOVIE_FETCHED',
 				data: movies

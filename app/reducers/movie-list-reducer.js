@@ -1,18 +1,14 @@
 import {combineReducers} from 'redux';
 
-const moviesReducer = (state = [], action) => {
+const moviesReducer = (state = {movies: [], total: 0}, action) => {
 	switch (action.type) {
 		case 'MOVIE_FETCHED':
-			return [...action.data];
+			return {
+				movies: [...action.movies],
+				total: action.total
+			};
 		case 'MOVIE_FAVOURED':
-			return [...state, {
-				"name": "WonderLand",
-				"viewCount": 181543,
-				"trending": 5555,
-				"favourite": true,
-				"imageUrl": "",
-				"url": ""
-			}];
+			return state;
 		default:
 			return state;
 	}
@@ -35,7 +31,7 @@ const refreshFlagReducer = (state=false, action) => {
 
 // using more explicit syntax for better naming
 const movieListReducer = combineReducers({
-		movies: moviesReducer,
+		movieData: moviesReducer,
 		tab: tabReducer,
 		isRefreshing: refreshFlagReducer
 });

@@ -36,8 +36,7 @@ class MovieList extends Component {
 	}
 
 	render() {
-		let {movies, isRefreshing} = this.props;
-		console.log(isRefreshing);
+		let {movieData: {movies, total}, isRefreshing} = this.props;
 		//let movieActionCreators = bindActionCreators(actions, dispatch);
 
 		return (
@@ -45,7 +44,9 @@ class MovieList extends Component {
 				dataSource={this.dataSource.cloneWithRows(movies)}
 				renderRow={this._renderRow}
 				renderSeparator={this._renderSeparator}
-				//onEndReachedThreshold={10}
+				onEndReachedThreshold={10}
+				onEndReached={this._loadMoreMovies.bind(this)}
+				enableEmptySections={true}
 				//renderFooter={this.renderFooter.bind(this)}
 				refreshControl={
 				<RefreshControl
@@ -72,8 +73,26 @@ class MovieList extends Component {
 		)
 	}
 
+	/**
+	 * Load more movies when end of list is reached
+	 * @private
+	 */
+	_loadMoreMovies() {
+		console.log('load more movies');
+		let {dispatch, movieData: {movies, total}} = this.props;
+		console.log('current movies:' + movies.length);
+		if (movies.length < total) {
+			dispatch(actions.fetchMovieList('all', movies.length + 10))
+		}
+	}
+
+	/**
+	 * When swipe down, check if there is new movies
+	 * @private
+	 */
 	_onRefresh() {
-		let {dispatch} = this.props;	// dispatch is injected by connect() call
+		console.log('on refresh');
+		let {dispatch} = this.props;
 		dispatch(actions.fetchMovieList('all'));
 	}
 }
