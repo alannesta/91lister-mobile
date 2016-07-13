@@ -5,6 +5,7 @@ import React, {Component} from 'react';
 import * as actions from '../../actions/movie-list-actions';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux';
+import Movie from './movie';
 
 import {
 	StyleSheet,
@@ -49,11 +50,12 @@ class MovieList extends Component {
 				enableEmptySections={true}
 				//renderFooter={this.renderFooter.bind(this)}
 				refreshControl={
-				<RefreshControl
-					refreshing={isRefreshing}
-					onRefresh={this._onRefresh.bind(this)}
-					colors={['#ff0000', '#00ff00', '#0000ff','#3ad564']}
-					progressBackgroundColor="#ffffff"/>}
+					<RefreshControl
+						refreshing={isRefreshing}
+						onRefresh={this._onRefresh.bind(this)}
+						colors={['#ff0000', '#00ff00', '#0000ff','#3ad564']}
+						progressBackgroundColor="#ffffff"/>
+					}
 				/>
 		)
 	}
@@ -61,9 +63,10 @@ class MovieList extends Component {
 	_renderRow(movie) {
 
 		return (
-			<View>
-				<Text>{movie.name}</Text>
-			</View>
+			<Movie
+				movie={movie}
+				actions={this.bindedMovieActionCreators}
+				/>
 		)
 	}
 

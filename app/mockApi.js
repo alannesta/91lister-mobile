@@ -2,7 +2,7 @@
 const randomMovie = () => {
 	return {
 		"name": `The painted veil ${Math.floor(Math.random()*100)}`,
-		"viewCount": 181543,
+		"viewCount": Math.floor(Math.random()*200000),
 		"trending": 5555,
 		"imageUrl": "",
 		"url": ""
@@ -13,7 +13,7 @@ function getMovieList(tab, count) {
 	switch(tab) {
 		case 'all':
 			let movieList = [];
-			let mCount = count || 10;
+			let mCount = count || 20;
 			for (let i=0; i<mCount;i++) {
 				movieList.push(randomMovie());
 			}
