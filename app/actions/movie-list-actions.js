@@ -1,8 +1,9 @@
 import {fetchMovie, favour} from '../mockApi';
 
-export const fetchMovieList = (tab) => {
+export const fetchMovieList = (tab, count, order) => {
 	return dispatch => {
-		fetchMovie(tab).then(function(res) {
+		dispatch(refreshingFlag(true));
+		fetchMovie(tab, count, order).then(function(res) {
 			return res.json();
 		}).then(function(movies) {
 			console.log('movies fetched: ', movies);
@@ -10,6 +11,7 @@ export const fetchMovieList = (tab) => {
 				type: 'MOVIE_FETCHED',
 				data: movies
 			});
+			dispatch(refreshingFlag(false));
 		});
 	}
 };
@@ -45,4 +47,11 @@ export const switchTab = (tab) => {
 			})
 		});
 	}
+};
+
+const refreshingFlag = (isRefreshing) => {
+	return {
+		type: 'REFRESHING_FLAG',
+		isRefreshing: isRefreshing
+	};
 };

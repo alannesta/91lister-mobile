@@ -26,10 +26,18 @@ const tabReducer = (state = 'all', action)  => {
 	}
 };
 
-// using more explicit syntax
+const refreshFlagReducer = (state=false, action) => {
+	if (action.type === "REFRESHING_FLAG") {
+		return action.isRefreshing;
+	}
+	return state;
+};
+
+// using more explicit syntax for better naming
 const movieListReducer = combineReducers({
 		movies: moviesReducer,
-		tab: tabReducer
+		tab: tabReducer,
+		isRefreshing: refreshFlagReducer
 });
 
 export default movieListReducer

@@ -28,9 +28,6 @@ class MovieList extends Component {
 		this.dataSource = new ListView.DataSource({
 			rowHasChanged: (row1, row2) => row1 !== row2
 		});
-		this.state = {
-			isRefreshing: false
-		}
 	}
 
 	componentDidMount() {
@@ -39,7 +36,8 @@ class MovieList extends Component {
 	}
 
 	render() {
-		let {movies} = this.props;
+		let {movies, isRefreshing} = this.props;
+		console.log(isRefreshing);
 		//let movieActionCreators = bindActionCreators(actions, dispatch);
 
 		return (
@@ -51,7 +49,7 @@ class MovieList extends Component {
 				//renderFooter={this.renderFooter.bind(this)}
 				refreshControl={
 				<RefreshControl
-					refreshing={this.state.isRefreshing}
+					refreshing={isRefreshing}
 					onRefresh={this._onRefresh.bind(this)}
 					colors={['#ff0000', '#00ff00', '#0000ff','#3ad564']}
 					progressBackgroundColor="#ffffff"/>}
