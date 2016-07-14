@@ -1,6 +1,9 @@
+/*
+	@flow weak
+*/
 import {fetchMovie, toogleLikeApi} from '../mockApi';
 
-export const fetchMovieList = (tab, count, order) => {
+export const fetchMovieList = (tab: string, count: number, order) => {
 	return dispatch => {
 		dispatch(refreshingFlag(true));
 		fetchMovie(tab, count, order).then(function(res) {
