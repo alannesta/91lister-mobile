@@ -1,4 +1,4 @@
-import {fetchMovie, favour} from '../mockApi';
+import {fetchMovie, toogleLikeApi} from '../mockApi';
 
 export const fetchMovieList = (tab, count, order) => {
 	return dispatch => {
@@ -17,17 +17,24 @@ export const fetchMovieList = (tab, count, order) => {
 	}
 };
 
-export const addToFav = (movie) => {
+export const toggleLike = (movie) => {
 	return dispatch => {
-		favour(movie).then(function(res) {
+		toogleLikeApi(movie).then(function(res) {
 			return res.json();
-		}).then(function(movieFaved) {
+		}).then(function(updatedMovie) {
 			dispatch({
-				type: 'MOVIE_FAVOURED',
-				data: movieFaved
+				type: 'MOVIE_UPDATED',
+				movie: updatedMovie
 			})
 		});
 	}
+};
+
+const refreshingFlag = (isRefreshing) => {
+	return {
+		type: 'REFRESHING_FLAG',
+		isRefreshing: isRefreshing
+	};
 };
 
 // need to find a way to decouple these composited actions, where should this logic go?
@@ -47,11 +54,4 @@ export const switchTab = (tab) => {
 			})
 		});
 	}
-};
-
-const refreshingFlag = (isRefreshing) => {
-	return {
-		type: 'REFRESHING_FLAG',
-		isRefreshing: isRefreshing
-	};
 };

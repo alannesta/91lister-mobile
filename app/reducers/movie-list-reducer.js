@@ -9,6 +9,13 @@ const moviesReducer = (state = {movies: [], total: 0}, action) => {
 			};
 		case 'MOVIE_FAVOURED':
 			return state;
+		case 'MOVIE_UPDATED':
+			let index = findMovieByID(state.movies, action.movie);
+			//state.movies[index] = action.movie;
+			return {
+				total: state.total,
+				movies: [...state.movies.slice(0, index), action.movie, ...state.movies.slice(index+1)]
+			};
 		default:
 			return state;
 	}
@@ -35,6 +42,15 @@ const movieListReducer = combineReducers({
 		tab: tabReducer,
 		isRefreshing: refreshFlagReducer
 });
+
+function findMovieByID(movies, movie) {
+	for (let i=0; i<movies.length; i++) {
+		if (movies[i].id === movie.id) {
+			return i;
+		}
+	}
+	return -1;
+}
 
 export default movieListReducer
 

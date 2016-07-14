@@ -1,11 +1,14 @@
+const uuid = require('node-uuid');
 
 const randomMovie = () => {
 	return {
-		"name": `The painted veil ${Math.floor(Math.random()*100)}`,
-		"viewCount": Math.floor(Math.random()*200000),
-		"trending": 5555,
-		"imageUrl": "",
-		"url": ""
+		id: uuid.v1(),
+		name: `The painted veil ${Math.floor(Math.random()*100)}`,
+		viewCount: Math.floor(Math.random()*200000),
+		trending: 5555,
+		imageUrl: "",
+		url: "",
+		liked: false
 	};
 };
 
@@ -42,11 +45,12 @@ export const fetchMovie = (tab, count, order) => {
 	})
 };
 
-export const favour = (movie) => {
+export const toogleLikeApi = (movie) => {
 	return new Promise(function(resolve, reject) {
 		setTimeout(function() {
+			movie.liked = !movie.liked;
 			let init = { "status" : 200 , "statusText" : "movie favourite success" };
-			let response = new Response(JSON.stringify({movie: movie.name}), init);
+			let response = new Response(JSON.stringify(movie), init);
 			resolve(response);
 		}, 1000)
 	})

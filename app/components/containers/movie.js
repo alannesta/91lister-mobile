@@ -14,14 +14,14 @@ export default class Movie extends Component {
 	}
 
 	render() {
-		let {movie} = this.props;
-		//let LikeButton;
+		let {movie, toggleLike} = this.props;
+		let LikeButton;
 
-		//if (movie.favourite) {
-		//	LikeButton = <button onClick={addToFav.bind(this, movie)}>Like</button>;
-		//} else {
-		//	LikeButton = <button>Unlike</button>;
-		//}
+		if (movie.liked) {
+			LikeButton = <Text>Like</Text>;
+		} else {
+			LikeButton = <Text>Unlike</Text>;
+		}
 		return (
 			<View style={styles.movieItem}>
 				<View style={styles.infoContainer}>
@@ -30,10 +30,10 @@ export default class Movie extends Component {
 				</View>
 				<TouchableOpacity
 					accessibilityTraits="button"
-					//onPress={this.props.onPress}
+					onPress={toggleLike.bind(this, movie)}
 					activeOpacity={0.5}
 					style={styles.likeButton}>
-					<Text>like</Text>
+					{LikeButton}
 				</TouchableOpacity>
 			</View>
 
@@ -57,6 +57,7 @@ const styles = StyleSheet.create({
 		color: '#d2d2d2'
 	},
 	likeButton: {
+		width: 80,
 		borderWidth: 1,
 		borderColor: '#d2d2d2',
 		height: 20

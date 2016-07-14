@@ -29,6 +29,8 @@ class MovieList extends Component {
 		this.dataSource = new ListView.DataSource({
 			rowHasChanged: (row1, row2) => row1 !== row2
 		});
+
+		this._renderRow = this._renderRow.bind(this);
 	}
 
 	componentDidMount() {
@@ -48,6 +50,7 @@ class MovieList extends Component {
 				onEndReachedThreshold={10}
 				onEndReached={this._loadMoreMovies.bind(this)}
 				enableEmptySections={true}
+				removeClippedSubviews={false} 	// fix android device listview crash: https://github.com/facebook/react-native/issues/5934
 				//renderFooter={this.renderFooter.bind(this)}
 				refreshControl={
 					<RefreshControl
@@ -65,7 +68,7 @@ class MovieList extends Component {
 		return (
 			<Movie
 				movie={movie}
-				actions={this.bindedMovieActionCreators}
+				{...this.bindedMovieActionCreators}
 				/>
 		)
 	}
