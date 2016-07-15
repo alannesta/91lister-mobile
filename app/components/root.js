@@ -6,7 +6,8 @@ import {
 	View,
 	Dimensions,
 	DrawerLayoutAndroid,
-	ToolbarAndroid
+	ToolbarAndroid,
+	DatePickerAndroid
 } from 'react-native';
 
 import MovieList from './containers/movie-list'
@@ -46,9 +47,10 @@ class Root extends Component {
 		return (
 			<View style={styles.container}>
 				<ToolbarAndroid
-					logo={require('../images/launcher_icon.png')}
 					navIcon={require('../images/ic_menu_black_24dp.png')}
 					onIconClicked={() => this.drawer.openDrawer()}
+					actions={[{title: 'Date', icon: require('../images/ic_settings_black_48dp.png'), show: 'always'}]}
+					onActionSelected={this._onActionSelected.bind(this)}
 					style={styles.toolbar}
 					title={'91 lister'}
 				/>
@@ -63,6 +65,35 @@ class Root extends Component {
 			</View>
 		)
 	}
+
+	_onActionSelected(index) {
+		console.log('action index: ', index);
+		this.showPicker()
+	}
+
+	// async showPicker() {
+  //   try {
+  //     const {action, year, month, day} = await DatePickerAndroid.open();
+  //     if (action === DatePickerAndroid.dismissedAction) {
+	// 			// canceled;
+  //     } else {
+  //       var date = new Date(year, month, day);
+	// 			console.log('date selected: ', date);
+  //     }
+  //   } catch ({code, message}) {
+  //     console.warn(message);
+  //   }
+  // }
+	showPicker() {
+    DatePickerAndroid.open().then(({action, year, month, day}) => {
+			if (action === DatePickerAndroid.dismissedAction) {
+				// canceled;
+      } else {
+        var date = new Date(year, month, day);
+				console.log('date selected: ', date);
+      }
+		})
+  }
 }
 
 const styles = StyleSheet.create({
