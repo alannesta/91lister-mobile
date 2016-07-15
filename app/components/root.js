@@ -9,7 +9,8 @@ import {
 	ToolbarAndroid
 } from 'react-native';
 
-import MovieList from './containers/movie-list';
+import MovieList from './containers/movie-list'
+import TabView from './containers/tab-view'
 
 const DRAWER_WIDTH_LEFT = 56;
 
@@ -41,7 +42,7 @@ class Root extends Component {
 	}
 
 	_renderApp() {
-		let movieList = MovieList;
+		let tab = TabView;
 		return (
 			<View style={styles.container}>
 				<ToolbarAndroid
@@ -52,7 +53,7 @@ class Root extends Component {
 					title={'91 lister'}
 				/>
 				<Navigator
-					initialRoute={{ name: 'home', component: movieList }}
+					initialRoute={{ name: 'home', component: tab }}
 					configureScene={(route, routeStack) => Navigator.SceneConfigs.FloatFromLeft}
 					renderScene={(route, navigator) => {
 					   	let Component = route.component;

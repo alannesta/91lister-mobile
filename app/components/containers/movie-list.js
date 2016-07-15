@@ -43,7 +43,8 @@ class MovieList extends Component {
 	}
 
 	componentDidMount() {
-		let {dispatch} = this.props;	// dispatch is injected by connect() call
+		let {dispatch, tabLabel} = this.props;	// dispatch is injected by connect() call
+		console.log('movielist tab tag: ' + tabLabel);
  		dispatch(actions.fetchMovieList('all'));
 	}
 
