@@ -1,12 +1,12 @@
 /**
  * Container Component for Movie list page
+ * @flow weak
  */
 import React, {Component} from 'react';
 import * as actions from '../../actions/movie-list-actions';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux';
 import Movie from './movie';
-
 import {
 	StyleSheet,
 	View,
@@ -19,7 +19,16 @@ import {
 	Animated,
 } from 'react-native';
 
+import type {TMovie} from '../../types/flowtypes'
+
 class MovieList extends Component {
+
+	// flow type declaration
+	bindedMovieActionCreators: any;
+	dataSource: any;
+	_renderRow: Function;
+
+	static defaultProps: {};
 
 	constructor(props) {
 		super(props);
@@ -63,7 +72,7 @@ class MovieList extends Component {
 		)
 	}
 
-	_renderRow(movie) {
+	_renderRow(movie: TMovie) {
 
 		return (
 			<Movie
@@ -97,7 +106,6 @@ class MovieList extends Component {
 	 * @private
 	 */
 	_onRefresh() {
-		console.log('on refresh');
 		let {dispatch} = this.props;
 		dispatch(actions.fetchMovieList('all'));
 	}
@@ -109,7 +117,6 @@ const styles = StyleSheet.create({
 		height: 1
 	}
 });
-
 
 function mapStateToProps(state) {
 	return state.movieListPage;

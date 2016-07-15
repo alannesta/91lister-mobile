@@ -3,7 +3,7 @@
 */
 import {fetchMovie, toogleLikeApi} from '../mockApi';
 
-export const fetchMovieList = (tab: string, count: number, order) => {
+export const fetchMovieList = (tab: string, count: ?number, order: ?any) => {
 	return dispatch => {
 		dispatch(refreshingFlag(true));
 		fetchMovie(tab, count, order).then(function(res) {
