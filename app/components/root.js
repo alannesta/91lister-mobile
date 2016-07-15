@@ -19,7 +19,6 @@ class Root extends Component {
 	}
 
 	render() {
-		let movieList = MovieList;
 		return (
 			<DrawerLayoutAndroid
         drawerPosition={DrawerLayoutAndroid.positions.Left}
@@ -42,17 +41,24 @@ class Root extends Component {
 	}
 
 	_renderApp() {
-		console.log('called');
+		let movieList = MovieList;
 		return (
 			<View style={styles.container}>
 				<ToolbarAndroid
-					// logo={require('image!../images/launcher_icon')}
-					// navIcon={require('image!../images/ic_menu_black_24dp')}
+					logo={require('../images/launcher_icon.png')}
+					navIcon={require('../images/ic_menu_black_24dp.png')}
 					onIconClicked={() => this.drawer.openDrawer()}
 					style={styles.toolbar}
 					title={'91 lister'}
 				/>
-				<Text>it works!</Text>
+				<Navigator
+					initialRoute={{ name: 'home', component: movieList }}
+					configureScene={(route, routeStack) => Navigator.SceneConfigs.FloatFromLeft}
+					renderScene={(route, navigator) => {
+					   	let Component = route.component;
+					   	return <Component {...route.params} navigator={navigator} />
+							}}
+				/>
 			</View>
 		)
 	}
