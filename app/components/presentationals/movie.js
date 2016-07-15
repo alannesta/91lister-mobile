@@ -40,6 +40,12 @@ export default class Movie extends Component {
 		);
 	}
 }
+// using React.proptypes instead of flow for simplicity (this is a runtime check)
+Movie.propTypes = {
+	movie: React.PropTypes.object,
+	toggleLike: React.PropTypes.func
+}
+
 
 const styles = StyleSheet.create({
 	movieItem: {

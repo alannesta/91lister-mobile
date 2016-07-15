@@ -6,7 +6,7 @@ import React, {Component} from 'react';
 import * as actions from '../../actions/movie-list-actions';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux';
-import Movie from './movie';
+import Movie from '../presentationals/movie';
 import {
 	StyleSheet,
 	View,
@@ -77,7 +77,7 @@ class MovieList extends Component {
 		return (
 			<Movie
 				movie={movie}
-				{...this.bindedMovieActionCreators}
+				toggleLike={this.bindedMovieActionCreators.toggleLike}
 				/>
 		)
 	}
