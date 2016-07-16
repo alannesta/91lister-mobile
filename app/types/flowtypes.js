@@ -9,3 +9,9 @@ export type TMovie = {
 	trending: number,
 	liked: boolean
 }
+
+export type TMovieState ={
+	movies: Array<TMovie>,
+	total: number,
+	since: ?Date
+}

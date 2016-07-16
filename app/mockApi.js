@@ -45,7 +45,7 @@ export const fetchMovie = (tab: string, count:?number, order:?any): Promise<*> =
 			};
 			let response = new Response(JSON.stringify(payload),init);
 			resolve(response);
-		}, 1500);
+		}, 500);
 	})
 };
 
@@ -56,6 +56,6 @@ export const toogleLikeApi = (movie: TMovie): Promise<*> => {
 			let init = { "status" : 200 , "statusText" : "movie favourite success" };
 			let response = new Response(JSON.stringify(movie), init);
 			resolve(response);
-		}, 1000)
+		}, 200)
 	})
 };

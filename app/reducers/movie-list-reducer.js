@@ -1,14 +1,25 @@
+/*
+*	@flow weak
+*/
 import {combineReducers} from 'redux';
+import type {TMovie, TMovieState} from '../types/flowtypes'
 
-const moviesReducer = (state = {movies: [], total: 0}, action) => {
+const DEFAULT_START_TIME = new Date('1983-12-01') // the default starting time for fetching
+
+const defaultMovieState: TMovieState = {
+	movies: [],
+	total: 0,
+	since: DEFAULT_START_TIME
+};
+
+const moviesReducer = (state = defaultMovieState, action) => {
 	switch (action.type) {
 		case 'MOVIE_FETCHED':
 			return {
 				movies: [...action.movies],
-				total: action.total
+				total: action.total,
+				since: action.since
 			};
-		case 'MOVIE_FAVOURED':
-			return state;
 		case 'MOVIE_UPDATED':
 			let index = findMovieByID(state.movies, action.movie);
 			//state.movies[index] = action.movie;
@@ -36,11 +47,19 @@ const refreshFlagReducer = (state=false, action) => {
 	return state;
 };
 
+const movieSinceReducer = (state = DEFAULT_START_TIME, action) => {
+	if (action.type === "MOVIE_TIMISINCE_CHANGED") {
+		return action.date;
+	}
+	return state;
+}
+
 // using more explicit syntax for better naming
 const movieListReducer = combineReducers({
 		movieData: moviesReducer,
 		tab: tabReducer,
-		isRefreshing: refreshFlagReducer
+		isRefreshing: refreshFlagReducer,
+		mSince: movieSinceReducer
 });
 
 function findMovieByID(movies, movie) {
@@ -53,4 +72,3 @@ function findMovieByID(movies, movie) {
 }
 
 export default movieListReducer
-

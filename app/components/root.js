@@ -12,6 +12,7 @@ import {
 
 import MovieList from './containers/movie-list'
 import TabView from './containers/tab-view'
+import Toolbar from './containers/toolbar'
 
 const DRAWER_WIDTH_LEFT = 56;
 
@@ -46,14 +47,7 @@ class Root extends Component {
 		let tab = TabView;
 		return (
 			<View style={styles.container}>
-				<ToolbarAndroid
-					navIcon={require('../images/ic_menu_black_24dp.png')}
-					onIconClicked={() => this.drawer.openDrawer()}
-					actions={[{title: 'Date', icon: require('../images/ic_settings_black_48dp.png'), show: 'always'}]}
-					onActionSelected={this._onActionSelected.bind(this)}
-					style={styles.toolbar}
-					title={'91 lister'}
-				/>
+				<Toolbar/>
 				<Navigator
 					initialRoute={{ name: 'home', component: tab }}
 					configureScene={(route, routeStack) => Navigator.SceneConfigs.FloatFromLeft}
