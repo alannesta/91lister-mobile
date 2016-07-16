@@ -5,9 +5,7 @@ import {
 	Navigator,
 	View,
 	Dimensions,
-	DrawerLayoutAndroid,
-	ToolbarAndroid,
-	DatePickerAndroid
+	DrawerLayoutAndroid
 } from 'react-native';
 
 import MovieList from './containers/movie-list'
@@ -59,35 +57,6 @@ class Root extends Component {
 			</View>
 		)
 	}
-
-	_onActionSelected(index) {
-		console.log('action index: ', index);
-		this.showPicker()
-	}
-
-	// async showPicker() {
-  //   try {
-  //     const {action, year, month, day} = await DatePickerAndroid.open();
-  //     if (action === DatePickerAndroid.dismissedAction) {
-	// 			// canceled;
-  //     } else {
-  //       var date = new Date(year, month, day);
-	// 			console.log('date selected: ', date);
-  //     }
-  //   } catch ({code, message}) {
-  //     console.warn(message);
-  //   }
-  // }
-	showPicker() {
-    DatePickerAndroid.open().then(({action, year, month, day}) => {
-			if (action === DatePickerAndroid.dismissedAction) {
-				// canceled;
-      } else {
-        var date = new Date(year, month, day);
-				console.log('date selected: ', date);
-      }
-		})
-  }
 }
 
 const styles = StyleSheet.create({
