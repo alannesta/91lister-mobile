@@ -1,3 +1,6 @@
+/*
+* @flow weak
+*/
 import React, {Component} from 'react';
 import { bindActionCreators, redux } from 'redux'
 import { connect } from 'react-redux';
@@ -38,17 +41,21 @@ class Toolbar extends Component {
 	}
 
   async _showPicker() {
-    let {mSince, dispatch} = this.props
+    let {mSince, dispatch, movieData: {movies, order}} = this.props;
     try {
       const {action, year, month, day} = await DatePickerAndroid.open({date: mSince});
       if (action === DatePickerAndroid.dismissedAction) {
 				// action canceled;
       } else {
-        var date = new Date(year, month, day);
-        dispatch(changeDate(date));
+        let date = new Date(year, month, day);
+				let currentMovieState = {
+					count: movies.length,
+					order: order
+				}
+        dispatch(changeDate(date, currentMovieState));
       }
-    } catch ({code, message}) {
-      console.warn(message);
+    } catch (err)  {
+      console.warn(err);
     }
   }
 }
@@ -61,10 +68,7 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
-  console.log(state);
-  return {
-    mSince: state.movieListPage.mSince
-  };
+  return state.movieListPage;
 }
 
 export default connect(mapStateToProps)(Toolbar);

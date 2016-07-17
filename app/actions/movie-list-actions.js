@@ -3,19 +3,21 @@
 */
 import {fetchMovie, toogleLikeApi} from '../mockApi';
 
-export const fetchMovieList = (tab: string, count: ?number, order: ?any) => {
+export const fetchMovieList = (count: ?number, since: ?Date, order: ?string) => {
 	return dispatch => {
 		dispatch(refreshingFlag(true));
-		fetchMovie(tab, count, order).then(function(res) {
+		return fetchMovie(count, since, order).then(function(res) {
 			return res.json();
 		}).then(function(result) {
 			//console.log('movies fetched: ', result);
 			dispatch({
 				type: 'MOVIE_FETCHED',
 				movies: result.movies,
-				total: result.total
+				total: result.total,
+				order: 'trending'
 			});
 			dispatch(refreshingFlag(false));
+			return true;
 		});
 	}
 };

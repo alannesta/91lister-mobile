@@ -13,5 +13,12 @@ export type TMovie = {
 export type TMovieState ={
 	movies: Array<TMovie>,
 	total: number,
-	since: ?Date
+	order: string
 }
+
+export type TMovieListState = {
+		movieData: TMovieState,
+		tab: string,
+		isRefreshing: boolean,
+		mSince: Date
+};

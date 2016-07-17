@@ -16,31 +16,22 @@ const randomMovie = ():TMovie => {
 	};
 };
 
-function getMovieList(tab, count): Array<TMovie> {
+function getMovieList(count): Array<TMovie> {
 	let movieList: Array<TMovie> = [];
-	switch(tab) {
-		case 'all':
-			let mCount = count || 20;
-			for (let i=0; i<mCount;i++) {
-				movieList.push(randomMovie());
-			}
-			return movieList;
-		case 'favourite':
-			return movieList.slice(0,3);
-		case 'trending':
-			return [movieList[1]];
-		default:
-			return movieList;
+	let mCount = count || 20;
+	for (let i=0; i<mCount;i++) {
+		movieList.push(randomMovie());
 	}
+	return movieList;
 }
 
-export const fetchMovie = (tab: string, count:?number, order:?any): Promise<*> => {
+export const fetchMovie = (count:?number, since: ?Date, order:?any): Promise<*> => {
 	//console.log('fetching movies for with params: ', arguments);
 	return new Promise(function(resolve, reject) {
 		setTimeout(function() {
 			let init = { "status" : 200 , "statusText" : "movie list fetch success" };
 			let payload = {
-				movies: getMovieList(tab, count),
+				movies: getMovieList(count),
 				total: 100
 			};
 			let response = new Response(JSON.stringify(payload),init);

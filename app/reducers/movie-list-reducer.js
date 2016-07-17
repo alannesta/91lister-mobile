@@ -2,14 +2,12 @@
 *	@flow weak
 */
 import {combineReducers} from 'redux';
-import type {TMovie, TMovieState} from '../types/flowtypes'
-
-const DEFAULT_START_TIME = new Date('1983-12-01') // the default starting time for fetching
+import type {TMovie, TMovieState, TMovieListState} from '../types/flowtypes'
 
 const defaultMovieState: TMovieState = {
 	movies: [],
 	total: 0,
-	since: DEFAULT_START_TIME
+	order: 'trending'
 };
 
 const moviesReducer = (state = defaultMovieState, action) => {
@@ -18,7 +16,7 @@ const moviesReducer = (state = defaultMovieState, action) => {
 			return {
 				movies: [...action.movies],
 				total: action.total,
-				since: action.since
+				order: action.order
 			};
 		case 'MOVIE_UPDATED':
 			let index = findMovieByID(state.movies, action.movie);
@@ -47,8 +45,8 @@ const refreshFlagReducer = (state=false, action) => {
 	return state;
 };
 
-const movieSinceReducer = (state = DEFAULT_START_TIME, action) => {
-	if (action.type === "MOVIE_TIMISINCE_CHANGED") {
+const movieSinceReducer = (state = new Date(), action) => {
+	if (action.type === "MOVIE_TIMESINCE_CHANGED") {
 		return action.date;
 	}
 	return state;

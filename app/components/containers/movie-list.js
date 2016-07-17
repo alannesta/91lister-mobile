@@ -45,7 +45,7 @@ class MovieList extends Component {
 	componentDidMount() {
 		let {dispatch, tabLabel} = this.props;	// dispatch is injected by connect() call
 		console.log('movielist tab tag: ' + tabLabel);
- 		dispatch(actions.fetchMovieList('all'));
+ 		dispatch(actions.fetchMovieList());
 	}
 
 	render() {
@@ -98,7 +98,7 @@ class MovieList extends Component {
 		let {dispatch, movieData: {movies, total}} = this.props;
 		console.log('current movies:' + movies.length);
 		if (movies.length < total) {
-			dispatch(actions.fetchMovieList('all', movies.length + 10))
+			dispatch(actions.fetchMovieList(movies.length + 10))
 		}
 	}
 
@@ -108,7 +108,7 @@ class MovieList extends Component {
 	 */
 	_onRefresh() {
 		let {dispatch} = this.props;
-		dispatch(actions.fetchMovieList('all'));
+		dispatch(actions.fetchMovieList());
 	}
 }
 
