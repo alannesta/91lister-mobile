@@ -24,6 +24,9 @@ export default class Movie extends Component {
 		}
 		return (
 			<View style={styles.movieItem}>
+				<Image style={styles.thumbnail}
+					source={{uri: 'https://placeholdit.imgix.net/~text?txtsize=33&txt=350%C3%97150&w=350&h=150'}}
+				/>
 				<View style={styles.infoContainer}>
 					<Text style={styles.movieName}>{movie.name}</Text>
 					<Text style={styles.viewCount}>{movie.viewCount}</Text>
@@ -53,6 +56,10 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		padding: 5
+	},
+	thumbnail: {
+		height: 50,
+		width: 50
 	},
 	infoContainer: {},
 	movieName: {
