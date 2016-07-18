@@ -7,12 +7,13 @@ const uuid = require('node-uuid');
 const randomMovie = ():TMovie => {
 	return {
 		id: uuid.v1(),
-		name: `The painted veil ${Math.floor(Math.random()*100)}`,
+		title: `The painted veil ${Math.floor(Math.random()*100)}`,
 		viewCount: Math.floor(Math.random()*200000),
-		trending: 5452,
-		imageUrl: "",
+		trend: 5452,
+		thumbnail: "",
 		url: "",
-		liked: false
+		liked: false,
+		favourite: 12
 	};
 };
 

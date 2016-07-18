@@ -3,11 +3,13 @@
 */
 export type TMovie = {
 	id: string,
-	name: string,
+	title: string,
 	url: string,
 	viewCount: number,
-	trending: number,
-	liked: boolean
+	trend: number,
+	liked: boolean,
+	thumbnail: string,
+	favourite: number
 }
 
 export type TMovieState ={

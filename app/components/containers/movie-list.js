@@ -95,10 +95,10 @@ class MovieList extends Component {
 	 */
 	_loadMoreMovies() {
 		console.log('load more movies');
-		let {dispatch, movieData: {movies, total}} = this.props;
+		let {dispatch, movieData: {movies, total}, mSince, order} = this.props;	// TODO: refactor order reducer
 		console.log('current movies:' + movies.length);
 		if (movies.length < total) {
-			dispatch(actions.fetchMovieList(movies.length + 10))
+			dispatch(actions.fetchMovieList(movies.length + 10, mSince, order))
 		}
 	}
 
