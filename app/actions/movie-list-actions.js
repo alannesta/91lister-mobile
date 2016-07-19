@@ -3,7 +3,7 @@
 */
 import {fetchMovie, toogleLikeApi} from '../api';
 
-export const fetchMovieList = (count: ?number, since: ?Date, order: ?string) => {
+export const fetchMovieList = (count: ?number, since: ?number, order: ?string) => {
 	return dispatch => {
 		dispatch(refreshingFlag(true));
 		return fetchMovie(count, since, order).then(function(result) {
@@ -11,11 +11,18 @@ export const fetchMovieList = (count: ?number, since: ?Date, order: ?string) => 
 			dispatch({
 				type: 'MOVIE_FETCHED',
 				movies: result.movies,
-				total: result.total,
-				order: 'trend'
+				total: result.total
 			});
 			dispatch(refreshingFlag(false));
 			return true;
+		}).catch((err) => {
+			dispatch({
+				type: 'MOVIE_FETCH_FAIL',
+				movies: [],
+				total: 0
+			});
+			dispatch(refreshingFlag(false));
+			return false;
 		});
 	}
 };

@@ -10,6 +10,7 @@ export const fetchMovie = (count = 10, since = 0, order = 'trend'): Promise<Arra
 
   let timestamp = 0;
   // convert Date to unix timestamp for mysql date comparing
+  // TODO: if since === today, timestamp = 0;
   if (since instanceof Date) {
     timestamp = since.getTime()/1000
   }

@@ -14,13 +14,13 @@ export type TMovie = {
 
 export type TMovieState ={
 	movies: Array<TMovie>,
-	total: number,
-	order: string
+	total: number
 }
 
 export type TMovieListState = {
 		movieData: TMovieState,
 		tab: string,
 		isRefreshing: boolean,
-		mSince: Date
+		mSince: Date,
+		order: string
 };

@@ -6,8 +6,7 @@ import type {TMovie, TMovieState, TMovieListState} from '../types/flowtypes'
 
 const defaultMovieState: TMovieState = {
 	movies: [],
-	total: 0,
-	order: 'trending'
+	total: 0
 };
 
 const moviesReducer = (state = defaultMovieState, action) => {
@@ -15,8 +14,7 @@ const moviesReducer = (state = defaultMovieState, action) => {
 		case 'MOVIE_FETCHED':
 			return {
 				movies: [...action.movies],
-				total: action.total,
-				order: action.order
+				total: action.total
 			};
 		case 'MOVIE_UPDATED':
 			let index = findMovieByID(state.movies, action.movie);
@@ -45,9 +43,17 @@ const refreshFlagReducer = (state=false, action) => {
 	return state;
 };
 
-const movieSinceReducer = (state = new Date(), action) => {
+// default time set to start of unix time
+const movieSinceReducer = (state = 0, action) => {
 	if (action.type === "MOVIE_TIMESINCE_CHANGED") {
 		return action.date;
+	}
+	return state;
+}
+
+const orderReducer = (state = 'trend', action) => {
+	if (action.type === "CHANGE_MOVIE_ORDER") {
+		return action.order
 	}
 	return state;
 }
@@ -57,7 +63,8 @@ const movieListReducer = combineReducers({
 		movieData: moviesReducer,
 		tab: tabReducer,
 		isRefreshing: refreshFlagReducer,
-		mSince: movieSinceReducer
+		mSince: movieSinceReducer,
+		order: orderReducer
 });
 
 function findMovieByID(movies, movie) {

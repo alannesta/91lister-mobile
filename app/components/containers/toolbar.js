@@ -41,13 +41,20 @@ class Toolbar extends Component {
 	}
 
   async _showPicker() {
-    let {mSince, dispatch, movieData: {movies, order}} = this.props;
+    let {dispatch, mSince, order, movieData: {movies}} = this.props;
+		let today = new Date();
     try {
-      const {action, year, month, day} = await DatePickerAndroid.open({date: mSince});
+			// if initial date is untouched, open datepicker with starting date set as today
+			let initialDate = order === 0? today : new Date(order);
+      const {action, year, month, day} = await DatePickerAndroid.open({date: initialDate});
       if (action === DatePickerAndroid.dismissedAction) {
 				// action canceled;
       } else {
-        let date = new Date(year, month, day);
+				let date = new Date(year, month, day).getTime();
+				if (today.getDay() === day && today.getMonth() === month && today.getFullYear() === year) {
+					date = 0;
+				}
+
 				let currentMovieState = {
 					count: movies.length,
 					order: order

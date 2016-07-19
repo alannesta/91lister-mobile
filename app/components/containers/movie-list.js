@@ -94,7 +94,6 @@ class MovieList extends Component {
 	 * @private
 	 */
 	_loadMoreMovies() {
-		console.log('load more movies');
 		let {dispatch, movieData: {movies, total}, mSince, order} = this.props;	// TODO: refactor order reducer
 		console.log('current movies:' + movies.length);
 		if (movies.length < total) {
