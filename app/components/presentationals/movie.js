@@ -28,7 +28,7 @@ export default class Movie extends Component {
 					source={{uri: 'https://placeholdit.imgix.net/~text?txtsize=33&txt=350%C3%97150&w=350&h=150'}}
 				/>
 				<View style={styles.infoContainer}>
-					<Text style={styles.movieName}>{movie.name}</Text>
+					<Text style={styles.movieName}>{movie.title}</Text>
 					<Text style={styles.viewCount}>{movie.viewCount}</Text>
 				</View>
 				<TouchableOpacity

@@ -3,7 +3,9 @@
 */
 import type {TMovie} from './types/flowtypes'
 
-const BASE_URL = 'http://localhost:4302';
+// const BASE_URL = 'http://localhost:4302';
+const BASE_URL = 'http://10.0.3.2:4302';
+
 const DEFAULT_STARTDATE = ''
 
 export const fetchMovie = (count = 10, since = 0, order = 'trend'): Promise<Array<TMovie>> => {
