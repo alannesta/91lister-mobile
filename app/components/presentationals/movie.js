@@ -20,10 +20,10 @@ export default class Movie extends Component {
 		let LikeButton;
 
 		if (movie.liked) {
-			LikeButton = <Image style={styles.likeButton} source={require('../../images/star_empty.png')} />;
+			LikeButton = <Image style={styles.likeButton} source={require('../../images/star_full.png')} />;
 
 		} else {
-			LikeButton = <Image style={styles.likeButton} source={require('../../images/star_full.png')} />;
+			LikeButton = <Image style={styles.likeButton} source={require('../../images/star_empty.png')} />;
 			// LikeButton = <Image style={styles.likeButton}>Unlike</Image>;
 
 		}
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
 		borderColor: '#d2d2d2'
 	},
 	likeButton: {
-		width: 20,
-		height: 20
+		width: 25,
+		height: 25
 	}
 });
