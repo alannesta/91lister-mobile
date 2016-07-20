@@ -22,14 +22,15 @@ export default class Movie extends Component {
 		} else {
 			LikeButton = <Text>Unlike</Text>;
 		}
+		let thumbnail = movie.thumbnail? movie.thumbnail : 'https://placeholdit.imgix.net/~text?txtsize=33&txt=350%C3%97150&w=350&h=150';
 		return (
 			<View style={styles.movieItem}>
 				<Image style={styles.thumbnail}
-					source={{uri: 'https://placeholdit.imgix.net/~text?txtsize=33&txt=350%C3%97150&w=350&h=150'}}
+					source={{uri: thumbnail}}
 				/>
 				<View style={styles.infoContainer}>
 					<Text style={styles.movieName}>{movie.title}</Text>
-					<Text style={styles.viewCount}>{movie.viewCount}</Text>
+					<Text style={styles.viewCount}>{movie.trend}</Text>
 				</View>
 				<TouchableOpacity
 					accessibilityTraits="button"

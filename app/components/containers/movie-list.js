@@ -15,8 +15,8 @@ import {
 	ListView,
 	RefreshControl,
 	TouchableOpacity,
-	InteractionManager,
 	Animated,
+	InteractionManager
 } from 'react-native';
 
 import type {TMovie} from '../../types/flowtypes'
@@ -44,14 +44,11 @@ class MovieList extends Component {
 
 	componentDidMount() {
 		let {dispatch, tabLabel} = this.props;	// dispatch is injected by connect() call
-		console.log('movielist tab tag: ' + tabLabel);
  		dispatch(actions.fetchMovieList());
 	}
 
 	render() {
 		let {movieData: {movies, total}, isRefreshing} = this.props;
-		//let movieActionCreators = bindActionCreators(actions, dispatch);
-
 		return (
 			<ListView
 				dataSource={this.dataSource.cloneWithRows(movies)}
@@ -95,9 +92,10 @@ class MovieList extends Component {
 	 */
 	_loadMoreMovies() {
 		let {dispatch, movieData: {movies, total}, mSince, order} = this.props;	// TODO: refactor order reducer
-		console.log('current movies:' + movies.length);
 		if (movies.length < total) {
-			dispatch(actions.fetchMovieList(movies.length + 10, mSince, order))
+			InteractionManager.runAfterInteractions(() => {
+				dispatch(actions.fetchMovieList(movies.length + 10, mSince, order));
+			});
 		}
 	}
 
@@ -106,8 +104,10 @@ class MovieList extends Component {
 	 * @private
 	 */
 	_onRefresh() {
-		let {dispatch} = this.props;
-		dispatch(actions.fetchMovieList());
+		let {dispatch, movieData: {movies}, mSince, order} = this.props;
+		InteractionManager.runAfterInteractions(() => {
+			dispatch(actions.fetchMovieList(movies.length, mSince, order));
+		});
 	}
 }
 

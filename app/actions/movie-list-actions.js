@@ -7,13 +7,12 @@ export const fetchMovieList = (count: ?number, since: ?number, order: ?string) =
 	return dispatch => {
 		dispatch(refreshingFlag(true));
 		return fetchMovie(count, since, order).then(function(result) {
-			//console.log('movies fetched: ', result);
+			dispatch(refreshingFlag(false));
 			dispatch({
 				type: 'MOVIE_FETCHED',
 				movies: result.movies,
 				total: result.total
 			});
-			dispatch(refreshingFlag(false));
 			return true;
 		}).catch((err) => {
 			dispatch({

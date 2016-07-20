@@ -13,7 +13,8 @@ import {
 	Text,
 	TouchableOpacity,
   ToolbarAndroid,
-  DatePickerAndroid
+  DatePickerAndroid,
+	InteractionManager
 } from 'react-native';
 
 class Toolbar extends Component {
@@ -51,15 +52,17 @@ class Toolbar extends Component {
 				// action canceled;
       } else {
 				let date = new Date(year, month, day).getTime();
-				if (today.getDay() === day && today.getMonth() === month && today.getFullYear() === year) {
-					date = 0;
-				}
+				// if (today.getDay() === day && today.getMonth() === month && today.getFullYear() === year) {
+				// 	date = 0;
+				// }
 
 				let currentMovieState = {
 					count: movies.length,
 					order: order
 				}
-        dispatch(changeDate(date, currentMovieState));
+				InteractionManager.runAfterInteractions(() => {
+					dispatch(changeDate(date, currentMovieState));
+				});
       }
     } catch (err)  {
       console.warn(err);

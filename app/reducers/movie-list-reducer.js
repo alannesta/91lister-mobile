@@ -13,9 +13,16 @@ const moviesReducer = (state = defaultMovieState, action) => {
 	switch (action.type) {
 		case 'MOVIE_FETCHED':
 			return {
-				movies: [...action.movies],
+				movies: action.movies,
 				total: action.total
 			};
+
+		case 'MOVIE_FETCH_FAIL':
+			return {
+				movies: action.movies,
+				total: action.total
+			}
+			
 		case 'MOVIE_UPDATED':
 			let index = findMovieByID(state.movies, action.movie);
 			//state.movies[index] = action.movie;
@@ -23,6 +30,7 @@ const moviesReducer = (state = defaultMovieState, action) => {
 				total: state.total,
 				movies: [...state.movies.slice(0, index), action.movie, ...state.movies.slice(index+1)]
 			};
+
 		default:
 			return state;
 	}
@@ -36,7 +44,7 @@ const tabReducer = (state = 'all', action)  => {
 	}
 };
 
-const refreshFlagReducer = (state=false, action) => {
+const refreshFlagReducer = (state = false, action) => {
 	if (action.type === "REFRESHING_FLAG") {
 		return action.isRefreshing;
 	}

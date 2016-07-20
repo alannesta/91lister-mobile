@@ -3,19 +3,14 @@
 */
 import type {TMovie} from './types/flowtypes'
 
-// const BASE_URL = 'http://localhost:4302';
-const BASE_URL = 'http://10.0.3.2:4302';
+const BASE_URL = 'http://192.168.0.104:4302';
+// const BASE_URL = 'http://10.0.3.2:4302';
 
 const DEFAULT_STARTDATE = ''
 
 export const fetchMovie = (count = 10, since = 0, order = 'trend'): Promise<Array<TMovie>> => {
 
-  let timestamp = 0;
-  // convert Date to unix timestamp for mysql date comparing
-  // TODO: if since === today, timestamp = 0;
-  if (since instanceof Date) {
-    timestamp = since.getTime()/1000
-  }
+  let timestamp = since/1000;
   let url = `${BASE_URL}/movies?count=${count}&since=${timestamp}&order=${order}`;
 
   return fetch(url).then(function(res) {
@@ -24,9 +19,8 @@ export const fetchMovie = (count = 10, since = 0, order = 'trend'): Promise<Arra
     } else {
       throw new Error('Fail to fetch movies');
     }
-  }).then(function(movies){
-    console.log(movies);
-    return movies;
+  }).then(function(movieData){
+    return movieData;
   }).catch(function(err) {
     console.log(err);
   });
