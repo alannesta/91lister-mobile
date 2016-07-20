@@ -3,8 +3,8 @@
 */
 import type {TMovie} from './types/flowtypes'
 
-const BASE_URL = 'http://192.168.0.104:4302';
-// const BASE_URL = 'http://10.0.3.2:4302';
+// const BASE_URL = 'http://192.168.0.104:4302'; // device
+const BASE_URL = 'http://10.0.3.2:4302';  // simulator
 
 const DEFAULT_STARTDATE = ''
 
@@ -39,6 +39,25 @@ export const fetchMovie = (count = 10, since = 0, order = 'trend'): Promise<Arra
 };
 
 export const toogleLikeApi = (movie: TMovie): Promise<*> => {
+  let url = `${BASE_URL}/movie/${movie.id}`
+  return fetch(url, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(movie)
+  }).then(function(res) {
+    if (res.status === 200) {
+      return res.json();
+    } else {
+      throw new Error('Fail to toggle like');
+    }
+  }).then(function(movie) {
+    return movie;
+  }).catch(function(err) {
+    console.log(err);
+  });
 
 	// return new Promise(function(resolve, reject) {
 	// 	setTimeout(function() {

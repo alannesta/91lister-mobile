@@ -28,14 +28,14 @@ export const fetchMovieList = (count: ?number, since: ?number, order: ?string) =
 
 export const toggleLike = (movie) => {
 	return dispatch => {
-		toogleLikeApi(movie).then(function(res) {
-			return res.json();
-		}).then(function(updatedMovie) {
+		toogleLikeApi(movie).then(function(updatedMovie) {
 			dispatch({
 				type: 'MOVIE_UPDATED',
 				movie: updatedMovie
 			})
-		});
+		}).catch((err) => {
+			//TODO: Toast
+		}) ;
 	}
 };
 

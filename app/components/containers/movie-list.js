@@ -106,7 +106,8 @@ class MovieList extends Component {
 	_onRefresh() {
 		let {dispatch, movieData: {movies}, mSince, order} = this.props;
 		InteractionManager.runAfterInteractions(() => {
-			dispatch(actions.fetchMovieList(movies.length, mSince, order));
+			var count = movies.length > 0 ? movies.length : 10;	// TODO: this is a temporary solution
+			dispatch(actions.fetchMovieList(count, mSince, order));
 		});
 	}
 }
