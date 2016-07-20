@@ -6,11 +6,13 @@ import {
 	Text,
 	Image,
 	TouchableOpacity,
+	Dimensions
 } from 'react-native';
 
 export default class Movie extends Component {
 	constructor(props) {
 		super(props);
+
 	}
 
 	render() {
@@ -18,9 +20,12 @@ export default class Movie extends Component {
 		let LikeButton;
 
 		if (movie.liked) {
-			LikeButton = <Text>Like</Text>;
+			LikeButton = <Image style={styles.likeButton} source={require('../../images/star_empty.png')} />;
+
 		} else {
-			LikeButton = <Text>Unlike</Text>;
+			LikeButton = <Image style={styles.likeButton} source={require('../../images/star_full.png')} />;
+			// LikeButton = <Image style={styles.likeButton}>Unlike</Image>;
+
 		}
 		let thumbnail = movie.thumbnail? movie.thumbnail : 'https://placeholdit.imgix.net/~text?txtsize=33&txt=350%C3%97150&w=350&h=150';
 		return (
@@ -30,15 +35,20 @@ export default class Movie extends Component {
 				/>
 				<View style={styles.infoContainer}>
 					<Text style={styles.movieName}>{movie.title}</Text>
-					<Text style={styles.viewCount}>{movie.trend}</Text>
+					<View style={styles.statisticsContainer}>
+						<Text style={styles.numbers}>{movie.view_count}</Text>
+						<Text style={styles.numbers}>{movie.trend}</Text>
+					</View>
 				</View>
-				<TouchableOpacity
-					accessibilityTraits="button"
-					onPress={toggleLike.bind(this, movie)}
-					activeOpacity={0.5}
-					style={styles.likeButton}>
-					{LikeButton}
-				</TouchableOpacity>
+				<View style={styles.likeButtonContainer}>
+					<TouchableOpacity
+						accessibilityTraits="button"
+						onPress={toggleLike.bind(this, movie)}
+						activeOpacity={0.5}
+						>
+						{LikeButton}
+					</TouchableOpacity>
+				</View>
 			</View>
 
 		);
@@ -50,30 +60,48 @@ Movie.propTypes = {
 	toggleLike: React.PropTypes.func
 }
 
+// const deviceWidth = console.log('width:'+Dimensions.get('window').width+',height:'+Dimensions.get('window').height);
 
 const styles = StyleSheet.create({
 	movieItem: {
-		height: 60,
+		height: 80,
 		flexDirection: 'row',
-		justifyContent: 'space-between',
+		// justifyContent: 'space-between',
 		padding: 5
 	},
 	thumbnail: {
-		height: 50,
-		width: 50
+		flex: 2
 	},
-	infoContainer: {},
+	infoContainer: {
+		padding: 5,
+		justifyContent: 'center',
+		alignItems: 'center',
+		flex: 5
+	},
+	statisticsContainer: {
+		flexDirection: 'row',
+		marginTop: 5,
+		justifyContent: 'center'
+	},
 	movieName: {
-		fontSize: 16
+		marginTop: 10,
+		fontSize: 14
 	},
-	viewCount: {
+	numbers: {
 		fontSize: 12,
-		color: '#d2d2d2'
+		color: '#d2d2d2',
+		padding: 10
+	},
+
+	likeButtonContainer: {
+		// flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'center',
+		flex:1,
+		borderColor: '#d2d2d2'
 	},
 	likeButton: {
-		width: 80,
-		borderWidth: 1,
-		borderColor: '#d2d2d2',
+		width: 20,
 		height: 20
 	}
 });
