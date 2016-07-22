@@ -5,6 +5,7 @@ import {AsyncStorage} from 'react-native'
 
 class AppStorage {
   constructor() {
+    console.log('App Storage Init');
     this.autToken = '';
 
     // cache jwt auth token upon init

@@ -6,6 +6,8 @@ import { bindActionCreators, redux } from 'redux'
 import { connect } from 'react-redux';
 import Movie from '../presentationals/movie';
 import {changeDate} from '../../actions/toolbar-actions';
+import {authenticate} from '../../actions/user-actions';
+
 
 import {
 	StyleSheet,
@@ -27,7 +29,10 @@ class Toolbar extends Component {
       <ToolbarAndroid
         navIcon={require('../../images/ic_menu_black_24dp.png')}
         onIconClicked={() => this.drawer.openDrawer()}
-        actions={[{title: 'Date', icon: require('../../images/ic_settings_black_48dp.png'), show: 'always'}]}
+        actions={[
+					{title: 'Date', icon: require('../../images/ic_settings_black_48dp.png'), show: 'always'},
+					{title: 'Login', icon: require('../../images/ic_settings_black_48dp.png'), show: 'always'}
+				]}
         onActionSelected={this._onActionSelected.bind(this)}
         style={styles.toolbar}
         title={'91 lister'}
@@ -38,7 +43,15 @@ class Toolbar extends Component {
   _onActionSelected(index) {
     if (index === 0) {
       this._showPicker()
-    }
+    } else if (index === 1) {
+			this._loginTest();
+		}
+	}
+
+	_loginTest() {
+		let {dispatch} = this.props;
+		console.log('authenticate');
+		dispatch(authenticate('alannesta', '112233aa'));
 	}
 
   async _showPicker() {

@@ -75,9 +75,9 @@ export const authenticateUser = (username: string, password: string): Promise < 
       // invalid credentials
       throw new Error('Authentication failed due to invalid credentials');
     }
-
+    throw new Error('Authentication failed due tointernal error');
   }).then(function(response) {
-    // TODO: save jwt credentials
+    return response;
   }).catch(function(err){
     console.log(err);
     throw(err);

@@ -5,10 +5,12 @@ import {authenticateUser} from '../api'
 import AppStorage from '../utils/app-storage'
 
 export const authenticate = (username: string, password: string) => {
+  console.log('in action');
   return (dispatch) => {
     authenticateUser(username, password).then(function(result) {
       console.log('authenticate user action: ', result);
       if (result.auth) {
+        // persist jwt auth token
         AppStorage.setItem('authToken', result.auth).then(() => {
             dispatch({
               type: 'USER_AUTHENTICATION_SUCCESS',
@@ -17,6 +19,10 @@ export const authenticate = (username: string, password: string) => {
         }).catch((err) => {
           console.log(err);
           throw(err);
+        });
+      } else {
+        dispatch({
+          type: 'USER_AUTHENTICATION_FAILED'
         });
       }
     }).catch((err) => {
