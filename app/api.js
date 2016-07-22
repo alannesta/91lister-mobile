@@ -1,16 +1,15 @@
 /*
  * @flow weak
  */
-import type {
-	TMovie
-} from './types/flowtypes'
+import type {TMovie} from './types/flowtypes'
+import AppStorage from './utils/app-storage'
 
 // const BASE_URL = 'http://192.168.0.104:4302'; // device
 const BASE_URL = 'http://10.0.3.2:4302'; // simulator
 const DEFAULT_HEADERS = {
   'Accept': 'application/json',
   'Content-Type': 'application/json',
-  'auth': _setAuthHeader()
+  'auth': AppStorage.getItem('authToken')
 };
 
 export const fetchMovie = (count = 10, since = 0, order = 'trend'): Promise < Array < TMovie >> => {
@@ -83,8 +82,4 @@ export const authenticateUser = (username: string, password: string): Promise < 
     console.log(err);
     throw(err);
   });
-}
-
-function _setAuthHeader() {
-  
 }
