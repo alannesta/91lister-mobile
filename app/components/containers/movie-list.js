@@ -24,11 +24,11 @@ import type {TMovie} from '../../types/flowtypes'
 class MovieList extends Component {
 
 	// flow type declaration
-	bindedMovieActionCreators: any;
-	dataSource: any;
-	_renderRow: Function;
+	bindedMovieActionCreators:any;
+	dataSource:any;
+	_renderRow:Function;
 
-	static defaultProps: {};
+	static defaultProps:{};
 
 	constructor(props) {
 		super(props);
@@ -44,7 +44,7 @@ class MovieList extends Component {
 
 	componentDidMount() {
 		let {dispatch, tabLabel} = this.props;	// dispatch is injected by connect() call
- 		dispatch(actions.fetchMovieList());
+		dispatch(actions.fetchMovieList());
 	}
 
 	render() {
@@ -57,7 +57,7 @@ class MovieList extends Component {
 				onEndReachedThreshold={10}
 				onEndReached={this._loadMoreMovies.bind(this)}
 				enableEmptySections={true}
-				removeClippedSubviews={false} 	// fix android device listview crash: https://github.com/facebook/react-native/issues/5934
+				removeClippedSubviews={false}    // fix android device listview crash: https://github.com/facebook/react-native/issues/5934
 				//renderFooter={this.renderFooter.bind(this)}
 				refreshControl={
 					<RefreshControl
@@ -70,7 +70,7 @@ class MovieList extends Component {
 		)
 	}
 
-	_renderRow(movie: TMovie) {
+	_renderRow(movie:TMovie) {
 
 		return (
 			<Movie
@@ -82,7 +82,7 @@ class MovieList extends Component {
 
 	_renderSeparator(sectionID, rowID) {
 		return (
-			<View style={styles.separator} key={rowID} />
+			<View style={styles.separator} key={rowID}/>
 		)
 	}
 

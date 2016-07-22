@@ -1,9 +1,12 @@
 /*
 	@flow weak
 */
-import {fetchMovie, toogleLikeApi} from '../api';
+import {
+	fetchMovie,
+	toogleLikeApi
+} from '../api';
 
-export const fetchMovieList = (count: ?number, since: ?number, order: ?string) => {
+export const fetchMovieList = (count: ? number, since : ? number, order : ? string) => {
 	return dispatch => {
 		dispatch(refreshingFlag(true));
 		return fetchMovie(count, since, order).then(function(result) {
@@ -35,7 +38,7 @@ export const toggleLike = (movie) => {
 			})
 		}).catch((err) => {
 			//TODO: Toast
-		}) ;
+		});
 	}
 };
 

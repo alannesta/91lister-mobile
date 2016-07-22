@@ -22,14 +22,14 @@ class Root extends Component {
 	render() {
 		return (
 			<DrawerLayoutAndroid
-        drawerPosition={DrawerLayoutAndroid.positions.Left}
-        drawerWidth={Dimensions.get('window').width - DRAWER_WIDTH_LEFT}
-        keyboardDismissMode="on-drag"
-        ref={(drawer) => { this.drawer = drawer; }}		//! for using this.drawer.open()
-        renderNavigationView={this._renderDrawerContent}
-        statusBarBackgroundColor="#589c90">
-        {this._renderApp()}
-      </DrawerLayoutAndroid>
+				drawerPosition={DrawerLayoutAndroid.positions.Left}
+				drawerWidth={Dimensions.get('window').width - DRAWER_WIDTH_LEFT}
+				keyboardDismissMode="on-drag"
+				ref={(drawer) => { this.drawer = drawer; }}        //! for using this.drawer.open()
+				renderNavigationView={this._renderDrawerContent}
+				statusBarBackgroundColor="#589c90">
+				{this._renderApp()}
+			</DrawerLayoutAndroid>
 		);
 	}
 
@@ -53,24 +53,24 @@ class Root extends Component {
 					   	let Component = route.component;
 					   	return <Component {...route.params} navigator={navigator} />
 							}}
-				/>
+					/>
 			</View>
 		)
 	}
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  toolbar: {
-    backgroundColor: '#E9EAED',
-    height: 56,
-  },
-  drawerContentWrapper: {
-    flex: 1,
-    backgroundColor: 'white',
-  },
+	container: {
+		flex: 1,
+	},
+	toolbar: {
+		backgroundColor: '#E9EAED',
+		height: 56,
+	},
+	drawerContentWrapper: {
+		flex: 1,
+		backgroundColor: 'white',
+	},
 });
 
 export default Root;

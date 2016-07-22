@@ -1,8 +1,14 @@
 /*
-*	@flow weak
-*/
-import {combineReducers} from 'redux';
-import type {TMovie, TMovieState, TMovieListState} from '../types/flowtypes'
+ *	@flow weak
+ */
+import {
+	combineReducers
+} from 'redux';
+import type {
+	TMovie,
+	TMovieState,
+	TMovieListState
+} from '../types/flowtypes'
 
 const defaultMovieState: TMovieState = {
 	movies: [],
@@ -28,7 +34,7 @@ const moviesReducer = (state = defaultMovieState, action) => {
 			//state.movies[index] = action.movie;
 			return {
 				total: state.total,
-				movies: [...state.movies.slice(0, index), action.movie, ...state.movies.slice(index+1)]
+				movies: [...state.movies.slice(0, index), action.movie, ...state.movies.slice(index + 1)]
 			};
 
 		default:
@@ -36,10 +42,10 @@ const moviesReducer = (state = defaultMovieState, action) => {
 	}
 };
 
-const tabReducer = (state = 'all', action)  => {
+const tabReducer = (state = 'all', action) => {
 	if (action.type === 'SWITCH_TAB') {
 		return action.tab;
-	}else {
+	} else {
 		return state;
 	}
 };
@@ -66,22 +72,24 @@ const orderReducer = (state = 'trend', action) => {
 	return state;
 }
 
-// using more explicit syntax for better naming
-const movieListReducer = combineReducers({
-		movieData: moviesReducer,
-		tab: tabReducer,
-		isRefreshing: refreshFlagReducer,
-		mSince: movieSinceReducer,
-		order: orderReducer
-});
-
 function findMovieByID(movies, movie) {
-	for (let i=0; i<movies.length; i++) {
+	for (let i = 0; i < movies.length; i++) {
 		if (movies[i].id === movie.id) {
 			return i;
 		}
 	}
 	return -1;
 }
+
+// using more explicit syntax for better naming
+const movieListReducer = combineReducers({
+	movieData: moviesReducer,
+	tab: tabReducer,
+	isRefreshing: refreshFlagReducer,
+	mSince: movieSinceReducer,
+	order: orderReducer
+});
+
+
 
 export default movieListReducer
