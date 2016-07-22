@@ -1,9 +1,12 @@
-import {combineReducers} from 'redux';
-import movieListPageReducer from './movie-list-reducer';
+import {
+	combineReducers
+} from 'redux';
+import movieListReducer from './movie-list-reducer';
+import userReducer from './user-reducer';
 
 const appReducer = combineReducers({
-	movieListPage: movieListPageReducer
+	movieListPage: movieListReducer,
+	user: userReducer
 });
 
 export default appReducer;
-
