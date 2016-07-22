@@ -90,6 +90,4 @@ const movieListReducer = combineReducers({
 	order: orderReducer
 });
 
-
-
 export default movieListReducer

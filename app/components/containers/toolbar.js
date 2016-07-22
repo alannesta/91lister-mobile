@@ -25,10 +25,11 @@ class Toolbar extends Component {
   }
 
   render() {
+		console.log(this.props);
     return (
       <ToolbarAndroid
         navIcon={require('../../images/ic_menu_black_24dp.png')}
-        onIconClicked={() => this.drawer.openDrawer()}
+        onIconClicked={() => this.props.drawer.openDrawer()}
         actions={[
 					{title: 'Date', icon: require('../../images/ic_settings_black_48dp.png'), show: 'always'},
 					{title: 'Login', icon: require('../../images/ic_settings_black_48dp.png'), show: 'always'}

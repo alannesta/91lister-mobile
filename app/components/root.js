@@ -11,12 +11,14 @@ import {
 import MovieList from './containers/movie-list'
 import TabView from './containers/tab-view'
 import Toolbar from './containers/toolbar'
+import LoginForm from './containers/login-form'
 
 const DRAWER_WIDTH_LEFT = 56;
 
 class Root extends Component {
 	constructor(props) {
 		super(props);
+		this._renderApp = this._renderApp.bind(this);
 	}
 
 	render() {
@@ -25,27 +27,29 @@ class Root extends Component {
 				drawerPosition={DrawerLayoutAndroid.positions.Left}
 				drawerWidth={Dimensions.get('window').width - DRAWER_WIDTH_LEFT}
 				keyboardDismissMode="on-drag"
-				ref={(drawer) => { this.drawer = drawer; }}        //! for using this.drawer.open()
-				renderNavigationView={this._renderLoginView}
+				// ref={(drawer) => { this.drawer = drawer; }}        //! for using this.drawer.open()
+				ref="drawer"
+				renderNavigationView={this._renderDrawerContent.bind(this)}
 				statusBarBackgroundColor="#589c90">
 				{this._renderApp()}
 			</DrawerLayoutAndroid>
 		);
 	}
 
-	_renderLoginView() {
+	_renderDrawerContent() {
 		return (
-			<View>
-				<Text>Drawer Content</Text>
-			</View>
+			<LoginForm />
 		)
 	}
 
 	_renderApp() {
 		let tab = TabView;
+		console.log(this.refs.drawer);
 		return (
 			<View style={styles.container}>
-				<Toolbar/>
+				<Toolbar
+					drawer={this.refs.drawer}
+				/>
 				<Navigator
 					initialRoute={{ name: 'home', component: tab }}
 					configureScene={(route, routeStack) => Navigator.SceneConfigs.FloatFromLeft}
