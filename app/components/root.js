@@ -27,13 +27,17 @@ class Root extends Component {
 				drawerPosition={DrawerLayoutAndroid.positions.Left}
 				drawerWidth={Dimensions.get('window').width - DRAWER_WIDTH_LEFT}
 				keyboardDismissMode="on-drag"
-				// ref={(drawer) => { this.drawer = drawer; }}        //! for using this.drawer.open()
-				ref="drawer"
+				ref={(drawer) => { this.drawer = drawer; }}        //! for using this.drawer.open()
+				// ref="drawer"
 				renderNavigationView={this._renderDrawerContent.bind(this)}
 				statusBarBackgroundColor="#589c90">
 				{this._renderApp()}
 			</DrawerLayoutAndroid>
 		);
+	}
+
+	componentDidMount() {
+		console.log('did mount: ', this.drawer);
 	}
 
 	_renderDrawerContent() {
@@ -44,11 +48,10 @@ class Root extends Component {
 
 	_renderApp() {
 		let tab = TabView;
-		console.log(this.refs.drawer);
 		return (
 			<View style={styles.container}>
 				<Toolbar
-					drawer={this.refs.drawer}
+					drawer={this.drawer}
 				/>
 				<Navigator
 					initialRoute={{ name: 'home', component: tab }}

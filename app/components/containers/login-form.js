@@ -9,7 +9,8 @@ import {
 	Text,
 	TouchableOpacity,
   TextInput,
-	InteractionManager
+	InteractionManager,
+  Dimensions
 } from 'react-native';
 
 class LoginForm extends Component {
@@ -23,29 +24,40 @@ class LoginForm extends Component {
   }
 
   render() {
-    return (
-      <View>
-        <TextInput
-          placeholder="username"
-          value={this.state.username}
-          onChangeText={(username) => {this.setState({username: username})}}
-        />
-        <TextInput
-          placeholder="password"
-          secureTextEntry={true}
-          returnKeyType="go"
-          value={this.state.password}
-          onChangeText={(password) => {this.setState({password: password})}}
-        />
-        <TouchableOpacity
-          accessibilityTraits="button"
-          onPress={this._login}
-          activeOpacity={0.5}
-          >
-          <Text>LOGIN</Text>
-        </TouchableOpacity>
-      </View>
-    );
+    let {status: {loggedIn, username}} = this.props;
+    if (loggedIn) {
+      return (
+        <View style={styles.welcomeScreen}>
+          <Text>Welcome and enjoy {username}!</Text>
+        </View>
+      )
+    } else {
+      return (
+        <View style={styles.loginForm}>
+          <TextInput
+            style={styles.inputField}
+            placeholder="username"
+            value={this.state.username}
+            onChangeText={(username) => {this.setState({username: username})}}
+          />
+          <TextInput
+            style={styles.inputField}
+            placeholder="password"
+            secureTextEntry={true}
+            returnKeyType="go"
+            value={this.state.password}
+            onChangeText={(password) => {this.setState({password: password})}}
+          />
+          <TouchableOpacity
+            accessibilityTraits="button"
+            onPress={this._login}
+            activeOpacity={0.5}
+            >
+            <Text>LOGIN</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    }
   }
 
   _login() {
@@ -56,8 +68,23 @@ class LoginForm extends Component {
   }
 }
 
-const styles = StyleSheet.create({
+const WINDOW_HEIGHT = Dimensions.get('window').height;
 
+const styles = StyleSheet.create({
+  inputField: {
+    marginTop: 10,
+    width: 200
+  },
+  loginForm: {
+    padding:10,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  welcomeScreen: {
+    height: WINDOW_HEIGHT-10,
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
 });
 
 function mapStateToProps(state) {

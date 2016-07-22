@@ -6,6 +6,10 @@ import {
 	toogleLikeApi
 } from '../api';
 
+import {
+	ToastAndroid
+} from 'react-native'
+
 export const fetchMovieList = (count: ? number, since : ? number, order : ? string) => {
 	return dispatch => {
 		dispatch(refreshingFlag(true));
@@ -32,10 +36,11 @@ export const fetchMovieList = (count: ? number, since : ? number, order : ? stri
 export const toggleLike = (movie) => {
 	return dispatch => {
 		toogleLikeApi(movie).then(function(updatedMovie) {
+			ToastAndroid.show('Movie updated successfully', ToastAndroid.SHORT);
 			dispatch({
 				type: 'MOVIE_UPDATED',
 				movie: updatedMovie
-			})
+			});
 		}).catch((err) => {
 			//TODO: Toast
 		});

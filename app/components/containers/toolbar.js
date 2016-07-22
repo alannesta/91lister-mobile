@@ -25,7 +25,6 @@ class Toolbar extends Component {
   }
 
   render() {
-		console.log(this.props);
     return (
       <ToolbarAndroid
         navIcon={require('../../images/ic_menu_black_24dp.png')}

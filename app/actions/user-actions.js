@@ -3,6 +3,9 @@
 */
 import {authenticateUser} from '../api'
 import AppStorage from '../utils/app-storage'
+import {
+  ToastAndroid
+} from 'react-native'
 
 export const authenticate = (username: string, password: string) => {
   return (dispatch) => {
@@ -14,6 +17,7 @@ export const authenticate = (username: string, password: string) => {
               type: 'USER_AUTHENTICATION_SUCCESS',
               username: username
             });
+            ToastAndroid.show('Login Success', ToastAndroid.SHORT);
             return true;
         }).catch((err) => {
           console.log(err);

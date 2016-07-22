@@ -7,6 +7,7 @@ class AppStorage {
   init() {
     return AsyncStorage.getItem('authToken').then((token) => {
       this.authToken = token;
+      return token;
     }).catch((err) => {
       console.log('AppStorage init failed');
     });
