@@ -26,14 +26,14 @@ class Root extends Component {
 				drawerWidth={Dimensions.get('window').width - DRAWER_WIDTH_LEFT}
 				keyboardDismissMode="on-drag"
 				ref={(drawer) => { this.drawer = drawer; }}        //! for using this.drawer.open()
-				renderNavigationView={this._renderDrawerContent}
+				renderNavigationView={this._renderLoginView}
 				statusBarBackgroundColor="#589c90">
 				{this._renderApp()}
 			</DrawerLayoutAndroid>
 		);
 	}
 
-	_renderDrawerContent() {
+	_renderLoginView() {
 		return (
 			<View>
 				<Text>Drawer Content</Text>

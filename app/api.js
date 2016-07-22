@@ -6,11 +6,6 @@ import AppStorage from './utils/app-storage'
 
 // const BASE_URL = 'http://192.168.0.104:4302'; // device
 const BASE_URL = 'http://10.0.3.2:4302'; // simulator
-const DEFAULT_HEADERS = {
-  'Accept': 'application/json',
-  'Content-Type': 'application/json',
-  'auth': AppStorage.getItem('authToken')
-};
 
 export const fetchMovie = (count = 10, since = 0, order = 'trend'): Promise < Array < TMovie >> => {
 
@@ -19,7 +14,7 @@ export const fetchMovie = (count = 10, since = 0, order = 'trend'): Promise < Ar
 
   // TODO: configure JWT header
 	return fetch(url, {
-    headers: DEFAULT_HEADERS
+    headers: _getDefaultHeaders()
   }).then(function(res) {
 		if (res.status === 200) {
 			return res.json();
@@ -38,7 +33,7 @@ export const toogleLikeApi = (movie: TMovie): Promise < * > => {
 	let url = `${BASE_URL}/movie/${movie.id}`
 	return fetch(url, {
 		method: 'POST',
-		headers: DEFAULT_HEADERS,
+		headers: _getDefaultHeaders(),
 		body: JSON.stringify(movie)
 	}).then(function(res) {
 		if (res.status === 200) {
@@ -82,4 +77,13 @@ export const authenticateUser = (username: string, password: string): Promise < 
     console.log(err);
     throw(err);
   });
+}
+
+function _getDefaultHeaders() {
+  console.log('get default headers');
+  return {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
+    'auth': AppStorage.getItem('authToken')
+  }
 }

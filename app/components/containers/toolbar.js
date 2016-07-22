@@ -50,8 +50,9 @@ class Toolbar extends Component {
 
 	_loginTest() {
 		let {dispatch} = this.props;
-		console.log('authenticate');
-		dispatch(authenticate('alannesta', '112233aa'));
+		InteractionManager.runAfterInteractions(() => {
+			dispatch(authenticate('alannesta', '112233aa'));
+		});
 	}
 
   async _showPicker() {

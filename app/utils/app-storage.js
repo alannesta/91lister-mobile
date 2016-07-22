@@ -4,21 +4,23 @@
 import {AsyncStorage} from 'react-native'
 
 class AppStorage {
-  constructor() {
-    console.log('App Storage Init');
-    this.autToken = '';
-
-    // cache jwt auth token upon init
-    AsyncStorage.getItem('authToken').then((token) => {
+  init() {
+    return AsyncStorage.getItem('authToken').then((token) => {
       this.authToken = token;
+    }).catch((err) => {
+      console.log('AppStorage init failed');
     });
   }
 
   getItem(key: string) {
+    console.log('cache check: for '+ key + '---> ' + this[key]);
     if (this[key]) {
       return this[key];
     }else {
-      return AsyncStorage.getItem(key);
+      return AsyncStorage.getItem(key).then(function(value) {
+        this[key] = value;
+        return value;
+      });
     }
   }
 
