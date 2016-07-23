@@ -14,7 +14,6 @@ class AppStorage {
   }
 
   getItem(key: string) {
-    console.log('cache check: for '+ key + '---> ' + this[key]);
     if (this[key]) {
       return this[key];
     }else {

@@ -80,7 +80,6 @@ export const authenticateUser = (username: string, password: string): Promise < 
 }
 
 function _getDefaultHeaders() {
-  console.log('get default headers');
   return {
     'Accept': 'application/json',
     'Content-Type': 'application/json',

@@ -19,6 +19,9 @@ class Root extends Component {
 	constructor(props) {
 		super(props);
 		this._renderApp = this._renderApp.bind(this);
+		this.state = {
+			drawerInstance: null
+		};
 	}
 
 	render() {
@@ -37,7 +40,12 @@ class Root extends Component {
 	}
 
 	componentDidMount() {
-		console.log('did mount: ', this.drawer);
+		// drawer reference will only be available when component finishes mounting
+		// the Root component will be fire componentDidMount after all child has mounted
+		// setState here so its child component Toolbar could get an updated reference of the Drawer Instance
+		this.setState({
+			drawerInstance: this.drawer
+		})
 	}
 
 	_renderDrawerContent() {
@@ -51,7 +59,7 @@ class Root extends Component {
 		return (
 			<View style={styles.container}>
 				<Toolbar
-					drawer={this.drawer}
+					drawer={this.state.drawerInstance}
 				/>
 				<Navigator
 					initialRoute={{ name: 'home', component: tab }}

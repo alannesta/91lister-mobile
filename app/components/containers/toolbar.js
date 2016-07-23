@@ -40,6 +40,9 @@ class Toolbar extends Component {
     )
   }
 
+	componentDidMount() {
+	}
+
   _onActionSelected(index) {
     if (index === 0) {
       this._showPicker()
