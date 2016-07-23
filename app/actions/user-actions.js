@@ -12,7 +12,7 @@ export const authenticate = (username: string, password: string) => {
     return authenticateUser(username, password).then(function(result) {
       if (result.auth) {
         // persist jwt auth token
-        AppStorage.setItem('authToken', result.auth).then(() => {
+        return AppStorage.setItem('authToken', result.auth).then(() => {
             dispatch({
               type: 'USER_AUTHENTICATION_SUCCESS',
               username: username

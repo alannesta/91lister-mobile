@@ -20,6 +20,10 @@ const loginStatusReducer = (state = {
 				loggedIn: false,
 				username: ''
 			}
+			
+		//TODO: what to do here? still not sure if user is authenticated. Need a validation call
+		case 'AUTHTOKEN_RETRIEVED':
+			break;
 		default:
 			return state;
 	}

@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import { redux } from 'redux'
 import { connect } from 'react-redux';
-import {authenticate} from '../../actions/user-actions';
+import { authenticate } from '../../actions/user-actions';
+import { fetchMovieList } from '../../actions/movie-list-actions'
 
 import {
 	StyleSheet,
@@ -61,11 +62,12 @@ class LoginForm extends Component {
   }
 
   _login() {
-    let {dispatch, drawer} = this.props;
+    let {dispatch, drawer, movieListPage: {mSince, order}} = this.props;
 		InteractionManager.runAfterInteractions(() => {
 			dispatch(authenticate(this.state.username, this.state.password)).then(() => {
-				// TODO: refetch list
+				// TODO: close drawer and refetch list
 				drawer.closeDrawer();
+				dispatch(fetchMovieList(10, mSince, order));
 			});
 		});
   }
