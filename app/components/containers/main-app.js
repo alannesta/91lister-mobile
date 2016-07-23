@@ -30,9 +30,9 @@ class Root extends Component {
 				drawerWidth={Dimensions.get('window').width - DRAWER_WIDTH_LEFT}
 				keyboardDismissMode="on-drag"
 				ref={(drawer) => { this.drawer = drawer; }}        //! for using this.drawer.open()
-				// ref="drawer"
 				renderNavigationView={this._renderDrawerContent.bind(this)}
-				statusBarBackgroundColor="#589c90">
+        statusBarBackgroundColor="#589c90"
+				>
 				{this._renderApp()}
 			</DrawerLayoutAndroid>
 		);
@@ -49,7 +49,7 @@ class Root extends Component {
 
 	_renderDrawerContent() {
 		return (
-			<LoginForm />
+			<LoginForm drawer={this.state.drawerInstance}/>
 		)
 	}
 
@@ -76,6 +76,7 @@ class Root extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
+    // height: Dimensions.get('window').height - 20
 	},
 	toolbar: {
 		backgroundColor: '#E9EAED',

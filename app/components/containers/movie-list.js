@@ -7,7 +7,6 @@ import * as actions from '../../actions/movie-list-actions';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux';
 import Movie from '../presentationals/movie';
-import AppStorage from '../../utils/app-storage';
 import {
 	StyleSheet,
 	View,
@@ -45,21 +44,8 @@ class MovieList extends Component {
 
 	componentDidMount() {
 		let {dispatch} = this.props;	// dispatch is injected by connect() call
-		AppStorage.init().then(function(authToken) {
-			if (authToken) {
-				dispatch({
-					type: 'USER_AUTHENTICATION_SUCCESS',
-					username: 'alannesta'
-				});
-			}
-			InteractionManager.runAfterInteractions(() => {
-				dispatch(actions.fetchMovieList());
-			});
-		}).catch((err) => {
-			// fetch movie list anyways
-			InteractionManager.runAfterInteractions(() => {
-				dispatch(actions.fetchMovieList());
-			});
+		InteractionManager.runAfterInteractions(() => {
+			dispatch(actions.fetchMovieList());
 		});
 	}
 

@@ -8,7 +8,6 @@ import Movie from '../presentationals/movie';
 import {changeDate} from '../../actions/toolbar-actions';
 import {authenticate} from '../../actions/user-actions';
 
-
 import {
 	StyleSheet,
 	View,

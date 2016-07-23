@@ -22,10 +22,18 @@ export const fetchMovieList = (count: ? number, since : ? number, order : ? stri
 			});
 			return true;
 		}).catch((err) => {
+			console.log(err);
+			if (err.code === 'SESSION_EXPIRED') {
+				dispatch({
+          type: 'USER_AUTHENTICATION_FAILED'
+        });
+				ToastAndroid.show('Please login again', ToastAndroid.SHORT);
+			}
+			if (err.code === 'REQUEST_FAILED') {
+				ToastAndroid.show('Fail to fetch movie', ToastAndroid.SHORT);
+			}
 			dispatch({
-				type: 'MOVIE_FETCH_FAIL',
-				movies: [],
-				total: 0
+				type: 'MOVIE_FETCH_FAIL'
 			});
 			dispatch(refreshingFlag(false));
 			return false;
@@ -42,7 +50,12 @@ export const toggleLike = (movie) => {
 				movie: updatedMovie
 			});
 		}).catch((err) => {
-			//TODO: Toast
+			if (err.code === 'SESSION_EXPIRED') {
+				dispatch({
+          type: 'USER_AUTHENTICATION_FAILED'
+        });
+				ToastAndroid.show('Please login again', ToastAndroid.SHORT);
+			}
 		});
 	}
 };

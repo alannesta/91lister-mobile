@@ -24,10 +24,7 @@ const moviesReducer = (state = defaultMovieState, action) => {
 			};
 
 		case 'MOVIE_FETCH_FAIL':
-			return {
-				movies: action.movies,
-				total: action.total
-			}
+			return state;
 
 		case 'MOVIE_UPDATED':
 			let index = findMovieByID(state.movies, action.movie);

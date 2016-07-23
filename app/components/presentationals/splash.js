@@ -7,25 +7,22 @@ import {
 	InteractionManager
 } from 'react-native';
 
-import AppStorage from '../../utils/app-storage';
-
+import { connect } from 'react-redux'
+import { initAppStorage } from '../../actions/user-actions'
 
 class SplashScreen extends Component {
 
   componentDidMount() {
-    let {navigator} = this.props;
-    AppStorage.init().then(function(authToken) {
-			// if (authToken) {
-			// 	dispatch({
-			// 		type: 'USER_AUTHENTICATION_SUCCESS',
-			// 		username: 'alannesta'
-			// 	});
-			// }
+    let {navigator, dispatch} = this.props;
+    dispatch(initAppStorage()).then(() => {
       setTimeout(function() {
         InteractionManager.runAfterInteractions(function() {
-          navigator.replace({name: 'MainApp', index: 1});
+          // navigator.replace({name: 'MainApp', index: 1});
+          navigator.push({name: 'MainApp', index: 1});
         });
       }, 1500);
+    }).catch((err) => {
+      console.log(err);
     });
   }
 
@@ -38,4 +35,8 @@ class SplashScreen extends Component {
   }
 }
 
-export default SplashScreen;
+function mapStateToProps(state) {
+  return state.user;
+}
+
+export default connect(mapStateToProps)(SplashScreen);

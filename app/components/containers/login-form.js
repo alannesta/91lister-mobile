@@ -24,7 +24,7 @@ class LoginForm extends Component {
   }
 
   render() {
-    let {status: {loggedIn, username}} = this.props;
+    let {user: {status: {loggedIn, username}}} = this.props;
     if (loggedIn) {
       return (
         <View style={styles.welcomeScreen}>
@@ -61,9 +61,12 @@ class LoginForm extends Component {
   }
 
   _login() {
-    let {dispatch} = this.props;
+    let {dispatch, drawer} = this.props;
 		InteractionManager.runAfterInteractions(() => {
-			dispatch(authenticate(this.state.username, this.state.password));
+			dispatch(authenticate(this.state.username, this.state.password)).then(() => {
+				// TODO: refetch list
+				drawer.closeDrawer();
+			});
 		});
   }
 }
@@ -76,6 +79,7 @@ const styles = StyleSheet.create({
     width: 200
   },
   loginForm: {
+		height: WINDOW_HEIGHT-10,
     padding:10,
     justifyContent: 'center',
     alignItems: 'center'
@@ -88,7 +92,7 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
-  return state.user;
+  return state;
 }
 
 export default connect(mapStateToProps)(LoginForm);

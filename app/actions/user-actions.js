@@ -36,3 +36,16 @@ export const authenticate = (username: string, password: string) => {
     })
   }
 }
+
+export const initAppStorage = () => {
+  return (dispatch) => {
+    return AppStorage.init().then((authToken) => {
+      dispatch({
+        type: 'AUTHTOKEN_RETRIEVED',
+        authToken: authToken
+      })
+    }).catch((err) => {
+      console.log(err);
+    })
+  };
+}

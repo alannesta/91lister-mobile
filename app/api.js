@@ -12,16 +12,10 @@ export const fetchMovie = (count = 10, since = 0, order = 'trend'): Promise < Ar
 	let timestamp = since / 1000;
 	let url = `${BASE_URL}/movies?count=${count}&since=${timestamp}&order=${order}`;
 
-  // TODO: configure JWT header
 	return fetch(url, {
     headers: _getDefaultHeaders()
-  }).then(function(res) {
-		if (res.status === 200) {
-			return res.json();
-		} else {
-			throw new Error('Fail to fetch movies');
-		}
-	}).then(function(movieData) {
+  }).then(_handleResponse)
+	.then(function(movieData) {
 		return movieData;
 	}).catch(function(err) {
 		console.log(err);
@@ -35,13 +29,7 @@ export const toogleLikeApi = (movie: TMovie): Promise < * > => {
 		method: 'POST',
 		headers: _getDefaultHeaders(),
 		body: JSON.stringify(movie)
-	}).then(function(res) {
-		if (res.status === 200) {
-			return res.json();
-		} else {
-			throw new Error('Fail to toggle like');
-		}
-	}).then(function(movie) {
+	}).then(_handleResponse).then(function(movie) {
 		return movie;
 	}).catch(function(err) {
 		console.log(err);
@@ -74,9 +62,22 @@ export const authenticateUser = (username: string, password: string): Promise < 
   }).then(function(response) {
     return response;
   }).catch(function(err){
-    console.log(err);
-    throw(err);
+    throw(err);	// throw error to actions, handle error there
   });
+}
+
+function _handleResponse(response) {
+	if (response.status === 200) {
+		return response.json();
+	} else if (response.status === 401) {
+		let error = new Error('session expired');
+		error.code = 'SESSION_EXPIRED';
+		throw error;
+	} else {
+		let error = new Error('session expired');
+		error.code = 'REQUEST_FAILED';
+		throw error;
+	}
 }
 
 function _getDefaultHeaders() {
