@@ -21,7 +21,6 @@ const DRAWER_WIDTH_LEFT = 56;
 class MainApp extends Component {
 	constructor(props) {
 		super(props);
-		this._renderApp = this._renderApp.bind(this);
 		this.state = {
 			drawerInstance: null
 		};
@@ -68,20 +67,16 @@ class MainApp extends Component {
 	}
 
 	_renderApp() {
-		let tab = TabView;
+		let { network: { connectionType }} = this.props;
 		return (
 			<View style={styles.container}>
 				<Toolbar
 					drawer={this.state.drawerInstance}
 				/>
-				<Navigator
-					initialRoute={{ name: 'home', component: tab }}
-					configureScene={(route, routeStack) => Navigator.SceneConfigs.FloatFromLeft}
-					renderScene={(route, navigator) => {
-					   	let Component = route.component;
-					   	return <Component {...route.params} navigator={navigator} />
-							}}
-					/>
+				{
+					(connectionType === 'NONE') ?
+						<View><Text>PLease check your network connection</Text></View> : <TabView />
+				}
 			</View>
 		)
 	}

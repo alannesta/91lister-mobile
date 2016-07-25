@@ -61,7 +61,7 @@ class Toolbar extends Component {
 		let today = new Date();
     try {
 			// if initial date is untouched, open datepicker with starting date set as today
-			let initialDate = order === 0? today : new Date(order);
+			let initialDate = mSince === 0? today : new Date(mSince);
       const {action, year, month, day} = await DatePickerAndroid.open({date: initialDate});
       if (action === DatePickerAndroid.dismissedAction) {
 				// action canceled;
