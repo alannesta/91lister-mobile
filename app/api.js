@@ -5,7 +5,8 @@ import type {TMovie} from './types/flowtypes'
 import AppStorage from './utils/app-storage'
 
 // const BASE_URL = 'http://192.168.0.104:4302'; // device
-const BASE_URL = 'http://10.0.3.2:4302'; // simulator
+// const BASE_URL = 'http://10.0.3.2:4302'; // simulator
+const BASE_URL = 'http://ec2-52-90-5-61.compute-1.amazonaws.com/movie-api';	// prod
 
 export const fetchMovie = (count = 10, since = 0, order = 'trend'): Promise < Array < TMovie >> => {
 

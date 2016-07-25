@@ -29,8 +29,7 @@ class Toolbar extends Component {
         navIcon={require('../../images/ic_menu_black_24dp.png')}
         onIconClicked={() => this.props.drawer.openDrawer()}
         actions={[
-					{title: 'Date', icon: require('../../images/ic_settings_black_48dp.png'), show: 'always'},
-					{title: 'Login', icon: require('../../images/ic_settings_black_48dp.png'), show: 'always'}
+					{title: 'Date', icon: require('../../images/ic_settings_black_48dp.png'), show: 'always'}
 				]}
         onActionSelected={this._onActionSelected.bind(this)}
         style={styles.toolbar}

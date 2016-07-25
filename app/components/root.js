@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 
 import MainApp from './containers/main-app'
-import Splash from './presentationals/splash'
+import Splash from './containers/splash'
 
 class Root extends Component {
 
