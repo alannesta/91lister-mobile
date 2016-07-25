@@ -1,20 +1,24 @@
-import React, {Component} from 'react';
+import React, {Component} from 'react'
+import { connect } from 'react-redux'
 import {
 	StyleSheet,
 	Text,
 	Navigator,
 	View,
 	Dimensions,
-	DrawerLayoutAndroid
+	DrawerLayoutAndroid,
+	NetInfo
 } from 'react-native';
 
 import TabView from './tab-view'
 import Toolbar from './toolbar'
 import LoginForm from './login-form'
 
+import { updateNetworkStatus } from '../../actions/app-actions'
+
 const DRAWER_WIDTH_LEFT = 56;
 
-class Root extends Component {
+class MainApp extends Component {
 	constructor(props) {
 		super(props);
 		this._renderApp = this._renderApp.bind(this);
@@ -44,7 +48,17 @@ class Root extends Component {
 		// setState here so its child component Toolbar could get an updated reference of the Drawer Instance
 		this.setState({
 			drawerInstance: this.drawer
-		})
+		});
+
+		// since we need to add event handlers here for NetInfo, does not delegate this into an action
+		NetInfo.addEventListener('change', this._handleConnectionInfoChange);
+		NetInfo.fetch().done((connection) => {
+			console.log('on mounting check', connection);
+		});
+	}
+
+	componentWillUnmount() {
+		// NetInfo.removeEventListener('change', this._handleConnectionInfoChange);
 	}
 
 	_renderDrawerContent() {
@@ -71,6 +85,15 @@ class Root extends Component {
 			</View>
 		)
 	}
+
+	_handleConnectionInfoChange(connectionInfo) {
+		console.log('in handle change');
+		let { dispatch } = this.props;
+		console.log(connectionInfo);
+		if (connectionInfo === 'NONE') {
+			dispatch(updateNetworkStatus(connectionInfo));
+		}
+	}
 }
 
 const styles = StyleSheet.create({
@@ -88,4 +111,8 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default Root;
+function mapStateToProps(state) {
+	return state.deviceStatus;
+}
+
+export default connect(mapStateToProps)(MainApp);

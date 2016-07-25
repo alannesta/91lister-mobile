@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 
 import { connect } from 'react-redux'
-import { initAppStorage } from '../../actions/user-actions'
+import { initAppStorage } from '../../actions/app-actions'
 
 class SplashScreen extends Component {
 
