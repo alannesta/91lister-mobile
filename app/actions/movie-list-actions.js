@@ -20,6 +20,7 @@ export const fetchMovieList = (count: ? number, since : ? number, order : ? stri
 	return dispatch => {
 		dispatch(refreshingFlag(true));
 		return fetchMovie(count, since, order).then(function(result) {
+			// two dispatches here will cause two movie-list view renders, heavy?
 			dispatch(refreshingFlag(false));
 			dispatch({
 				type: 'MOVIE_FETCHED',

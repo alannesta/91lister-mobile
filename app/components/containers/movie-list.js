@@ -38,7 +38,6 @@ class MovieList extends Component {
 		this.dataSource = new ListView.DataSource({
 			rowHasChanged: (row1, row2) => row1 !== row2
 		});
-
 		this._renderRow = this._renderRow.bind(this);
 	}
 
@@ -65,7 +64,8 @@ class MovieList extends Component {
 					<RefreshControl
 						refreshing={isRefreshing}
 						onRefresh={this._onRefresh.bind(this)}
-						colors={['#ff0000', '#00ff00', '#0000ff','#3ad564']}
+						progressViewOffset={120}
+						colors={['#3ad564']}
 						progressBackgroundColor="#ffffff"/>
 					}
 				/>
