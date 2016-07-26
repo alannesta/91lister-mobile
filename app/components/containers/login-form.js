@@ -50,6 +50,7 @@ class LoginForm extends Component {
             onChangeText={(password) => {this.setState({password: password})}}
           />
           <TouchableOpacity
+						style={styles.loginButton}
             accessibilityTraits="button"
             onPress={this._login}
             activeOpacity={0.5}
@@ -68,6 +69,8 @@ class LoginForm extends Component {
 				// TODO: close drawer and refetch list
 				drawer.closeDrawer();
 				dispatch(fetchMovieList(10, mSince, order));
+			}).catch((err) => {
+				// NO-OP
 			});
 		});
   }
@@ -90,7 +93,18 @@ const styles = StyleSheet.create({
     height: WINDOW_HEIGHT-10,
     justifyContent: 'center',
     alignItems: 'center'
-  }
+  },
+	loginButton: {
+		justifyContent: 'center',
+		alignItems: 'center',
+		marginTop: 30,
+		borderWidth: 1.5,
+		borderColor: 'grey',
+		borderRadius: 4,
+		paddingRight: 5,
+		paddingLeft: 5,
+		height: 35
+	}
 });
 
 function mapStateToProps(state) {

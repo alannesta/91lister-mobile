@@ -30,9 +30,11 @@ export const authenticate = (username: string, password: string) => {
       }
     }).catch((err) => {
       console.log('authenticate user action err: ', err);
+      ToastAndroid.show('Login failed', ToastAndroid.SHORT);
       dispatch({
         type: 'USER_AUTHENTICATION_FAILED'
-      })
+      });
+      throw err;
     })
   }
 }
