@@ -6,6 +6,12 @@ import {
 	toogleLikeApi
 } from '../api';
 
+import type {
+	TMovie,
+	TMovieState,
+	TMovieListState
+} from '../types/flowtypes'
+
 import {
 	ToastAndroid
 } from 'react-native'
@@ -41,7 +47,7 @@ export const fetchMovieList = (count: ? number, since : ? number, order : ? stri
 	}
 };
 
-export const toggleLike = (movie) => {
+export const toggleLike = (movie: TMovie) => {
 	return dispatch => {
 		toogleLikeApi(movie).then(function(updatedMovie) {
 			ToastAndroid.show('Movie updated successfully', ToastAndroid.SHORT);
@@ -60,7 +66,7 @@ export const toggleLike = (movie) => {
 	}
 };
 
-const refreshingFlag = (isRefreshing) => {
+const refreshingFlag = (isRefreshing: boolean) => {
 	return {
 		type: 'REFRESHING_FLAG',
 		isRefreshing: isRefreshing
