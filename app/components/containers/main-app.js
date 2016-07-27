@@ -24,6 +24,7 @@ class MainApp extends Component {
 		this.state = {
 			drawerInstance: null
 		};
+		this.connectionHistory = [];
 	}
 
 	render() {
@@ -49,10 +50,17 @@ class MainApp extends Component {
 			drawerInstance: this.drawer
 		});
 
+		let {dispatch} = this.props;
 		// since we need to add event handlers here for NetInfo, does not delegate this into an action
+		// should be better moved to splash screen for checking network
 		NetInfo.addEventListener('change', this._handleConnectionInfoChange.bind(this));
 		NetInfo.fetch().done((connection) => {
-			console.log('on mounting check', connection);
+			this.connectionHistory.unshift(connection);
+			console.log('main app componentDidMount checkpoint: ', connection);
+			// default connection state is 'WIFI', just to save one more dispatch -> render roundtrip
+			if (connection === 'NONE') {
+				dispatch(updateNetworkStatus(connection));
+			}
 		});
 	}
 
@@ -82,13 +90,16 @@ class MainApp extends Component {
 	}
 
 	_handleConnectionInfoChange(connectionInfo) {
-		console.log('in handle change');
-		console.log(this);
+		console.log('handle connection change: ', connectionInfo);
 		let { dispatch } = this.props;
-		console.log(connectionInfo);
+		// regain network access, re-render view to mount the <TabView>
+		if (connectionInfo !== 'NONE' && this.connectionHistory[0] === 'NONE') {
+			dispatch(updateNetworkStatus(connectionInfo));
+		}
 		if (connectionInfo === 'NONE') {
 			dispatch(updateNetworkStatus(connectionInfo));
 		}
+		this.connectionHistory.unshift(connectionInfo);
 	}
 }
 

@@ -1,3 +1,6 @@
+/*
+  @flow weak
+*/
 import AppStorage from '../utils/app-storage'
 
 export const initAppStorage = () => {
@@ -16,6 +19,13 @@ export const initAppStorage = () => {
 export const updateNetworkStatus = (connectionType) => {
   return {
     type: 'CONNECTION_STATUS_CHANGED',
+    connectionType: connectionType
+  }
+}
+
+export const connectionReestablished = (connectionType) => {
+  return {
+    type: 'CONNECTION_REESTABLISHED',
     connectionType: connectionType
   }
 }
