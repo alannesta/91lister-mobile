@@ -63,38 +63,42 @@ class MovieList extends Component {
 		let {movieData: {movies, total}, selectedMovie} = this.props;
 		return (
 			<View style={styles.container}>
-			<ListView
-				style={styles.listView}
-				dataSource={this.dataSource.cloneWithRows(movies)}
-				renderRow={this._renderRow}
-				renderSeparator={this._renderSeparator}
-				onEndReachedThreshold={10}
-				onEndReached={this._loadMoreMovies.bind(this)}
-				enableEmptySections={true}
-				removeClippedSubviews={false}    // fix android device listview crash: https://github.com/facebook/react-native/issues/5934
-				//renderFooter={this.renderFooter.bind(this)}
-				refreshControl={
-					<RefreshControl
-						refreshing={this.state.isRefreshing}
-						onRefresh={this._onRefresh.bind(this)}
-						progressViewOffset={120}
-						colors={['#3ad564']}
-						progressBackgroundColor="#ffffff"/>
-					}
+				<ListView
+					style={styles.listView}
+					dataSource={this.dataSource.cloneWithRows(movies)}
+					renderRow={this._renderRow}
+					renderSeparator={this._renderSeparator}
+					onEndReachedThreshold={10}
+					onEndReached={this._loadMoreMovies.bind(this)}
+					enableEmptySections={true}
+					removeClippedSubviews={false}    // fix android device listview crash: https://github.com/facebook/react-native/issues/5934
+					//renderFooter={this.renderFooter.bind(this)}
+					refreshControl={
+						<RefreshControl
+							refreshing={this.state.isRefreshing}
+							onRefresh={this._onRefresh.bind(this)}
+							progressViewOffset={120}
+							colors={['#3ad564']}
+							progressBackgroundColor="#ffffff"/>
+						}
 				/>
 				<Modal
-				 style={styles.modal}
 				 animationType={'fade'}
-				 transparent={false}
+				 transparent={true}
 				 visible={this.state.modalVisible}
 				 onRequestClose={() => {}}
 				 >
-				 <Text>{selectedMovie.title}</Text>
-				 <TouchableOpacity
-						onPress={() => {this.setState({modalVisible: false})}}
-				 >
-				 		<Text>Close</Text>
-				 </TouchableOpacity>
+				 <View style={styles.modalContainer}>
+				 	<View style={styles.modal}>
+						<Text>{selectedMovie.title}</Text>
+						<TouchableOpacity
+							style={styles.cancelButton}
+							onPress={() => {this.setState({modalVisible: false})}}>
+							<Text>Close</Text>
+						</TouchableOpacity>
+					</View>
+				 </View>
+
 			 </Modal>
 			</View>
 		)
@@ -160,13 +164,28 @@ const styles = StyleSheet.create({
 		height: 1
 	},
 	container: {
-		flex: 1		//essential!! for the onEndReached bug:
+		flex: 1,		//essential!! for the onEndReached bug
 	},
 	ListView: {
 
 	},
+	modalContainer: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: 'rgba(0, 0, 0, 0.5)'
+	},
 	modal: {
-
+		height: 250,
+		width: 300,
+		borderRadius: 10,
+		backgroundColor: '#fff'
+	},
+	cancelButton: {
+		width: 50,
+		padding: 5,
+		borderRadius: 3,
+		marginTop: 20
 	}
 });
 
