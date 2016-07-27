@@ -29,28 +29,31 @@ export default class Movie extends Component {
 		}
 		let thumbnail = movie.thumbnail? movie.thumbnail : 'https://placeholdit.imgix.net/~text?txtsize=33&txt=350%C3%97150&w=350&h=150';
 		return (
-			<View style={styles.movieItem}>
-				<Image style={styles.thumbnail}
-					source={{uri: thumbnail}}
-				/>
-				<View style={styles.infoContainer}>
-					<Text style={styles.movieName}>{movie.title}</Text>
-					<View style={styles.statisticsContainer}>
-						<Text style={styles.numbers}>{movie.view_count}</Text>
-						<Text style={styles.numbers}>{movie.trend}</Text>
+			<TouchableOpacity
+				onPress={this.props.onPress}
+				>
+				<View style={styles.movieItem}>
+					<Image style={styles.thumbnail}
+						source={{uri: thumbnail}}
+					/>
+					<View style={styles.infoContainer}>
+						<Text style={styles.movieName}>{movie.title}</Text>
+						<View style={styles.statisticsContainer}>
+							<Text style={styles.numbers}>{movie.view_count}</Text>
+							<Text style={styles.numbers}>{movie.trend}</Text>
+						</View>
+					</View>
+					<View style={styles.likeButtonContainer}>
+						<TouchableOpacity
+							accessibilityTraits="button"
+							onPress={toggleLike.bind(this, movie)}
+							activeOpacity={0.5}
+							>
+							{LikeButton}
+						</TouchableOpacity>
 					</View>
 				</View>
-				<View style={styles.likeButtonContainer}>
-					<TouchableOpacity
-						accessibilityTraits="button"
-						onPress={toggleLike.bind(this, movie)}
-						activeOpacity={0.5}
-						>
-						{LikeButton}
-					</TouchableOpacity>
-				</View>
-			</View>
-
+			</TouchableOpacity>
 		);
 	}
 }

@@ -3,12 +3,13 @@ import React, {Component} from 'react'
 import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import thunkMiddleware from 'redux-thunk'
+import createLogger from 'redux-logger';
 
 import Root from './components/root'
-
 import appReducer from './reducers/app-reducer';
 import reducer from './reducers/movie-list-reducer';
 
+const logger = createLogger();
 const createStoreWithMiddleware = applyMiddleware(thunkMiddleware)(createStore);
 
 let store = createStoreWithMiddleware(appReducer);
@@ -25,5 +26,3 @@ class ReduxApp extends Component {
 }
 
 export default ReduxApp;
-
-

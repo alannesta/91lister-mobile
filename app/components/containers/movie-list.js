@@ -16,7 +16,8 @@ import {
 	RefreshControl,
 	TouchableOpacity,
 	Animated,
-	InteractionManager
+	InteractionManager,
+	Modal
 } from 'react-native';
 
 import type {TMovie} from '../../types/flowtypes'
@@ -27,6 +28,7 @@ class MovieList extends Component {
 	bindedMovieActionCreators:any;
 	dataSource:any;
 	_renderRow:Function;
+	state:{modalVisible: boolean, isRefreshing: boolean};
 
 	static defaultProps:{};
 
@@ -39,6 +41,10 @@ class MovieList extends Component {
 			rowHasChanged: (row1, row2) => row1 !== row2
 		});
 		this._renderRow = this._renderRow.bind(this);
+		this.state = {
+			modalVisible: false,
+			isRefreshing: false
+		};
 	}
 
 	componentDidMount() {
@@ -51,7 +57,9 @@ class MovieList extends Component {
 	render() {
 		let {movieData: {movies, total}, isRefreshing} = this.props;
 		return (
+			<View style={styles.container}>
 			<ListView
+				style={styles.listView}
 				dataSource={this.dataSource.cloneWithRows(movies)}
 				renderRow={this._renderRow}
 				renderSeparator={this._renderSeparator}
@@ -69,14 +77,30 @@ class MovieList extends Component {
 						progressBackgroundColor="#ffffff"/>
 					}
 				/>
+				<Modal
+				 style={styles.modal}
+				 animationType={'fade'}
+				 transparent={false}
+				 visible={this.state.modalVisible}
+				 onRequestClose={() => {}}
+				 >
+				 <Text>Movie Info goes here</Text>
+				 <Text></Text>
+				 <TouchableOpacity
+						onPress={() => {this.setState({modalVisible: false})}}
+				 >
+				 		<Text>Close</Text>
+				 </TouchableOpacity>
+			 </Modal>
+			</View>
 		)
 	}
 
 	_renderRow(movie:TMovie) {
-
 		return (
 			<Movie
 				movie={movie}
+				onPress={() => {this.setState({modalVisible: true})}}
 				toggleLike={this.bindedMovieActionCreators.toggleLike}
 				/>
 		)
@@ -93,6 +117,7 @@ class MovieList extends Component {
 	 * @private
 	 */
 	_loadMoreMovies() {
+		console.log('load more movies called');
 		let {dispatch, movieData: {movies, total}, mSince, order} = this.props;	// TODO: refactor order reducer
 		if (movies.length < total) {
 			InteractionManager.runAfterInteractions(() => {
@@ -118,6 +143,15 @@ const styles = StyleSheet.create({
 	separator: {
 		backgroundColor: '#eeeeee',
 		height: 1
+	},
+	container: {
+		flex: 1		//essential!! for the onEndReached bug
+	},
+	ListView: {
+
+	},
+	modal: {
+
 	}
 });
 

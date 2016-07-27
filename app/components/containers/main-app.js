@@ -50,7 +50,7 @@ class MainApp extends Component {
 		});
 
 		// since we need to add event handlers here for NetInfo, does not delegate this into an action
-		NetInfo.addEventListener('change', this._handleConnectionInfoChange);
+		NetInfo.addEventListener('change', this._handleConnectionInfoChange.bind(this));
 		NetInfo.fetch().done((connection) => {
 			console.log('on mounting check', connection);
 		});
@@ -83,6 +83,7 @@ class MainApp extends Component {
 
 	_handleConnectionInfoChange(connectionInfo) {
 		console.log('in handle change');
+		console.log(this);
 		let { dispatch } = this.props;
 		console.log(connectionInfo);
 		if (connectionInfo === 'NONE') {
