@@ -28,6 +28,7 @@ class MovieList extends Component {
 	bindedMovieActionCreators:any;
 	dataSource:any;
 	_renderRow:Function;
+	_selectMovie: Function;
 	state:{modalVisible: boolean, isRefreshing: boolean};
 
 	static defaultProps:{};
@@ -41,6 +42,7 @@ class MovieList extends Component {
 			rowHasChanged: (row1, row2) => row1 !== row2
 		});
 		this._renderRow = this._renderRow.bind(this);
+		this._selectMovie = this._selectMovie.bind(this);
 		this.state = {
 			modalVisible: false,
 			isRefreshing: false
@@ -55,7 +57,7 @@ class MovieList extends Component {
 	}
 
 	render() {
-		let {movieData: {movies, total}, isRefreshing} = this.props;
+		let {movieData: {movies, total}, isRefreshing, selectedMovie} = this.props;
 		return (
 			<View style={styles.container}>
 			<ListView
@@ -84,8 +86,7 @@ class MovieList extends Component {
 				 visible={this.state.modalVisible}
 				 onRequestClose={() => {}}
 				 >
-				 <Text>Movie Info goes here</Text>
-				 <Text></Text>
+				 <Text>{selectedMovie.title}</Text>
 				 <TouchableOpacity
 						onPress={() => {this.setState({modalVisible: false})}}
 				 >
@@ -100,7 +101,7 @@ class MovieList extends Component {
 		return (
 			<Movie
 				movie={movie}
-				onPress={() => {this.setState({modalVisible: true})}}
+				onPress={() => {this._selectMovie(movie)}}
 				toggleLike={this.bindedMovieActionCreators.toggleLike}
 				/>
 		)
@@ -112,12 +113,17 @@ class MovieList extends Component {
 		)
 	}
 
+	_selectMovie(movie) {
+		let {dispatch} = this.props;
+		this.setState({modalVisible: true});
+		dispatch(actions.selectMovie(movie));
+	}
+
 	/**
 	 * Load more movies when end of list is reached
 	 * @private
 	 */
 	_loadMoreMovies() {
-		console.log('load more movies called');
 		let {dispatch, movieData: {movies, total}, mSince, order} = this.props;	// TODO: refactor order reducer
 		if (movies.length < total) {
 			InteractionManager.runAfterInteractions(() => {
@@ -145,7 +151,7 @@ const styles = StyleSheet.create({
 		height: 1
 	},
 	container: {
-		flex: 1		//essential!! for the onEndReached bug
+		flex: 1		//essential!! for the onEndReached bug:
 	},
 	ListView: {
 

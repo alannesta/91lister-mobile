@@ -67,6 +67,13 @@ export const toggleLike = (movie: TMovie) => {
 	}
 };
 
+export const selectMovie = (movie: TMovie) => {
+	return {
+		type: 'SELECT_MOVIE',
+		movie: movie
+	};
+}
+
 const refreshingFlag = (isRefreshing: boolean) => {
 	return {
 		type: 'REFRESHING_FLAG',

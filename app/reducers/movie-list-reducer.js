@@ -15,6 +15,17 @@ const defaultMovieState: TMovieState = {
 	total: 0
 };
 
+const defaultSelectedMovieState: TMovie = {
+	id: '',
+	title: '',
+	url: '',
+	viewCount: 0,
+	trend: 0,
+	liked: false,
+	thumbnail: '',
+	favourite: 0
+}
+
 const moviesReducer = (state = defaultMovieState, action) => {
 	switch (action.type) {
 		case 'MOVIE_FETCHED':
@@ -38,6 +49,15 @@ const moviesReducer = (state = defaultMovieState, action) => {
 			return state;
 	}
 };
+
+const selectedMovieReducer = (state = defaultSelectedMovieState, action) => {
+	switch(action.type) {
+		case 'SELECT_MOVIE':
+			return action.movie;
+		default:
+			return state;
+	}
+}
 
 const tabReducer = (state = 'all', action) => {
 	if (action.type === 'SWITCH_TAB') {
@@ -81,6 +101,7 @@ function findMovieByID(movies, movie) {
 // using more explicit syntax for better naming
 const movieListReducer = combineReducers({
 	movieData: moviesReducer,
+	selectedMovie: selectedMovieReducer,
 	tab: tabReducer,
 	isRefreshing: refreshFlagReducer,
 	mSince: movieSinceReducer,
