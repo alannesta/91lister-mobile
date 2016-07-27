@@ -18,10 +18,8 @@ import {
 
 export const fetchMovieList = (count: ? number, since : ? number, order : ? string) => {
 	return dispatch => {
-		dispatch(refreshingFlag(true));
 		return fetchMovie(count, since, order).then(function(result) {
 			// two dispatches here will cause two movie-list view renders, heavy?
-			dispatch(refreshingFlag(false));
 			dispatch({
 				type: 'MOVIE_FETCHED',
 				movies: result.movies,
@@ -42,8 +40,7 @@ export const fetchMovieList = (count: ? number, since : ? number, order : ? stri
 			dispatch({
 				type: 'MOVIE_FETCH_FAIL'
 			});
-			dispatch(refreshingFlag(false));
-			return false;
+			return false;	// handle error here, no error handling in the view layer
 		});
 	}
 };
@@ -73,10 +70,3 @@ export const selectMovie = (movie: TMovie) => {
 		movie: movie
 	};
 }
-
-const refreshingFlag = (isRefreshing: boolean) => {
-	return {
-		type: 'REFRESHING_FLAG',
-		isRefreshing: isRefreshing
-	};
-};

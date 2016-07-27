@@ -52,12 +52,15 @@ class MovieList extends Component {
 	componentDidMount() {
 		let {dispatch} = this.props;	// dispatch is injected by connect() call
 		InteractionManager.runAfterInteractions(() => {
-			dispatch(actions.fetchMovieList());
+			this.setState({isRefreshing: true});
+			dispatch(actions.fetchMovieList()).then(() => {
+				this.setState({isRefreshing: false});
+			});
 		});
 	}
 
 	render() {
-		let {movieData: {movies, total}, isRefreshing, selectedMovie} = this.props;
+		let {movieData: {movies, total}, selectedMovie} = this.props;
 		return (
 			<View style={styles.container}>
 			<ListView
@@ -72,7 +75,7 @@ class MovieList extends Component {
 				//renderFooter={this.renderFooter.bind(this)}
 				refreshControl={
 					<RefreshControl
-						refreshing={isRefreshing}
+						refreshing={this.state.isRefreshing}
 						onRefresh={this._onRefresh.bind(this)}
 						progressViewOffset={120}
 						colors={['#3ad564']}
@@ -126,8 +129,11 @@ class MovieList extends Component {
 	_loadMoreMovies() {
 		let {dispatch, movieData: {movies, total}, mSince, order} = this.props;	// TODO: refactor order reducer
 		if (movies.length < total) {
+			this.setState({isRefreshing: true});
 			InteractionManager.runAfterInteractions(() => {
-				dispatch(actions.fetchMovieList(movies.length + 10, mSince, order));
+				dispatch(actions.fetchMovieList(movies.length + 10, mSince, order)).then(() => {
+					this.setState({isRefreshing: false});
+				});
 			});
 		}
 	}
@@ -138,9 +144,12 @@ class MovieList extends Component {
 	 */
 	_onRefresh() {
 		let {dispatch, movieData: {movies}, mSince, order} = this.props;
+		this.setState({isRefreshing: true});
 		InteractionManager.runAfterInteractions(() => {
 			var count = movies.length > 0 ? movies.length : 10;	// TODO: this is a temporary solution
-			dispatch(actions.fetchMovieList(count, mSince, order));
+			dispatch(actions.fetchMovieList(count, mSince, order)).then(() => {
+				this.setState({isRefreshing: false});
+			});
 		});
 	}
 }

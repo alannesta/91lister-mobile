@@ -67,13 +67,6 @@ const tabReducer = (state = 'all', action) => {
 	}
 };
 
-const refreshFlagReducer = (state = false, action) => {
-	if (action.type === "REFRESHING_FLAG") {
-		return action.isRefreshing;
-	}
-	return state;
-};
-
 // default time set to start of unix time
 const movieSinceReducer = (state = 0, action) => {
 	if (action.type === "MOVIE_TIMESINCE_CHANGED") {
@@ -103,7 +96,6 @@ const movieListReducer = combineReducers({
 	movieData: moviesReducer,
 	selectedMovie: selectedMovieReducer,
 	tab: tabReducer,
-	isRefreshing: refreshFlagReducer,
 	mSince: movieSinceReducer,
 	order: orderReducer
 });

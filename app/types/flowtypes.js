@@ -20,7 +20,6 @@ export type TMovieState ={
 export type TMovieListState = {
 		movieData: TMovieState,
 		tab: string,
-		isRefreshing: boolean,
 		mSince: Date,
 		order: string
 };
