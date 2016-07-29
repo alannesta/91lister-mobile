@@ -42,7 +42,9 @@ export default class Movie extends Component {
 					<View style={styles.infoContainer}>
 						<Text style={styles.movieName}>{movie.title}</Text>
 						<View style={styles.statisticsContainer}>
+							<Image style={styles.numberIcon} source={require('../../images/view_count.png')} />
 							<Text style={styles.numbers}>{movie.view_count}</Text>
+							<Image style={styles.numberIcon} source={require('../../images/trending_arrow.png')} />
 							<Text style={styles.numbers}>{movie.trend}</Text>
 						</View>
 					</View>
@@ -90,8 +92,12 @@ const styles = StyleSheet.create({
 	},
 	statisticsContainer: {
 		flexDirection: 'row',
-		marginTop: 5,
+		marginTop: 12,
 		justifyContent: 'center'
+	},
+	numberIcon: {
+		width: 18,
+		height: 18
 	},
 	movieName: {
 		marginTop: 10,
@@ -99,7 +105,6 @@ const styles = StyleSheet.create({
 	},
 	numbers: {
 		fontSize: 12,
-		color: '#d2d2d2',
 		padding: 10
 	},
 
