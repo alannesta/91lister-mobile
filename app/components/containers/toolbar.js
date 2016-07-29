@@ -44,16 +44,7 @@ class Toolbar extends Component {
   _onActionSelected(index) {
     if (index === 0) {
       this._showPicker()
-    } else if (index === 1) {
-			this._loginTest();
-		}
-	}
-
-	_loginTest() {
-		let {dispatch} = this.props;
-		InteractionManager.runAfterInteractions(() => {
-			dispatch(authenticate('alannesta', '112233aa'));
-		});
+    }
 	}
 
   async _showPicker() {

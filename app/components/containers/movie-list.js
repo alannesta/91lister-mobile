@@ -39,7 +39,7 @@ class MovieList extends Component {
 		// avoid binding action creators on renderRow method
 		this.bindedMovieActionCreators = bindActionCreators(actions, dispatch);
 		this.dataSource = new ListView.DataSource({
-			rowHasChanged: (row1, row2) => row1 !== row2
+			rowHasChanged: (row1, row2) => row1.id !== row2.id
 		});
 		this._renderRow = this._renderRow.bind(this);
 		this._selectMovie = this._selectMovie.bind(this);
@@ -68,7 +68,7 @@ class MovieList extends Component {
 					dataSource={this.dataSource.cloneWithRows(movies)}
 					renderRow={this._renderRow}
 					renderSeparator={this._renderSeparator}
-					onEndReachedThreshold={10}
+					onEndReachedThreshold={5}
 					onEndReached={this._loadMoreMovies.bind(this)}
 					enableEmptySections={true}
 					removeClippedSubviews={false}    // fix android device listview crash: https://github.com/facebook/react-native/issues/5934

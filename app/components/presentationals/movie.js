@@ -17,25 +17,27 @@ export default class Movie extends Component {
 
 	render() {
 		let {movie, toggleLike} = this.props;
-		let LikeButton;
+		let LikeButton, thumbnailImg;
 
 		if (movie.liked) {
 			LikeButton = <Image style={styles.likeButton} source={require('../../images/star_full.png')} />;
 
 		} else {
 			LikeButton = <Image style={styles.likeButton} source={require('../../images/star_empty.png')} />;
-			// LikeButton = <Image style={styles.likeButton}>Unlike</Image>;
-
 		}
-		let thumbnail = movie.thumbnail? movie.thumbnail : 'https://placeholdit.imgix.net/~text?txtsize=33&txt=350%C3%97150&w=350&h=150';
+		let thumbnailUrl = movie.thumbnail;
+		if (thumbnailUrl) {
+			thumbnailImg = <Image style={styles.thumbnail} source={{uri: thumbnailUrl}}/>
+		} else {
+			thumbnailImg = <Image style={styles.thumbnail} source={require('../../images/thumbnail.png')} />
+		}
+
 		return (
 			<TouchableOpacity
 				onPress={this.props.onPress}
 				>
 				<View style={styles.movieItem}>
-					<Image style={styles.thumbnail}
-						source={{uri: thumbnail}}
-					/>
+					{thumbnailImg}
 					<View style={styles.infoContainer}>
 						<Text style={styles.movieName}>{movie.title}</Text>
 						<View style={styles.statisticsContainer}>
@@ -73,7 +75,10 @@ const styles = StyleSheet.create({
 		padding: 5
 	},
 	thumbnail: {
-		flex: 2
+		flex: 2,
+		resizeMode: 'contain',
+		width: null,	// should be a react-native bug: https://github.com/facebook/react-native/issues/950
+		height: null
 	},
 	infoContainer: {
 		padding: 5,
