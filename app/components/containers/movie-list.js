@@ -60,7 +60,7 @@ class MovieList extends Component {
 	}
 
 	render() {
-		let {movieData: {movies, total}, selectedMovie} = this.props;
+		let {movieData: {movies, total}, selectedMovieData: {selectedMovie, fileUrl}} = this.props;
 		return (
 			<View style={styles.container}>
 				<ListView
@@ -88,11 +88,17 @@ class MovieList extends Component {
 				 visible={this.state.modalVisible}
 				 onRequestClose={() => {}}
 				 >
-				 <View style={styles.modalContainer}>
-				 	<View style={styles.modal}>
+				 <View style={styles.modalBackground}>
+				 	<View style={styles.modalContainer}>
 						<Text>{selectedMovie.title}</Text>
+						<Text style={styles.movieFileLink}>{fileUrl}</Text>
 						<TouchableOpacity
-							style={styles.cancelButton}
+							style={styles.modalButton}
+							onPress={() => {this._getMovieFileUrl(selectedMovie)}}>
+							<Text>Enjoy</Text>
+						</TouchableOpacity>
+						<TouchableOpacity
+							style={styles.modalButton}
 							onPress={() => {this.setState({modalVisible: false})}}>
 							<Text>Close</Text>
 						</TouchableOpacity>
@@ -124,6 +130,11 @@ class MovieList extends Component {
 		let {dispatch} = this.props;
 		this.setState({modalVisible: true});
 		dispatch(actions.selectMovie(movie));
+	}
+
+	_getMovieFileUrl(movie) {
+		let {dispatch} = this.props;
+		dispatch(actions.getMovieFileUrl(movie));
 	}
 
 	/**
@@ -169,19 +180,23 @@ const styles = StyleSheet.create({
 	ListView: {
 
 	},
-	modalContainer: {
+	modalBackground: {
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
 		backgroundColor: 'rgba(0, 0, 0, 0.5)'
 	},
-	modal: {
+	modalContainer: {
 		height: 250,
 		width: 300,
 		borderRadius: 10,
-		backgroundColor: '#fff'
+		backgroundColor: '#fff',
+		padding: 5
 	},
-	cancelButton: {
+	movieFileLink: {
+
+	},
+	modalButton: {
 		width: 50,
 		padding: 5,
 		borderRadius: 3,

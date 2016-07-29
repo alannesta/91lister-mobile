@@ -34,6 +34,7 @@ export default class Movie extends Component {
 
 		return (
 			<TouchableOpacity
+				style={{'overflow': 'hidden'}}	// scroll view optimizations?
 				onPress={this.props.onPress}
 				>
 				<View style={styles.movieItem}>
@@ -72,7 +73,8 @@ const styles = StyleSheet.create({
 		height: 80,
 		flexDirection: 'row',
 		// justifyContent: 'space-between',
-		padding: 5
+		padding: 5,
+		overflow: 'hidden'
 	},
 	thumbnail: {
 		flex: 2,

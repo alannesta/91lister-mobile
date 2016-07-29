@@ -3,7 +3,8 @@
 */
 import {
 	fetchMovie,
-	toogleLikeApi
+	toogleLikeApi,
+	getMovieFileUrl as getMovieFileUrlAPI
 } from '../api';
 
 import type {
@@ -69,4 +70,21 @@ export const selectMovie = (movie: TMovie) => {
 		type: 'SELECT_MOVIE',
 		movie: movie
 	};
+}
+
+export const getMovieFileUrl = (movie: TMovie) => {
+	return dispatch => {
+		return getMovieFileUrlAPI(movie).then(function(fileUrl){
+			dispatch({
+				type: 'UPDATE_FILEURL_SUCCESS',
+				fileUrl
+			});
+		}).catch((err) => {
+			console.log(err);
+			dispatch({
+				type: 'UPDATE_FILEURL_SUCCESS',
+				fileUrl: 'Fail to resolve the url for this movie'
+			});
+		});
+	}
 }

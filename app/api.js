@@ -5,8 +5,8 @@ import type {TMovie} from './types/flowtypes'
 import AppStorage from './utils/app-storage'
 
 // const BASE_URL = 'http://192.168.0.104:4302'; // device
-// const BASE_URL = 'http://10.0.3.2:4302'; // simulator
-const BASE_URL = 'http://ec2-52-90-5-61.compute-1.amazonaws.com/movie-api';	// prod
+const BASE_URL = 'http://10.0.3.2:4302'; // simulator
+// const BASE_URL = 'http://ec2-52-90-5-61.compute-1.amazonaws.com/movie-api';	// prod
 
 export const fetchMovie = (count = 10, since = 0, order = 'trend'): Promise < Array < TMovie >> => {
 
@@ -67,9 +67,20 @@ export const authenticateUser = (username: string, password: string): Promise < 
   });
 }
 
+export const getMovieFileUrl = (movie: TMovie): Promise<*> => {
+	console.log('go get the url !');
+	let url = `${BASE_URL}/movie/fileUrl?pageUrl=${movie.url}`;
+	return fetch(url).then(_handleResponse).then(function(data) {
+		return data.fileUrl;
+	}).catch((err) => {
+		console.log(err);
+		throw err;
+	});
+}
+
 function _handleResponse(response) {
 	if (response.status === 200) {
-		return response.json();
+		return response.json();	// in fact calling JSON.parse, could also be called on none empty strings
 	} else if (response.status === 401) {
 		let error = new Error('session expired');
 		error.code = 'SESSION_EXPIRED';

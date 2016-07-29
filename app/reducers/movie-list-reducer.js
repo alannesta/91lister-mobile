@@ -10,7 +10,18 @@ import type {
 	TMovieListState
 } from '../types/flowtypes'
 
-const defaultMovieState: TMovieState = {
+// sub state type declaration
+type TMovieData = {
+	movies: Array<TMovie>,
+	total: number
+}
+
+type TSelectedMovieData = {
+	selectedMovie: TMovie,
+	fileUrl: string
+}
+
+const defaultMovieState: TMovieData = {
 	movies: [],
 	total: 0
 };
@@ -29,10 +40,10 @@ const defaultSelectedMovieState: TMovie = {
 const moviesReducer = (state = defaultMovieState, action) => {
 	switch (action.type) {
 		case 'MOVIE_FETCHED':
-			return {
+			return ({
 				movies: action.movies,
 				total: action.total
-			};
+			}:TMovieData);
 
 		case 'MOVIE_FETCH_FAIL':
 			return state;
@@ -40,20 +51,29 @@ const moviesReducer = (state = defaultMovieState, action) => {
 		case 'MOVIE_UPDATED':
 			let index = findMovieByID(state.movies, action.movie);
 			//state.movies[index] = action.movie;
-			return {
+			return ({
 				total: state.total,
 				movies: [...state.movies.slice(0, index), action.movie, ...state.movies.slice(index + 1)]
-			};
+			}: TMovieData);
 
 		default:
 			return state;
 	}
 };
 
-const selectedMovieReducer = (state = defaultSelectedMovieState, action) => {
+const selectedMovieReducer = (state = {selectedMovie: defaultSelectedMovieState, fileUrl: ''}, action) => {
 	switch(action.type) {
 		case 'SELECT_MOVIE':
-			return action.movie;
+			return ({
+				selectedMovie: action.movie,
+				fileUrl: action.movie.id === state.selectedMovie.id ? state.fileUrl: ''
+			}: TSelectedMovieData)
+		case 'UPDATE_FILEURL_SUCCESS':
+			console.log('returning movie: ', state.selectedMovie);
+			return ({
+				selectedMovie: state.selectedMovie,
+				fileUrl: action.fileUrl
+			}: TSelectedMovieData)
 		default:
 			return state;
 	}
@@ -94,7 +114,7 @@ function findMovieByID(movies, movie) {
 // using more explicit syntax for better naming
 const movieListReducer = combineReducers({
 	movieData: moviesReducer,
-	selectedMovie: selectedMovieReducer,
+	selectedMovieData: selectedMovieReducer,
 	tab: tabReducer,
 	mSince: movieSinceReducer,
 	order: orderReducer
