@@ -19,6 +19,10 @@ import {
 
 export const fetchMovieList = (count: ? number, since : ? number, order : ? string) => {
 	return dispatch => {
+		// garantee at least 10 movies are fetched (to fill the whole screen)
+		if (count && count < 10) {
+			count = 10;
+		}
 		return fetchMovie(count, since, order).then(function(result) {
 			// two dispatches here will cause two movie-list view renders, heavy?
 			dispatch({

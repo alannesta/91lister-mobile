@@ -12,7 +12,6 @@ import {
 export default class Movie extends Component {
 	constructor(props) {
 		super(props);
-
 	}
 
 	render() {

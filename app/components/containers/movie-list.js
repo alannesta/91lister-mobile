@@ -7,6 +7,7 @@ import * as actions from '../../actions/movie-list-actions';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux';
 import Movie from '../presentationals/movie';
+import MovieDetailModal from '../presentationals/movie-detail-modal'
 import {
 	StyleSheet,
 	View,
@@ -15,9 +16,9 @@ import {
 	ListView,
 	RefreshControl,
 	TouchableOpacity,
-	Animated,
 	InteractionManager,
-	Modal
+	Modal,
+	ActivityIndicator
 } from 'react-native';
 
 import type {TMovie} from '../../types/flowtypes'
@@ -29,7 +30,8 @@ class MovieList extends Component {
 	dataSource:any;
 	_renderRow:Function;
 	_selectMovie: Function;
-	state:{modalVisible: boolean, isRefreshing: boolean};
+	_getMovieFileUrl: Function;
+	state:{modalVisible: boolean, isRefreshing: boolean, loadingIndicator: boolean};
 
 	static defaultProps:{};
 
@@ -43,9 +45,12 @@ class MovieList extends Component {
 		});
 		this._renderRow = this._renderRow.bind(this);
 		this._selectMovie = this._selectMovie.bind(this);
+		this._getMovieFileUrl = this._getMovieFileUrl.bind(this);
+		// view state: modals, loading indicator, refreshing indicator
 		this.state = {
 			modalVisible: false,
-			isRefreshing: false
+			isRefreshing: false,
+			loadingIndicator: false
 		};
 	}
 
@@ -60,6 +65,7 @@ class MovieList extends Component {
 	}
 
 	render() {
+		console.log('movie list render called');
 		let {movieData: {movies, total}, selectedMovieData: {selectedMovie, fileUrl}} = this.props;
 		return (
 			<View style={styles.container}>
@@ -72,7 +78,6 @@ class MovieList extends Component {
 					onEndReached={this._loadMoreMovies.bind(this)}
 					enableEmptySections={true}
 					removeClippedSubviews={false}    // fix android device listview crash: https://github.com/facebook/react-native/issues/5934
-					//renderFooter={this.renderFooter.bind(this)}
 					refreshControl={
 						<RefreshControl
 							refreshing={this.state.isRefreshing}
@@ -82,30 +87,14 @@ class MovieList extends Component {
 							progressBackgroundColor="#ffffff"/>
 						}
 				/>
-				<Modal
-				 animationType={'fade'}
-				 transparent={true}
-				 visible={this.state.modalVisible}
-				 onRequestClose={() => {}}
-				 >
-				 <View style={styles.modalBackground}>
-				 	<View style={styles.modalContainer}>
-						<Text>{selectedMovie.title}</Text>
-						<Text style={styles.movieFileLink}>{fileUrl}</Text>
-						<TouchableOpacity
-							style={styles.modalButton}
-							onPress={() => {this._getMovieFileUrl(selectedMovie)}}>
-							<Text>Enjoy</Text>
-						</TouchableOpacity>
-						<TouchableOpacity
-							style={styles.modalButton}
-							onPress={() => {this.setState({modalVisible: false})}}>
-							<Text>Close</Text>
-						</TouchableOpacity>
-					</View>
-				 </View>
-
-			 </Modal>
+				<MovieDetailModal
+					modalVisible={this.state.modalVisible}
+					loadingIndicator={this.state.loadingIndicator}
+					closeModal={() => {	this.setState({ modalVisible: false, loadingIndicator: false})}}
+					enjoyMovie={this._getMovieFileUrl}
+					movie={selectedMovie}
+					fileUrl={fileUrl}
+				 />
 			</View>
 		)
 	}
@@ -126,15 +115,28 @@ class MovieList extends Component {
 		)
 	}
 
+	/**
+	 * Display movie info in a modal
+	 * @private
+	 */
 	_selectMovie(movie) {
 		let {dispatch} = this.props;
 		this.setState({modalVisible: true});
 		dispatch(actions.selectMovie(movie));
 	}
 
+	/**
+	 * resolve real movie url
+	 * @private
+	 */
 	_getMovieFileUrl(movie) {
 		let {dispatch} = this.props;
-		dispatch(actions.getMovieFileUrl(movie));
+		this.setState({loadingIndicator: true});
+		InteractionManager.runAfterInteractions(() => {
+			dispatch(actions.getMovieFileUrl(movie)).then(() => {
+				this.setState({loadingIndicator: false});
+			});
+		});
 	}
 
 	/**
@@ -192,6 +194,9 @@ const styles = StyleSheet.create({
 		borderRadius: 10,
 		backgroundColor: '#fff',
 		padding: 5
+	},
+	loadingSpinner: {
+		height: 30
 	},
 	movieFileLink: {
 
