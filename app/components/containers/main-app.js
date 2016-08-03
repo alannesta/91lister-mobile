@@ -1,3 +1,6 @@
+/*
+ @flow weak
+*/
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import {
@@ -13,12 +16,21 @@ import {
 import TabView from './tab-view'
 import Toolbar from './toolbar'
 import LoginForm from './login-form'
+import SearchWidget from '../presentationals/search-widget'
 
 import { updateNetworkStatus } from '../../actions/app-actions'
+import {fetchMovieList} from '../../actions/movie-list-actions'
 
 const DRAWER_WIDTH_LEFT = 56;
 
 class MainApp extends Component {
+	// flow type declaration
+	_renderRow:Function;
+	state:{drawerInstance: ?Object};
+	connectionHistory: Array<String>
+	drawer: ?Object
+
+
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -64,13 +76,15 @@ class MainApp extends Component {
 		});
 	}
 
-	componentWillUnmount() {
-		// NetInfo.removeEventListener('change', this._handleConnectionInfoChange);
-	}
-
 	_renderDrawerContent() {
 		return (
-			<LoginForm drawer={this.state.drawerInstance}/>
+			<View>
+				<SearchWidget
+					drawer={this.state.drawerInstance}
+					onSearch={this._searchMovies}
+					/>
+				<LoginForm drawer={this.state.drawerInstance}/>
+			</View>
 		)
 	}
 
@@ -87,6 +101,11 @@ class MainApp extends Component {
 				}
 			</View>
 		)
+	}
+
+	_searchMovies() {
+		let {dispatch, movieList: {query, since, order}} = this.props;
+		return dispatch(fetchMovieList(10, since, order, query))
 	}
 
 	_handleConnectionInfoChange(connectionInfo) {
@@ -119,7 +138,10 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
-	return state.deviceStatus;
+	return {
+		deviceStatus: state.deviceStatus,
+		movieList: state.movieList
+	};
 }
 
 export default connect(mapStateToProps)(MainApp);

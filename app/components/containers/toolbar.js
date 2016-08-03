@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
-  return state.movieListPage;
+  return state.movieList;
 }
 
 export default connect(mapStateToProps)(Toolbar);

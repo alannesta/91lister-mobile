@@ -102,6 +102,13 @@ const orderReducer = (state = 'trend', action) => {
 	return state;
 }
 
+const queryReducer = (state='', action) => {
+	if (action.type === "UPDATE_QUERY") {
+		return action.query;
+	}
+	return state;
+}
+
 function findMovieByID(movies, movie) {
 	for (let i = 0; i < movies.length; i++) {
 		if (movies[i].id === movie.id) {
@@ -116,6 +123,7 @@ const movieListReducer = combineReducers({
 	movieData: moviesReducer,
 	selectedMovieData: selectedMovieReducer,
 	tab: tabReducer,
+	query: queryReducer,
 	mSince: movieSinceReducer,
 	order: orderReducer
 });

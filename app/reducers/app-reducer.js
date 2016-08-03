@@ -7,7 +7,7 @@ import deviceStatusReducer from './device-status';
 
 
 const appReducer = combineReducers({
-	movieListPage: movieListReducer,
+	movieList: movieListReducer,
 	user: userReducer,
 	deviceStatus: deviceStatusReducer
 });
