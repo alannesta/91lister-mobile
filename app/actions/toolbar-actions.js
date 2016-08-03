@@ -8,10 +8,16 @@ import {
 //count: number, order: string
 export const changeDate = (date: number, {
 	count,
-	order
+	order,
+	query
 }) => {
 	return (dispatch) => {
-		dispatch(fetchMovieList(count, date, order)).then(function() {
+		dispatch(fetchMovieList({
+			count: count,
+			since: date,
+			order: order,
+			query: query
+		})).then(function() {
 			dispatch({
 				type: "MOVIE_TIMESINCE_CHANGED",
 				date: date

@@ -63,12 +63,15 @@ class LoginForm extends Component {
   }
 
   _login() {
-    let {dispatch, drawer, movieList: {mSince, order}} = this.props;
+    let {dispatch, drawer, movieList: {mSince, order, query}} = this.props;
 		InteractionManager.runAfterInteractions(() => {
 			dispatch(authenticate(this.state.username, this.state.password)).then(() => {
-				// TODO: close drawer and refetch list
 				drawer.closeDrawer();
-				dispatch(fetchMovieList(10, mSince, order));
+				dispatch(fetchMovieList({
+						since: mSince,
+						order: order,
+						query: query
+				}));
 			}).catch((err) => {
 				// NO-OP
 			});

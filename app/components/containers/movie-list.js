@@ -55,17 +55,20 @@ class MovieList extends Component {
 	}
 
 	componentDidMount() {
-		let {dispatch} = this.props;	// dispatch is injected by connect() call
+		let {dispatch, order, query, mSince} = this.props;	// dispatch is injected by connect() call
 		InteractionManager.runAfterInteractions(() => {
 			this.setState({isRefreshing: true});
-			dispatch(actions.fetchMovieList()).then(() => {
+			dispatch(actions.fetchMovieList({
+				since: mSince,
+				order: order,
+				query: query
+			})).then(() => {
 				this.setState({isRefreshing: false});
 			});
 		});
 	}
 
 	render() {
-		console.log('movie list render called');
 		let {movieData: {movies, total}, selectedMovieData: {selectedMovie, fileUrl}} = this.props;
 		return (
 			<View style={styles.container}>
@@ -144,11 +147,16 @@ class MovieList extends Component {
 	 * @private
 	 */
 	_loadMoreMovies() {
-		let {dispatch, movieData: {movies, total}, mSince, order} = this.props;	// TODO: refactor order reducer
+		let {dispatch, movieData: {movies, total}, mSince, order, query} = this.props;	// TODO: refactor order reducer
 		if (movies.length < total) {
 			this.setState({isRefreshing: true});
 			InteractionManager.runAfterInteractions(() => {
-				dispatch(actions.fetchMovieList(movies.length + 10, mSince, order)).then(() => {
+				dispatch(actions.fetchMovieList({
+					count: movies.length + 10,
+					since: mSince,
+					order: order,
+					query: query
+				})).then(() => {
 					this.setState({isRefreshing: false});
 				});
 			});
@@ -160,11 +168,15 @@ class MovieList extends Component {
 	 * @private
 	 */
 	_onRefresh() {
-		let {dispatch, movieData: {movies}, mSince, order} = this.props;
+		let {dispatch, movieData: {movies}, mSince, order, query} = this.props;
 		this.setState({isRefreshing: true});
 		InteractionManager.runAfterInteractions(() => {
-			var count = movies.length > 0 ? movies.length : 10;	// TODO: this is a temporary solution
-			dispatch(actions.fetchMovieList(count, mSince, order)).then(() => {
+			dispatch(actions.fetchMovieList({
+				count: movies.length,
+				since: mSince,
+				order: order,
+				query: query
+			})).then(() => {
 				this.setState({isRefreshing: false});
 			});
 		});

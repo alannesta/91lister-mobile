@@ -10,20 +10,16 @@ import {
 import type {
 	TMovie,
 	TMovieState,
-	TMovieListState
+	TMovieQueryParams
 } from '../types/flowtypes'
 
 import {
 	ToastAndroid
 } from 'react-native'
 
-export const fetchMovieList = (count: ? number, since : ? number, order : ? string) => {
+export const fetchMovieList = (options: TMovieQueryParams) => {
 	return dispatch => {
-		// garantee at least 10 movies are fetched (to fill the whole screen)
-		if (count && count < 10) {
-			count = 10;
-		}
-		return fetchMovie(count, since, order).then(function(result) {
+		return fetchMovie(options).then(function(result) {
 			// two dispatches here will cause two movie-list view renders, heavy?
 			dispatch({
 				type: 'MOVIE_FETCHED',

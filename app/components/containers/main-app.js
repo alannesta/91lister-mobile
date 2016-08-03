@@ -27,7 +27,7 @@ class MainApp extends Component {
 	// flow type declaration
 	_renderRow:Function;
 	state:{drawerInstance: ?Object};
-	connectionHistory: Array<String>
+	connectionHistory: Array<*>
 	drawer: ?Object
 
 
@@ -89,7 +89,7 @@ class MainApp extends Component {
 	}
 
 	_renderApp() {
-		let { network: { connectionType }} = this.props;
+		let { deviceStatus: { connectionType }} = this.props;
 		return (
 			<View style={styles.container}>
 				<Toolbar
@@ -104,8 +104,12 @@ class MainApp extends Component {
 	}
 
 	_searchMovies() {
-		let {dispatch, movieList: {query, since, order}} = this.props;
-		return dispatch(fetchMovieList(10, since, order, query))
+		let {dispatch, movieList: {query, mSince, order}} = this.props;
+		return dispatch(fetchMovieList({
+			query: query,
+			since: mSince,
+			order: order
+		}))
 	}
 
 	_handleConnectionInfoChange(connectionInfo) {

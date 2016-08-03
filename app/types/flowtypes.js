@@ -17,9 +17,9 @@ export type TMovieState ={
 	total: number
 }
 
-export type TMovieListState = {
-		movieData: TMovieState,
-		tab: string,
-		mSince: Date,
-		order: string
-};
+export type TMovieQueryParams = {
+	count?: number,
+	order?: string,
+	query?: string,
+	since?: number
+}

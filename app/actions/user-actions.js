@@ -42,7 +42,7 @@ export const authenticate = (username: string, password: string) => {
 // too lazy to develop an api end point for this check since no user registration is allowed for now
 export const loginStatusCheck = () => {
 	return dispatch => {
-		return fetchMovie().then(() => {
+		return fetchMovie({}).then(() => {
 			dispatch({
 				type: 'USER_AUTHENTICATION_SUCCESS',
 				username: 'alannesta'		// TODO: need a dedicated api which returns the username lol

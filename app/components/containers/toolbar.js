@@ -48,7 +48,7 @@ class Toolbar extends Component {
 	}
 
   async _showPicker() {
-    let {dispatch, mSince, order, movieData: {movies}} = this.props;
+    let {dispatch, mSince, order, query, movieData: {movies}} = this.props;
 		let today = new Date();
     try {
 			// if initial date is untouched, open datepicker with starting date set as today
@@ -64,7 +64,8 @@ class Toolbar extends Component {
 
 				let currentMovieState = {
 					count: movies.length,
-					order: order
+					order: order,
+					query: query
 				}
 				InteractionManager.runAfterInteractions(() => {
 					dispatch(changeDate(date, currentMovieState));
