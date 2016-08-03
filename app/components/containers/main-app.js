@@ -26,9 +26,12 @@ const DRAWER_WIDTH_LEFT = 56;
 class MainApp extends Component {
 	// flow type declaration
 	_renderRow:Function;
+	_handleConnectionInfoChange: Function;
+	_searchMovies: Function;
+	_renderDrawerContent: Function;
 	state:{drawerInstance: ?Object};
 	connectionHistory: Array<*>
-	drawer: ?Object
+	drawer: Object
 
 
 	constructor(props) {
@@ -37,6 +40,9 @@ class MainApp extends Component {
 			drawerInstance: null
 		};
 		this.connectionHistory = [];
+		this._searchMovies = this._searchMovies.bind(this);
+		this._renderDrawerContent = this._renderDrawerContent.bind(this);
+		this._handleConnectionInfoChange = this._handleConnectionInfoChange.bind(this);
 	}
 
 	render() {
@@ -77,11 +83,13 @@ class MainApp extends Component {
 	}
 
 	_renderDrawerContent() {
+		let {movieList: {query}} = this.props;
 		return (
 			<View>
 				<SearchWidget
 					drawer={this.state.drawerInstance}
 					onSearch={this._searchMovies}
+					query={query}
 					/>
 				<LoginForm drawer={this.state.drawerInstance}/>
 			</View>
@@ -103,13 +111,20 @@ class MainApp extends Component {
 		)
 	}
 
-	_searchMovies() {
-		let {dispatch, movieList: {query, mSince, order}} = this.props;
+	_searchMovies(userQuery) {
+		let {dispatch, movieList: {mSince, order}} = this.props;
 		return dispatch(fetchMovieList({
-			query: query,
+			query: userQuery,
 			since: mSince,
 			order: order
-		}))
+		})).then(() => {
+			this.drawer.closeDrawer();
+			// update the query in redux store
+			dispatch({
+				type: "UPDATE_QUERY",
+				query: userQuery
+			});
+		})
 	}
 
 	_handleConnectionInfoChange(connectionInfo) {

@@ -1,5 +1,7 @@
+/*
+	@flow weak
+*/
 import React, {Component} from 'react';
-
 import {
 	StyleSheet,
 	View,
@@ -10,6 +12,9 @@ import {
 } from 'react-native';
 
 export default class SearchWidget extends Component {
+	//flow
+	state: {query: string};
+
 	constructor(props) {
 		super(props);
     this.state = {
@@ -28,7 +33,7 @@ export default class SearchWidget extends Component {
           />
           <TouchableOpacity
             accessibilityTraits="button"
-            onPress={this.props.onSearch}
+            onPress={() => {this.props.onSearch(this.state.query)}}
             style={styles.searchButton}
             activeOpacity={0.5}
             >
