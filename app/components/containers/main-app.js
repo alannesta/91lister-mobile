@@ -10,16 +10,18 @@ import {
 	View,
 	Dimensions,
 	DrawerLayoutAndroid,
-	NetInfo
+	NetInfo,
+	InteractionManager
 } from 'react-native';
 
 import TabView from './tab-view'
 import Toolbar from './toolbar'
-import LoginForm from './login-form'
+import LoginForm from '../presentationals/login-form'
 import SearchWidget from '../presentationals/search-widget'
 
 import { updateNetworkStatus } from '../../actions/app-actions'
 import {fetchMovieList} from '../../actions/movie-list-actions'
+import { authenticate } from '../../actions/user-actions';
 
 const DRAWER_WIDTH_LEFT = 56;
 
@@ -28,6 +30,7 @@ class MainApp extends Component {
 	_renderRow:Function;
 	_handleConnectionInfoChange: Function;
 	_searchMovies: Function;
+	_login: Function;
 	_renderDrawerContent: Function;
 	state:{drawerInstance: ?Object};
 	connectionHistory: Array<*>
@@ -43,6 +46,7 @@ class MainApp extends Component {
 		this._searchMovies = this._searchMovies.bind(this);
 		this._renderDrawerContent = this._renderDrawerContent.bind(this);
 		this._handleConnectionInfoChange = this._handleConnectionInfoChange.bind(this);
+		this._login = this._login.bind(this);
 	}
 
 	render() {
@@ -83,23 +87,32 @@ class MainApp extends Component {
 	}
 
 	_renderDrawerContent() {
-		let {movieList: {query}} = this.props;
-		return (
-			<View>
-				<SearchWidget
-					drawer={this.state.drawerInstance}
-					onSearch={this._searchMovies}
-					query={query}
-					/>
-				<LoginForm drawer={this.state.drawerInstance}/>
-			</View>
-		)
+		let {user: {status: {loggedIn, username}}, movieList: {query}} = this.props;
+
+		if (loggedIn) {
+			return (
+				<View style={styles.drawerViewContainer}>
+					<SearchWidget
+						onSearch={this._searchMovies}
+						query={query}
+						/>
+					<Text style={{marginTop: 50}}>Welcome and enjoy {username} !</Text>
+				</View>
+			)
+		} else {
+			return (
+				<View style={styles.drawerViewContainer}>
+					<LoginForm onLogin={this._login}/>
+				</View>
+			)
+		}
+
 	}
 
 	_renderApp() {
 		let { deviceStatus: { connectionType }} = this.props;
 		return (
-			<View style={styles.container}>
+			<View style={styles.appContainer}>
 				<Toolbar
 					drawer={this.state.drawerInstance}
 				/>
@@ -127,6 +140,22 @@ class MainApp extends Component {
 		})
 	}
 
+	_login(username, password) {
+		let {dispatch, movieList: {mSince, order, query}} = this.props;
+		InteractionManager.runAfterInteractions(() => {
+			dispatch(authenticate(username, password)).then(() => {
+				this.drawer.closeDrawer();
+				dispatch(fetchMovieList({
+						since: mSince,
+						order: order,
+						query: query
+				}));
+			}).catch((err) => {
+				// NO-OP?
+			});
+		});
+	}
+
 	_handleConnectionInfoChange(connectionInfo) {
 		console.log('handle connection change: ', connectionInfo);
 		let { dispatch } = this.props;
@@ -142,7 +171,7 @@ class MainApp extends Component {
 }
 
 const styles = StyleSheet.create({
-	container: {
+	appContainer: {
 		flex: 1,
     // height: Dimensions.get('window').height - 20
 	},
@@ -150,17 +179,15 @@ const styles = StyleSheet.create({
 		backgroundColor: '#E9EAED',
 		height: 56,
 	},
-	drawerContentWrapper: {
+	drawerViewContainer: {
 		flex: 1,
 		backgroundColor: 'white',
+		alignItems: 'center'
 	},
 });
 
 function mapStateToProps(state) {
-	return {
-		deviceStatus: state.deviceStatus,
-		movieList: state.movieList
-	};
+	return state;
 }
 
 export default connect(mapStateToProps)(MainApp);

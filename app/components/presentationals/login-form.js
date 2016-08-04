@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import { redux } from 'redux'
-import { connect } from 'react-redux';
 import { authenticate } from '../../actions/user-actions';
 import { fetchMovieList } from '../../actions/movie-list-actions'
 
@@ -10,14 +9,12 @@ import {
 	Text,
 	TouchableOpacity,
   TextInput,
-	InteractionManager,
   Dimensions
 } from 'react-native';
 
 class LoginForm extends Component {
   constructor(props) {
     super(props);
-    this._login = this._login.bind(this);
     this.state = {
       username: '',
       password: ''
@@ -25,14 +22,6 @@ class LoginForm extends Component {
   }
 
   render() {
-    let {user: {status: {loggedIn, username}}} = this.props;
-    if (loggedIn) {
-      return (
-        <View style={styles.welcomeScreen}>
-          <Text>Welcome and enjoy {username}!</Text>
-        </View>
-      )
-    } else {
       return (
         <View style={styles.loginForm}>
           <TextInput
@@ -52,30 +41,13 @@ class LoginForm extends Component {
           <TouchableOpacity
 						style={styles.loginButton}
             accessibilityTraits="button"
-            onPress={this._login}
+            onPress={() => {this.props.onLogin(this.state.username, this.state.password)}}
             activeOpacity={0.5}
             >
             <Text>LOGIN</Text>
           </TouchableOpacity>
         </View>
       );
-    }
-  }
-
-  _login() {
-    let {dispatch, drawer, movieList: {mSince, order, query}} = this.props;
-		InteractionManager.runAfterInteractions(() => {
-			dispatch(authenticate(this.state.username, this.state.password)).then(() => {
-				drawer.closeDrawer();
-				dispatch(fetchMovieList({
-						since: mSince,
-						order: order,
-						query: query
-				}));
-			}).catch((err) => {
-				// NO-OP
-			});
-		});
   }
 }
 
@@ -110,8 +82,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-function mapStateToProps(state) {
-  return state;
-}
-
-export default connect(mapStateToProps)(LoginForm);
+export default LoginForm;
