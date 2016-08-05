@@ -8,12 +8,14 @@ import {
 	TouchableOpacity,
   InteractionManager,
 	Modal,
-	ActivityIndicator
+	ActivityIndicator,
+	Linking
 } from 'react-native';
 
 class MovieDetailModal extends Component {
   constructor(props) {
-    super(props)
+    super(props);
+		this._openLink = this._openLink.bind(this);
   }
 
   componentDidMount() {
@@ -35,7 +37,11 @@ class MovieDetailModal extends Component {
           {
             this.props.loadingIndicator ? <ActivityIndicator style={styles.loadingSpinner} size="small"/>: null
           }
-          <Text style={styles.movieFileLink}>{this.props.fileUrl}</Text>
+
+					<TouchableOpacity
+		        onPress={this._openLink}>
+						<Text style={styles.movieFileLink}>{this.props.fileUrl}</Text>
+		      </TouchableOpacity>
           <View style={{flexDirection: 'row'}}>
             <TouchableOpacity
               style={styles.modalButton}
@@ -53,6 +59,16 @@ class MovieDetailModal extends Component {
      </Modal>
    )
   }
+
+	_openLink() {
+		Linking.canOpenURL(this.props.fileUrl).then(supported => {
+      if (supported) {
+        Linking.openURL(this.props.fileUrl);
+      } else {
+        console.log('Don\'t know how to open URI: ' + this.props.fileUrl);
+      }
+    });
+	}
 }
 
 const styles = StyleSheet.create({
