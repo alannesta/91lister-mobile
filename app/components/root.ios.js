@@ -70,7 +70,15 @@ class Root extends Component {
 						case 'UserProfile':
 							 return (
 								<TouchableOpacity
-									onPress={() => navigator.pop()}
+									onPress={() => {
+										// console.log('nav State', navState);
+										if (navState.routeStack.length > 1) {
+											navigator.pop();
+										} else {
+											// in this case, coming from the splash screen state
+											navigator.replace(this.routeConfig[1])
+										}
+									}}
 									style={styles.navBarItem}
 								>
 									<Text>MovieList</Text>
@@ -79,7 +87,7 @@ class Root extends Component {
 						case 'MovieList':
 							return (
 								<TouchableOpacity
-									onPress={() => navigator.push({name: 'DatePicker', index: 3})}
+									onPress={() => navigator.push(this.routeConfig[3])}
 									style={styles.navBarItem}
 									>
 									<Text>Settings</Text>

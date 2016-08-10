@@ -9,7 +9,8 @@ import {
   InteractionManager,
 	Modal,
 	ActivityIndicator,
-	Linking
+	Linking,
+	Platform
 } from 'react-native';
 
 class MovieDetailModal extends Component {
@@ -42,7 +43,7 @@ class MovieDetailModal extends Component {
 		        onPress={this._openLink}>
 						<Text style={styles.movieFileLink}>{this.props.fileUrl}</Text>
 		      </TouchableOpacity>
-          <View style={{flexDirection: 'row'}}>
+          <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={styles.modalButton}
               onPress={() => {this.props.enjoyMovie(this.props.movie)}}>
@@ -89,8 +90,13 @@ const styles = StyleSheet.create({
     marginTop: 10,
 		height: 30
 	},
+	buttonContainer: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'center'
+	},
 	modalButton: {
-		width: 50,
+		width: 70,
 		padding: 5,
 		borderRadius: 3,
 		marginTop: 20

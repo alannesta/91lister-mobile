@@ -24,7 +24,9 @@ class SplashScreen extends Component {
     dispatch(initAppStorage()).then(() => {
 			dispatch(loginStatusCheck()).then(() => {
 				this._navigateToPage({name: 'MovieList', index: 1});
-			})
+			}).catch((err) => {
+				this._navigateToPage({name: 'UserProfile', index: 2});
+			});
     }).catch((err) => {
 			// should never be catching an error here, already handled at action level
       console.log(err);
@@ -46,7 +48,7 @@ class SplashScreen extends Component {
 			InteractionManager.runAfterInteractions(() => {
 				navigator.replace(pageRoute);
 			});
-		}, 1000);
+		}, 800);
 	}
 
 }

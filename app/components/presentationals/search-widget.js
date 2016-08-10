@@ -30,7 +30,7 @@ export default class SearchWidget extends Component {
           placeholder="Search"
           value={this.state.query}
           onChangeText={(userQuery) => {this.setState({query: userQuery})}}
-					autoCapitalize={false}
+					autoCapitalize={'none'}
 					autoCorrect={false}
           />
           <TouchableOpacity

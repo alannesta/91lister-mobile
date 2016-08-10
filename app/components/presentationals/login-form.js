@@ -29,7 +29,7 @@ class LoginForm extends Component {
             placeholder="username"
             value={this.state.username}
             onChangeText={(username) => {this.setState({username: username})}}
-						autoCapitalize={false}
+						autoCapitalize={'none'}
 						autoCorrect={false}
           />
           <TextInput
@@ -38,7 +38,7 @@ class LoginForm extends Component {
             secureTextEntry={true}
             value={this.state.password}
             onChangeText={(password) => {this.setState({password: password})}}
-						autoCapitalize={false}
+						autoCapitalize={'none'}
 						autoCorrect={false}
           />
           <TouchableOpacity
