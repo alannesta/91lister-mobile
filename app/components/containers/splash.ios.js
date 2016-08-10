@@ -19,34 +19,39 @@ class SplashScreen extends Component {
   }
 
   componentDidMount() {
-    let {navigator, dispatch} = this.props;
-    dispatch(initAppStorage()).then(() => {
-			dispatch(loginStatusCheck()).then(() => {
-				this._navigateToHomepage();
-			})
-    }).catch((err) => {
-			// should never be catching an error here, already handled at action level
-      console.log(err);
-			this._navigateToHomepage();
-    });
+		console.log('splash mount');
+    // let {navigator, dispatch} = this.props;
+    // dispatch(initAppStorage()).then(() => {
+		// 	dispatch(loginStatusCheck()).then(() => {
+		// 		this._navigateToHomepage();
+		// 	})
+    // }).catch((err) => {
+		// 	// should never be catching an error here, already handled at action level
+    //   console.log(err);
+		// 	this._navigateToHomepage();
+    // });
+		this._navigateToHomepage();
   }
 
   render() {
     return (
-      <View>
+      <View style={{height: 650, justifyContent: 'center', alignItems: 'center'}}>
         <Text>Welcome to listermobile</Text>
+				<Text>Welcome to listermobile</Text>
+				<Text>Welcome to listermobile</Text>
+				<Text>Welcome to listermobile</Text>
+				<Text>Welcome to listermobile</Text>
       </View>
     )
   }
 
 	_navigateToHomepage() {
-		let {navigator, nextRoute, dispatch} = this.props;
+		let {navigator, dispatch} = this.props;
 		setTimeout(() => {
 			InteractionManager.runAfterInteractions(() => {
-				// navigator.replace({name: 'MainApp', index: 1});
-        nextRoute();
+				navigator.replace({name: 'MovieList', index: 1});
 			});
-		}, 500);
+		}, 1500);
 	}
 
 }

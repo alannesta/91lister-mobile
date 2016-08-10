@@ -29,16 +29,16 @@ class Root extends Component {
 	render() {
 		return (
 			<Navigator
+				style={styles.appContainer}
 				initialRoute={this.routeConfig[0]}
 				configureScene={(route, routeStack) => Navigator.SceneConfigs.FloatFromLeft}
 				renderScene={this._renderScene}
 				navigationBar={
 					<Navigator.NavigationBar
 		       routeMapper={this._getRouteMapper()}
-		       style={{justifyContent:'center', alignItems:'center'}}
+					 style={styles.navBar}
 		     />
 				}
-				style={{justifyContent:'center', alignItems:'center'}}
 			/>
 		)
 	}
@@ -62,6 +62,7 @@ class Root extends Component {
 					 return (
 						 <TouchableOpacity
 							 onPress={() => navigator.push(this.routeConfig[2])}
+							 style={styles.navBarItem}
 						 >
 							 <Text>Cancel</Text>
 						 </TouchableOpacity>
@@ -69,12 +70,18 @@ class Root extends Component {
 				 },
 				 RightButton: (route, navigator, index, navState) => {
 					 return (
+						 <TouchableOpacity
+							 onPress={() => navigator.push(this.routeConfig[2])}
+							 style={styles.navBarItem}
+						 >
 						 <Text>Done</Text>
+						 </TouchableOpacity>
+
 					 );
 				 },
 				 Title: (route, navigator, index, navState) =>{
 					 return (
-							 <Text>{route.name}</Text>
+							 <Text style={styles.navBarItem}>{route.name}</Text>
 					 );
 				 }
 		}
@@ -82,7 +89,16 @@ class Root extends Component {
 }
 
 const styles = StyleSheet.create({
-
+	appContainer: {
+		flex: 1
+	},
+	navBar: {
+		borderWidth: 1.5,
+		borderColor: 'grey'
+	},
+	navBarItem: {
+		padding: 10
+	}
 });
 
 export default Root;
