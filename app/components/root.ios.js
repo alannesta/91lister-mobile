@@ -9,10 +9,12 @@ import {
 	TouchableOpacity
 } from 'react-native';
 
+import { connect } from 'react-redux';
+
 import MovieList from './containers/movie-list'
 import Splash from './containers/splash'
-// import LoginForm from './presentationals/login-form'
 import UserProfile from './containers/user-profile'
+import DatePicker from './containers/datepicker'
 
 class Root extends Component {
 
@@ -21,7 +23,8 @@ class Root extends Component {
 		this.routeConfig = [
 			{name: 'SplashScreen', index: 0},
 			{name: 'MovieList', index: 1},
-			{name: 'UserProfile', index: 2}
+			{name: 'UserProfile', index: 2},
+			{name: 'DatePicker', index: 3}
 		];
 		this._getRouteMapper = this._getRouteMapper.bind(this);
 	}
@@ -44,7 +47,6 @@ class Root extends Component {
 	}
 
 	_renderScene(route, navigator) {
-
 		if (route.name === 'SplashScreen') {
 			return <Splash navigator={navigator} />;
 		}
@@ -53,6 +55,9 @@ class Root extends Component {
 		}
 		if (route.name === 'UserProfile') {
 			return <UserProfile navigator={navigator} />;
+		}
+		if (route.name === 'DatePicker') {
+			return <DatePicker navigator={navigator} />;
 		}
 	}
 
@@ -71,6 +76,24 @@ class Root extends Component {
 									<Text>MovieList</Text>
 								</TouchableOpacity>
 							);
+						case 'MovieList':
+							return (
+								<TouchableOpacity
+									onPress={() => navigator.push({name: 'DatePicker', index: 3})}
+									style={styles.navBarItem}
+									>
+									<Text>Settings</Text>
+								</TouchableOpacity>
+							)
+						case 'DatePicker':
+							return (
+								<TouchableOpacity
+									onPress={() => navigator.pop()}
+									style={styles.navBarItem}
+									>
+									<Text>Done</Text>
+								</TouchableOpacity>
+							)
 						default:
 							return null;
 					 }
@@ -107,7 +130,7 @@ const styles = StyleSheet.create({
 	},
 	navBar: {
 		height: 60,
-		borderWidth: 1.5,
+		borderBottomWidth: 1.5,
 		borderColor: 'grey'
 	},
 	navBarItem: {
@@ -115,4 +138,8 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default Root;
+function mapStateToProps(state) {
+	return state;
+}
+
+export default connect(mapStateToProps)(Root);

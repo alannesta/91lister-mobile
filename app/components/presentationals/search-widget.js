@@ -30,6 +30,8 @@ export default class SearchWidget extends Component {
           placeholder="Search"
           value={this.state.query}
           onChangeText={(userQuery) => {this.setState({query: userQuery})}}
+					autoCapitalize={false}
+					autoCorrect={false}
           />
           <TouchableOpacity
             accessibilityTraits="button"
@@ -46,20 +48,19 @@ export default class SearchWidget extends Component {
 
 const styles = StyleSheet.create({
   searchWidget: {
-    marginTop: 20,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center'
   },
   searchInput: {
-    marginTop: 10,
     width: 180,
-		height: 25
+		height: 25,
+		backgroundColor: '#ededed'
   },
 	searchButton: {
+		marginLeft: 5,
 		justifyContent: 'center',
 		alignItems: 'center',
-		marginTop: 30,
 		borderWidth: 1.5,
 		borderColor: 'grey',
 		borderRadius: 4,
