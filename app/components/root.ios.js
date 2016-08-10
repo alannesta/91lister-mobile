@@ -1,54 +1,83 @@
 import React, {Component} from 'react';
 import {
 	StyleSheet,
-  View,
 	Text,
-	NavigatorIOS,
-  StatusBar
+	Navigator,
+	View,
+	Dimensions,
+	StatusBar,
+	TouchableOpacity
 } from 'react-native';
 
-import Splash from './containers/splash'
 import MovieList from './containers/movie-list'
+import Splash from './containers/splash'
+// import LoginForm from './presentationals/login-form'
+import UserProfile from './containers/user-profile'
 
 class Root extends Component {
 
 	constructor(props) {
 		super(props);
-
-		this._navigateToHomepage = this._navigateToHomepage.bind(this);
-		this.routeConfig = {
-			homePage: {
-				component: MovieList,
-				title: 'Movie List'
-			},
-			splashPage: {
-				component: Splash,
-				passProps: {nextRoute: this._navigateToHomepage},
-				title: 'Spalsh Screen',
-				rightButtonTitle: 'Go'
-				// onRightButtonPress: () => this._handleNavigationRequest()
-			}
-		}
+		this.routeConfig = [
+			{name: 'SplashScreen', index: 0},
+			{name: 'MovieList', index: 1},
+			{name: 'UserProfile', index: 2}
+		];
+		this._getRouteMapper = this._getRouteMapper.bind(this);
 	}
 
 	render() {
 		return (
-		    // <Text>IOS init</Text>
-        <View>
-          <StatusBar
-            backgroundColor="blue"
-            barStyle="light-content"
-          />
-          <NavigatorIOS
-						ref={(navigator) => {this.navigator = navigator}}
-            initialRoute={this.routeConfig.splashPage}
-          />
-        </View>
+			<Navigator
+				initialRoute={this.routeConfig[0]}
+				configureScene={(route, routeStack) => Navigator.SceneConfigs.FloatFromLeft}
+				renderScene={this._renderScene}
+				navigationBar={
+					<Navigator.NavigationBar
+		       routeMapper={this._getRouteMapper()}
+		       style={{justifyContent:'center', alignItems:'center'}}
+		     />
+				}
+				style={{justifyContent:'center', alignItems:'center'}}
+			/>
 		)
 	}
 
-  _navigateToHomepage() {
-		this.navigator.push(this.routeConfig.homePage);
+	_renderScene(route, navigator) {
+
+		if (route.name === 'SplashScreen') {
+			return <Splash navigator={navigator} />;
+		}
+		if (route.name === 'MovieList') {
+			return <MovieList navigator={navigator} />;
+		}
+		if (route.name === 'UserProfile') {
+			return <UserProfile navigator={navigator} />;
+		}
+	}
+
+	_getRouteMapper() {
+		return {
+				 LeftButton: (route, navigator, index, navState) => {
+					 return (
+						 <TouchableOpacity
+							 onPress={() => navigator.push(this.routeConfig[2])}
+						 >
+							 <Text>Cancel</Text>
+						 </TouchableOpacity>
+					 );
+				 },
+				 RightButton: (route, navigator, index, navState) => {
+					 return (
+						 <Text>Done</Text>
+					 );
+				 },
+				 Title: (route, navigator, index, navState) =>{
+					 return (
+							 <Text>{route.name}</Text>
+					 );
+				 }
+		}
 	}
 }
 

@@ -34,7 +34,6 @@ class LoginForm extends Component {
             style={styles.inputField}
             placeholder="password"
             secureTextEntry={true}
-            returnKeyType="go"
             value={this.state.password}
             onChangeText={(password) => {this.setState({password: password})}}
           />
@@ -56,10 +55,13 @@ const WINDOW_HEIGHT = Dimensions.get('window').height;
 const styles = StyleSheet.create({
   inputField: {
     marginTop: 10,
-    width: 200
+    width: 200,
+		height: 30,
+		backgroundColor: '#ededed'
   },
   loginForm: {
-		height: WINDOW_HEIGHT-10,
+		// height: WINDOW_HEIGHT-10,
+		flex: 1,
     padding:10,
     justifyContent: 'center',
     alignItems: 'center'
