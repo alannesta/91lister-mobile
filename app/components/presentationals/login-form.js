@@ -60,8 +60,9 @@ const styles = StyleSheet.create({
 		backgroundColor: '#ededed'
   },
   loginForm: {
-		// height: WINDOW_HEIGHT-10,
-		flex: 1,
+		height: WINDOW_HEIGHT-60,
+		// flex: 1,
+		marginTop: 60,
     padding:10,
     justifyContent: 'center',
     alignItems: 'center'

@@ -18,7 +18,8 @@ import {
 	TouchableOpacity,
 	InteractionManager,
 	Modal,
-	ActivityIndicator
+	ActivityIndicator,
+	Dimensions
 } from 'react-native';
 
 import type {TMovie} from '../../types/flowtypes'
@@ -183,16 +184,19 @@ class MovieList extends Component {
 	}
 }
 
+const WINDOW_HEIGHT = Dimensions.get('window').height;
+
 const styles = StyleSheet.create({
 	separator: {
 		backgroundColor: '#eeeeee',
 		height: 1
 	},
 	container: {
-		flex: 1,		//essential!! for the onEndReached bug
+		// flex: 1,		//essential!! for the onEndReached bug
+		marginTop: 60,	// for the navbar which is 60 in height
+		height: WINDOW_HEIGHT-60
 	},
 	ListView: {
-
 	},
 	modalBackground: {
 		flex: 1,

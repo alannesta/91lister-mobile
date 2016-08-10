@@ -59,25 +59,38 @@ class Root extends Component {
 	_getRouteMapper() {
 		return {
 				 LeftButton: (route, navigator, index, navState) => {
-					 return (
-						 <TouchableOpacity
-							 onPress={() => navigator.push(this.routeConfig[2])}
-							 style={styles.navBarItem}
-						 >
-							 <Text>Cancel</Text>
-						 </TouchableOpacity>
-					 );
+					 switch(route.name) {
+						case 'SplashScreen':
+								return null;
+						case 'UserProfile':
+							 return (
+								<TouchableOpacity
+									onPress={() => navigator.pop()}
+									style={styles.navBarItem}
+								>
+									<Text>MovieList</Text>
+								</TouchableOpacity>
+							);
+						default:
+							return null;
+					 }
 				 },
 				 RightButton: (route, navigator, index, navState) => {
-					 return (
-						 <TouchableOpacity
-							 onPress={() => navigator.push(this.routeConfig[2])}
-							 style={styles.navBarItem}
-						 >
-						 <Text>Done</Text>
-						 </TouchableOpacity>
-
-					 );
+					 switch(route.name) {
+						case 'SplashScreen':
+								return null;
+						case 'MovieList':
+							 return (
+								<TouchableOpacity
+									onPress={() => navigator.push(this.routeConfig[2])}
+									style={styles.navBarItem}
+								>
+									<Text>User Profile</Text>
+								</TouchableOpacity>
+							);
+						default:
+							return null;
+					 }
 				 },
 				 Title: (route, navigator, index, navState) =>{
 					 return (
@@ -93,6 +106,7 @@ const styles = StyleSheet.create({
 		flex: 1
 	},
 	navBar: {
+		height: 60,
 		borderWidth: 1.5,
 		borderColor: 'grey'
 	},

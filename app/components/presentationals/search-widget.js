@@ -53,7 +53,8 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     marginTop: 10,
-    width: 180
+    width: 180,
+		height: 25
   },
 	searchButton: {
 		justifyContent: 'center',

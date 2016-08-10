@@ -15,43 +15,38 @@ class SplashScreen extends Component {
 
   constructor(props) {
     super(props);
-    this._navigateToHomepage = this._navigateToHomepage.bind(this);
+    this._navigateToPage = this._navigateToPage.bind(this);
   }
 
   componentDidMount() {
-		console.log('splash mount');
-    // let {navigator, dispatch} = this.props;
-    // dispatch(initAppStorage()).then(() => {
-		// 	dispatch(loginStatusCheck()).then(() => {
-		// 		this._navigateToHomepage();
-		// 	})
-    // }).catch((err) => {
-		// 	// should never be catching an error here, already handled at action level
-    //   console.log(err);
-		// 	this._navigateToHomepage();
-    // });
-		this._navigateToHomepage();
+
+    let {navigator, dispatch} = this.props;
+    dispatch(initAppStorage()).then(() => {
+			dispatch(loginStatusCheck()).then(() => {
+				this._navigateToPage({name: 'MovieList', index: 1});
+			})
+    }).catch((err) => {
+			// should never be catching an error here, already handled at action level
+      console.log(err);
+			this._navigateToPage({name: 'UserProfile', index: 2});
+    });
   }
 
   render() {
     return (
       <View style={{height: 650, justifyContent: 'center', alignItems: 'center'}}>
         <Text>Welcome to listermobile</Text>
-				<Text>Welcome to listermobile</Text>
-				<Text>Welcome to listermobile</Text>
-				<Text>Welcome to listermobile</Text>
-				<Text>Welcome to listermobile</Text>
       </View>
     )
   }
 
-	_navigateToHomepage() {
+	_navigateToPage(pageRoute) {
 		let {navigator, dispatch} = this.props;
 		setTimeout(() => {
 			InteractionManager.runAfterInteractions(() => {
-				navigator.replace({name: 'MovieList', index: 1});
+				navigator.replace(pageRoute);
 			});
-		}, 1500);
+		}, 1000);
 	}
 
 }
