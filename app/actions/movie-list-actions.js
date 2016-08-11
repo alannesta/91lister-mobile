@@ -14,7 +14,9 @@ import type {
 } from '../types/flowtypes'
 
 import {
-	ToastAndroid
+	ToastAndroid,
+	Platform,
+	AlertIOS
 } from 'react-native'
 
 export const fetchMovieList = (options: TMovieQueryParams) => {
@@ -33,10 +35,18 @@ export const fetchMovieList = (options: TMovieQueryParams) => {
 				dispatch({
           type: 'USER_AUTHENTICATION_FAILED'
         });
-				ToastAndroid.show('Please login again', ToastAndroid.SHORT);
+				if (Platform.OS === 'ios') {
+					AlertIOS.alert('Session Expired', 'Please Login Again');
+				} else {
+					ToastAndroid.show('Please login again', ToastAndroid.SHORT);
+				}
 			}
 			if (err.code === 'REQUEST_FAILED') {
-				ToastAndroid.show('Fail to fetch movie', ToastAndroid.SHORT);
+				if (Platform.OS === 'ios') {
+					AlertIOS.alert('Request Failed');
+				} else {
+					ToastAndroid.show('Fail to fetch movie', ToastAndroid.SHORT);
+				}
 			}
 			dispatch({
 				type: 'MOVIE_FETCH_FAIL'
@@ -49,7 +59,11 @@ export const fetchMovieList = (options: TMovieQueryParams) => {
 export const toggleLike = (movie: TMovie) => {
 	return dispatch => {
 		toogleLikeApi(movie).then(function(updatedMovie) {
-			ToastAndroid.show('Movie updated successfully', ToastAndroid.SHORT);
+			if (Platform.OS === 'ios') {
+
+			} else {
+				ToastAndroid.show('Movie updated successfully', ToastAndroid.SHORT);
+			}
 			dispatch({
 				type: 'MOVIE_UPDATED',
 				movie: updatedMovie
@@ -59,7 +73,11 @@ export const toggleLike = (movie: TMovie) => {
 				dispatch({
           type: 'USER_AUTHENTICATION_FAILED'
         });
-				ToastAndroid.show('Please login again', ToastAndroid.SHORT);
+				if (Platform.OS === 'ios') {
+					AlertIOS.alert('Session Expired', 'Please Login Again');
+				} else {
+					ToastAndroid.show('Please login again', ToastAndroid.SHORT);
+				}
 			}
 		});
 	}

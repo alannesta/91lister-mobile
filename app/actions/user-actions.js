@@ -4,7 +4,9 @@
 import { authenticateUser, fetchMovie } from '../api'
 import AppStorage from '../utils/app-storage'
 import {
-  ToastAndroid
+  ToastAndroid,
+  AlertIOS,
+  Platform
 } from 'react-native'
 
 export const authenticate = (username: string, password: string) => {
@@ -17,7 +19,11 @@ export const authenticate = (username: string, password: string) => {
               type: 'USER_AUTHENTICATION_SUCCESS',
               username: username
             });
-            ToastAndroid.show('Login Success', ToastAndroid.SHORT);
+            if (Platform.OS === 'ios') {
+
+            } else {
+              ToastAndroid.show('Login Success', ToastAndroid.SHORT);
+            }
             return true;
         }).catch((err) => {
           console.log(err);
@@ -30,7 +36,11 @@ export const authenticate = (username: string, password: string) => {
       }
     }).catch((err) => {
       console.log('authenticate user action err: ', err);
-      ToastAndroid.show('Login failed', ToastAndroid.SHORT);
+      if (Platform.OS === 'ios') {
+        AlertIOS.alert('Login Failed');
+      } else {
+        ToastAndroid.show('Login failed', ToastAndroid.SHORT);
+      }
       dispatch({
         type: 'USER_AUTHENTICATION_FAILED'
       });
@@ -51,6 +61,7 @@ export const loginStatusCheck = () => {
 			dispatch({
 				type: 'USER_AUTHENTICATION_FAILED'
 			});
+      throw err;
 		})
 	}
 };

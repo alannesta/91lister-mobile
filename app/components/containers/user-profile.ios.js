@@ -100,14 +100,18 @@ class UserProfile extends Component {
 	}
 
 	_login(username, password) {
-		let {dispatch, movieList: {mSince, order, query}} = this.props;
+		let {dispatch, movieList: {mSince, order, query}, navigator} = this.props;
 		InteractionManager.runAfterInteractions(() => {
 			dispatch(authenticate(username, password)).then(() => {
 				dispatch(fetchMovieList({
 						since: mSince,
 						order: order,
 						query: query
-				}));
+				})).then(() => {
+					// navigate to list page on login success
+					navigator.replace({name: 'MovieList', index: 1})
+				});
+
 			}).catch((err) => {
 				// NO-OP?
 			});
