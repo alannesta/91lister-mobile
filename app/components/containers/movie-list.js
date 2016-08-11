@@ -19,7 +19,8 @@ import {
 	InteractionManager,
 	Modal,
 	ActivityIndicator,
-	Dimensions
+	Dimensions,
+	Platform
 } from 'react-native';
 
 import type {TMovie} from '../../types/flowtypes'
@@ -83,12 +84,18 @@ class MovieList extends Component {
 					enableEmptySections={true}
 					removeClippedSubviews={false}    // fix android device listview crash: https://github.com/facebook/react-native/issues/5934
 					refreshControl={
+						Platform.os === 'android'?
 						<RefreshControl
 							refreshing={this.state.isRefreshing}
 							onRefresh={this._onRefresh.bind(this)}
 							progressViewOffset={120}
 							colors={['#3ad564']}
 							progressBackgroundColor="#ffffff"/>
+							:
+						<RefreshControl
+							refreshing={this.state.isRefreshing}
+							onRefresh={this._onRefresh.bind(this)}
+							/>
 						}
 				/>
 				<MovieDetailModal
@@ -150,7 +157,7 @@ class MovieList extends Component {
 	_loadMoreMovies() {
 		let {dispatch, movieData: {movies, total}, mSince, order, query} = this.props;	// TODO: refactor order reducer
 		if (movies.length < total) {
-			this.setState({isRefreshing: true});
+			// this.setState({isRefreshing: true});
 			InteractionManager.runAfterInteractions(() => {
 				dispatch(actions.fetchMovieList({
 					count: movies.length + 10,
@@ -158,7 +165,7 @@ class MovieList extends Component {
 					order: order,
 					query: query
 				})).then(() => {
-					this.setState({isRefreshing: false});
+					// this.setState({isRefreshing: false});
 				});
 			});
 		}
@@ -170,7 +177,7 @@ class MovieList extends Component {
 	 */
 	_onRefresh() {
 		let {dispatch, movieData: {movies}, mSince, order, query} = this.props;
-		this.setState({isRefreshing: true});
+		// this.setState({isRefreshing: true});
 		InteractionManager.runAfterInteractions(() => {
 			dispatch(actions.fetchMovieList({
 				count: movies.length,
@@ -178,7 +185,7 @@ class MovieList extends Component {
 				order: order,
 				query: query
 			})).then(() => {
-				this.setState({isRefreshing: false});
+				// this.setState({isRefreshing: false});
 			});
 		});
 	}
@@ -193,8 +200,8 @@ const styles = StyleSheet.create({
 	},
 	container: {
 		// flex: 1,		//essential!! for the onEndReached bug
-		marginTop: 60,	// for the navbar which is 60 in height
-		height: WINDOW_HEIGHT-60
+		marginTop: 61,	// for the navbar which is 60 in height
+		height: WINDOW_HEIGHT-61
 	},
 	ListView: {
 	},
