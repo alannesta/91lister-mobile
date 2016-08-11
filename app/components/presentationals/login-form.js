@@ -9,7 +9,8 @@ import {
 	Text,
 	TouchableOpacity,
   TextInput,
-  Dimensions
+  Dimensions,
+	Platform
 } from 'react-native';
 
 class LoginForm extends Component {
@@ -56,21 +57,7 @@ class LoginForm extends Component {
 
 const WINDOW_HEIGHT = Dimensions.get('window').height;
 
-const styles = StyleSheet.create({
-  inputField: {
-    marginTop: 10,
-    width: 200,
-		height: 30,
-		backgroundColor: '#ededed'
-  },
-  loginForm: {
-		height: WINDOW_HEIGHT-60,
-		// flex: 1,
-		marginTop: 60,
-    padding:10,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
+const stylesheet = {
   welcomeScreen: {
     height: WINDOW_HEIGHT-10,
     justifyContent: 'center',
@@ -87,6 +74,42 @@ const styles = StyleSheet.create({
 		paddingLeft: 5,
 		height: 35
 	}
-});
+};
+
+const iosStyle = {
+	loginForm: {
+		height: WINDOW_HEIGHT-60,
+		marginTop: 60,
+		padding:10,
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	inputField: {
+		marginTop: 10,
+		width: 200,
+		height: 30,
+		backgroundColor: '#ededed'
+	}
+
+};
+
+const androidStyle = {
+	loginForm: {
+		flex: 1,
+		padding:10,
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	inputField: {
+		marginTop: 10,
+		width: 200,
+	}
+}
+
+Object.keys(iosStyle).forEach(function(key) {
+	stylesheet[key] = Platform.OS === 'ios'? iosStyle[key]: androidStyle[key];
+})
+
+const styles = StyleSheet.create(stylesheet);
 
 export default LoginForm;

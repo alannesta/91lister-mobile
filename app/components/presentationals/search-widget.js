@@ -8,7 +8,8 @@ import {
 	Text,
 	Image,
 	TouchableOpacity,
-	TextInput
+	TextInput,
+	Platform
 } from 'react-native';
 
 export default class SearchWidget extends Component {
@@ -46,7 +47,7 @@ export default class SearchWidget extends Component {
 	}
 }
 
-const styles = StyleSheet.create({
+const iosStyle = {
   searchWidget: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -68,7 +69,35 @@ const styles = StyleSheet.create({
 		paddingLeft: 5,
 		height: 25
 	}
-});
+}
+
+const androidStyle = {
+  searchWidget: {
+    marginTop: 20,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  searchInput: {
+    marginTop: 10,
+    width: 180
+  },
+	searchButton: {
+		justifyContent: 'center',
+		alignItems: 'center',
+		marginTop: 30,
+		borderWidth: 1.5,
+		borderColor: 'grey',
+		borderRadius: 4,
+		paddingRight: 5,
+		paddingLeft: 5,
+		height: 25
+	}
+}
+
+const stylesheet = Platform.OS === 'ios'? iosStyle: androidStyle;
+
+const styles = StyleSheet.create(stylesheet);
 
 // using React.proptypes instead of flow for simplicity (this is a runtime check)
 SearchWidget.propTypes = {

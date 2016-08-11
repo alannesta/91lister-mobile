@@ -84,7 +84,7 @@ class MovieList extends Component {
 					enableEmptySections={true}
 					removeClippedSubviews={false}    // fix android device listview crash: https://github.com/facebook/react-native/issues/5934
 					refreshControl={
-						Platform.os === 'android'?
+						Platform.OS === 'android'?
 						<RefreshControl
 							refreshing={this.state.isRefreshing}
 							onRefresh={this._onRefresh.bind(this)}
@@ -193,17 +193,10 @@ class MovieList extends Component {
 
 const WINDOW_HEIGHT = Dimensions.get('window').height;
 
-const styles = StyleSheet.create({
+const stylesheet = {
 	separator: {
 		backgroundColor: '#eeeeee',
 		height: 1
-	},
-	container: {
-		// flex: 1,		//essential!! for the onEndReached bug
-		marginTop: 61,	// for the navbar which is 60 in height
-		height: WINDOW_HEIGHT-61
-	},
-	ListView: {
 	},
 	modalBackground: {
 		flex: 1,
@@ -230,7 +223,11 @@ const styles = StyleSheet.create({
 		borderRadius: 3,
 		marginTop: 20
 	}
-});
+}
+
+stylesheet.container = Platform.OS === 'ios'? { marginTop: 61,	height: WINDOW_HEIGHT-61} : {flex: 1};
+
+const styles = StyleSheet.create(stylesheet);
 
 function mapStateToProps(state) {
 	return state.movieList;

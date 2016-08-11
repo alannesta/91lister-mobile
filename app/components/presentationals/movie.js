@@ -72,7 +72,7 @@ Movie.propTypes = {
 
 const styles = StyleSheet.create({
 	movieItem: {
-		height: Platform.os === 'android' ? 80: 100,
+		height: Platform.OS === 'ios' ? 100: 80,
 		flexDirection: 'row',
 		// justifyContent: 'space-between',
 		padding: 5,
