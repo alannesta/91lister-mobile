@@ -6,7 +6,8 @@ import {
 	Text,
 	Image,
 	TouchableOpacity,
-	Dimensions
+	Dimensions,
+	Platform
 } from 'react-native';
 
 export default class Movie extends Component {
@@ -71,7 +72,7 @@ Movie.propTypes = {
 
 const styles = StyleSheet.create({
 	movieItem: {
-		height: 80,
+		height: Platform.os === 'android' ? 80: 100,
 		flexDirection: 'row',
 		// justifyContent: 'space-between',
 		padding: 5,

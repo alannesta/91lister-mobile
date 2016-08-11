@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
 	},
 	navBar: {
 		height: 60,
-		borderBottomWidth: 1.5,
+		borderBottomWidth: 1,
 		borderColor: 'grey'
 	},
 	navBarItem: {
