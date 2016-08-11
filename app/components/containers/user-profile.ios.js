@@ -79,7 +79,7 @@ class UserProfile extends Component {
 	}
 
 	_searchMovies(userQuery) {
-		let {dispatch, movieList: {mSince, order}} = this.props;
+		let {dispatch, movieList: {mSince, order}, navigator} = this.props;
 		return dispatch(fetchMovieList({
 			query: userQuery,
 			since: mSince,
@@ -90,6 +90,12 @@ class UserProfile extends Component {
 				type: "UPDATE_QUERY",
 				query: userQuery
 			});
+			// console.log(navigator.state.routeStack);
+			if (navigator.state.routeStack.length>1) {
+				navigator.pop();
+			} else {
+				navigator.replace({name: 'MovieList', index: 1})
+			}
 		})
 	}
 

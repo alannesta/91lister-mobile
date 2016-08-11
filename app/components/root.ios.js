@@ -4,6 +4,7 @@ import {
 	Text,
 	Navigator,
 	View,
+	Image,
 	Dimensions,
 	StatusBar,
 	TouchableOpacity
@@ -116,7 +117,7 @@ class Root extends Component {
 									onPress={() => navigator.push(this.routeConfig[2])}
 									style={styles.navBarItem}
 								>
-									<Text>User Profile</Text>
+									<Image style={styles.userPorfile} source={require('../images/user-profile.png')} />
 								</TouchableOpacity>
 							);
 						default:
@@ -143,6 +144,10 @@ const styles = StyleSheet.create({
 	},
 	navBarItem: {
 		padding: 10
+	},
+	userPorfile: {
+		width: 20,
+		height: 20
 	}
 });
 
