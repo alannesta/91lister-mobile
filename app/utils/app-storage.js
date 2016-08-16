@@ -30,5 +30,9 @@ class AppStorage {
     });
   }
 
+  cacheFileUrl(movieId: number, fileUrl: string) {
+    
+  }
+
 }
 export default new AppStorage();

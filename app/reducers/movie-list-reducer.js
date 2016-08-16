@@ -64,12 +64,13 @@ const moviesReducer = (state = defaultMovieState, action) => {
 const selectedMovieReducer = (state = {selectedMovie: defaultSelectedMovieState, fileUrl: ''}, action) => {
 	switch(action.type) {
 		case 'SELECT_MOVIE':
+			// TODO: retrieve from cache
 			return ({
 				selectedMovie: action.movie,
 				fileUrl: action.movie.id === state.selectedMovie.id ? state.fileUrl: ''
 			}: TSelectedMovieData)
 		case 'UPDATE_FILEURL_SUCCESS':
-			console.log('returning movie: ', state.selectedMovie);
+			//TODO: cache the url. when to invalidate?
 			return ({
 				selectedMovie: state.selectedMovie,
 				fileUrl: action.fileUrl
