@@ -36,13 +36,14 @@ class MovieDetailModal extends Component {
         <View style={styles.modalContainer}>
           <Text>{this.props.movie.title}</Text>
           {
-            this.props.loadingIndicator ? <ActivityIndicator style={styles.loadingSpinner} size="small"/>: null
+            this.props.loadingIndicator ?
+							<ActivityIndicator style={styles.loadingSpinner} size="small"/>
+							:
+							<TouchableOpacity
+				        onPress={this._openLink}>
+								<Text style={styles.movieFileLink}>{this.props.fileUrl}</Text>
+				      </TouchableOpacity>
           }
-
-					<TouchableOpacity
-		        onPress={this._openLink}>
-						<Text style={styles.movieFileLink}>{this.props.fileUrl}</Text>
-		      </TouchableOpacity>
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={styles.modalButton}

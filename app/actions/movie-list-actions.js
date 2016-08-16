@@ -98,10 +98,11 @@ export const getMovieFileUrl = (movie: TMovie) => {
 				fileUrl
 			});
 		}).catch((err) => {
-			console.log(err);
+			console.log('get movie url error: ' + err);
+			const generalError = 'Fail to resolve the url for this movie';
 			dispatch({
 				type: 'UPDATE_FILEURL_SUCCESS',
-				fileUrl: 'Fail to resolve the url for this movie'
+				fileUrl: err && err.message? generalError + ': ' +err.message : generalError
 			});
 		});
 	}

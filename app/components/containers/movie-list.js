@@ -33,7 +33,7 @@ class MovieList extends Component {
 	_renderRow:Function;
 	_selectMovie: Function;
 	_getMovieFileUrl: Function;
-	state:{modalVisible: boolean, isRefreshing: boolean, loadingIndicator: boolean};
+	state:{modalVisible: boolean, isRefreshing: boolean, loadingIndicator: boolean, IOSloadMore: boolean};
 
 	static defaultProps:{};
 
@@ -52,7 +52,8 @@ class MovieList extends Component {
 		this.state = {
 			modalVisible: false,
 			isRefreshing: false,
-			loadingIndicator: false
+			loadingIndicator: false,
+			IOSloadMore: false
 		};
 	}
 
@@ -86,7 +87,7 @@ class MovieList extends Component {
 					refreshControl={
 						Platform.OS === 'android'?
 						<RefreshControl
-							refreshing={this.state.isRefreshing}
+							// refreshing={this.state.isRefreshing}	// not needed for IOS..
 							onRefresh={this._onRefresh.bind(this)}
 							progressViewOffset={120}
 							colors={['#3ad564']}
@@ -98,6 +99,7 @@ class MovieList extends Component {
 							/>
 						}
 				/>
+				{this.state.IOSloadMore ? <ActivityIndicator style={styles.loadmoreSpinner} size="small"/>: null}
 				<MovieDetailModal
 					modalVisible={this.state.modalVisible}
 					loadingIndicator={this.state.loadingIndicator}
@@ -158,6 +160,7 @@ class MovieList extends Component {
 		let {dispatch, movieData: {movies, total}, mSince, order, query} = this.props;	// TODO: refactor order reducer
 		if (movies.length < total) {
 			// this.setState({isRefreshing: true});
+			this.setState({IOSloadMore: true});
 			InteractionManager.runAfterInteractions(() => {
 				dispatch(actions.fetchMovieList({
 					count: movies.length + 10,
@@ -166,6 +169,7 @@ class MovieList extends Component {
 					query: query
 				})).then(() => {
 					// this.setState({isRefreshing: false});
+					this.setState({IOSloadMore: false});
 				});
 			});
 		}
@@ -211,8 +215,8 @@ const stylesheet = {
 		backgroundColor: '#fff',
 		padding: 5
 	},
-	loadingSpinner: {
-		height: 30
+	loadmoreSpinner: {
+		marginBottom: 10
 	},
 	movieFileLink: {
 
