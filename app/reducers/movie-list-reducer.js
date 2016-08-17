@@ -64,13 +64,11 @@ const moviesReducer = (state = defaultMovieState, action) => {
 const selectedMovieReducer = (state = {selectedMovie: defaultSelectedMovieState, fileUrl: ''}, action) => {
 	switch(action.type) {
 		case 'SELECT_MOVIE':
-			// TODO: retrieve from cache
 			return ({
 				selectedMovie: action.movie,
-				fileUrl: action.movie.id === state.selectedMovie.id ? state.fileUrl: ''
+				fileUrl: action.fileUrl? action.fileUrl : ''
 			}: TSelectedMovieData)
 		case 'UPDATE_FILEURL_SUCCESS':
-			//TODO: cache the url. when to invalidate?
 			return ({
 				selectedMovie: state.selectedMovie,
 				fileUrl: action.fileUrl
@@ -110,7 +108,7 @@ const queryReducer = (state='', action) => {
 	return state;
 }
 
-function findMovieByID(movies, movie) {
+function findMovieByID(movies, movie: TMovie) {
 	for (let i = 0; i < movies.length; i++) {
 		if (movies[i].id === movie.id) {
 			return i;

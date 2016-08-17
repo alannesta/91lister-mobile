@@ -31,7 +31,32 @@ class AppStorage {
   }
 
   cacheFileUrl(movieId: number, fileUrl: string) {
-    
+    var timestamp = new Date().getTime();
+    return AsyncStorage.setItem(movieId.toString(), JSON.stringify({fileUrl: fileUrl, timestamp: timestamp}))
+  }
+
+  getFileUrl(movieId: number) {
+    var timestamp = new Date().getTime();
+    return AsyncStorage.getItem(movieId.toString()).then((cached) => {
+      // cache for 1 hour
+      if (cached === null) {
+        return '';
+      } else {
+        cached = JSON.parse(cached);
+        if (timestamp - cached.timestamp > 60*60*1000) {
+          return AsyncStorage.removeItem(movieId.toString()).then(() => {
+            console.log('cache expired, removing from AppStorage');
+            return Promise.reject('Cache expired');
+          });
+        } else {
+          console.log('cache hit! retrieving fileUrl from cache');
+          return cached.fileUrl;
+        }
+      }
+
+    }).catch((err) => {
+      throw err;
+    })
   }
 
 }

@@ -134,8 +134,9 @@ class MovieList extends Component {
 	 */
 	_selectMovie(movie) {
 		let {dispatch} = this.props;
-		this.setState({modalVisible: true});
-		dispatch(actions.selectMovie(movie));
+		dispatch(actions.selectMovie(movie)).then(() => {
+			this.setState({modalVisible: true});
+		});
 	}
 
 	/**

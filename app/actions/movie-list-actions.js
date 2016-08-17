@@ -6,6 +6,7 @@ import {
 	toogleLikeApi,
 	getMovieFileUrl as getMovieFileUrlAPI
 } from '../api';
+import AppStorage from '../utils/app-storage'
 
 import type {
 	TMovie,
@@ -84,15 +85,29 @@ export const toggleLike = (movie: TMovie) => {
 };
 
 export const selectMovie = (movie: TMovie) => {
-	return {
-		type: 'SELECT_MOVIE',
-		movie: movie
-	};
+	return dispatch => {
+		return AppStorage.getFileUrl(movie.id).then((fileUrl) => {
+			dispatch({
+				type: 'SELECT_MOVIE',
+				movie: movie,
+				fileUrl: fileUrl
+			});
+		}).catch((err) => {
+			dispatch({
+				type: 'SELECT_MOVIE',
+				movie: movie
+			});
+		})
+	}
 }
 
 export const getMovieFileUrl = (movie: TMovie) => {
 	return dispatch => {
 		return getMovieFileUrlAPI(movie).then(function(fileUrl){
+			// cache it without blocking ui updates
+			AppStorage.cacheFileUrl(movie.id, fileUrl).then(() => {
+				console.log('cache file url for: ' + movie.id);
+			});
 			dispatch({
 				type: 'UPDATE_FILEURL_SUCCESS',
 				fileUrl

@@ -2,7 +2,7 @@
 * @flow
 */
 export type TMovie = {
-	id: string,
+	id: number,
 	title: string,
 	url: string,
 	viewCount: number,
