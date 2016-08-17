@@ -4,9 +4,9 @@
 import type {TMovie, TMovieQueryParams} from './types/flowtypes'
 import AppStorage from './utils/app-storage'
 
-// const BASE_URL = 'http://192.168.0.106:4302'; // device
-const BASE_URL = 'http://10.0.3.2:4302'; // simulator
-// const BASE_URL = 'http://ec2-52-90-5-61.compute-1.amazonaws.com/movie-api';	// prod
+// const BASE_URL = 'http://localhost:4302'; // device
+// const BASE_URL = 'http://10.0.3.2:4302'; // simulator
+const BASE_URL = 'http://ec2-52-90-5-61.compute-1.amazonaws.com/movie-api';	// prod
 
 export const fetchMovie = (options): Promise < Array < TMovie >> => {
 	let count = options.count ? (options.count < 10 ? 10: options.count): 10;
@@ -46,6 +46,7 @@ export const toogleLikeApi = (movie: TMovie): Promise < * > => {
 
 export const authenticateUser = (username: string, password: string): Promise < * > => {
 	let url = `${BASE_URL}/login`;
+	console.log('in:', url);
   let payload = {
     username: username,
     password: password
@@ -65,7 +66,7 @@ export const authenticateUser = (username: string, password: string): Promise < 
       // invalid credentials
       throw new Error('Authentication failed due to invalid credentials');
     }
-    throw new Error('Authentication failed due tointernal error');
+    throw new Error('Authentication failed due to internal error');
   }).then(function(response) {
     return response;
   }).catch(function(err){
@@ -78,23 +79,32 @@ export const getMovieFileUrl = (movie: TMovie): Promise<*> => {
 	return fetch(url).then(_handleResponse).then(function(data) {
 		return data.fileUrl;
 	}).catch((err) => {
-		console.log(err);
 		throw err;
 	});
 }
 
+// TODO: using server side error message if available
 function _handleResponse(response) {
 	if (response.status === 200) {
-		return response.json();	// in fact calling JSON.parse, could also be called on none empty strings
+		return response.json();	// need to make sure all server side response in proper json string format
 	} else if (response.status === 401) {
 		let error = new Error('session expired');
 		error.code = 'SESSION_EXPIRED';
 		throw error;
-	} else {
-		let error = new Error('session expired');
-		error.code = 'REQUEST_FAILED';
-		throw error;
+	} else if (response.status >= 500) {
+		// using server side error message if available
+		let error;
+		return response.text().then(function(errorMsg) {
+			if (errorMsg) {
+				error = new Error(errorMsg);
+			} else {
+				error = new Error('Internal Server Error')
+			}
+			error.code = 'REQUEST_FAILED';
+			throw error;
+		})
 	}
+	return response.json();
 }
 
 function _getDefaultHeaders() {

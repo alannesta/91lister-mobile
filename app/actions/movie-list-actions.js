@@ -43,7 +43,7 @@ export const fetchMovieList = (options: TMovieQueryParams) => {
 			}
 			if (err.code === 'REQUEST_FAILED') {
 				if (Platform.OS === 'ios') {
-					AlertIOS.alert('Request Failed');
+					AlertIOS.alert('Fail to fetch movie');
 				} else {
 					ToastAndroid.show('Fail to fetch movie', ToastAndroid.SHORT);
 				}
