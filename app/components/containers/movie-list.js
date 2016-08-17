@@ -87,7 +87,7 @@ class MovieList extends Component {
 					refreshControl={
 						Platform.OS === 'android'?
 						<RefreshControl
-							// refreshing={this.state.isRefreshing}	// not needed for IOS..
+							refreshing={this.state.isRefreshing}
 							onRefresh={this._onRefresh.bind(this)}
 							progressViewOffset={120}
 							colors={['#3ad564']}
@@ -99,7 +99,7 @@ class MovieList extends Component {
 							/>
 						}
 				/>
-				{this.state.IOSloadMore ? <ActivityIndicator style={styles.loadmoreSpinner} size="small"/>: null}
+				{Platform.OS === 'ios' && this.state.IOSloadMore ? <ActivityIndicator style={styles.loadmoreSpinner} size="small"/>: null}
 				<MovieDetailModal
 					modalVisible={this.state.modalVisible}
 					loadingIndicator={this.state.loadingIndicator}
@@ -159,7 +159,7 @@ class MovieList extends Component {
 	_loadMoreMovies() {
 		let {dispatch, movieData: {movies, total}, mSince, order, query} = this.props;	// TODO: refactor order reducer
 		if (movies.length < total) {
-			// this.setState({isRefreshing: true});
+			this._androidRefreshIndicator(true);
 			this.setState({IOSloadMore: true});
 			InteractionManager.runAfterInteractions(() => {
 				dispatch(actions.fetchMovieList({
@@ -168,7 +168,7 @@ class MovieList extends Component {
 					order: order,
 					query: query
 				})).then(() => {
-					// this.setState({isRefreshing: false});
+					this._androidRefreshIndicator(false);
 					this.setState({IOSloadMore: false});
 				});
 			});
@@ -181,7 +181,7 @@ class MovieList extends Component {
 	 */
 	_onRefresh() {
 		let {dispatch, movieData: {movies}, mSince, order, query} = this.props;
-		// this.setState({isRefreshing: true});
+		this._androidRefreshIndicator(true);
 		InteractionManager.runAfterInteractions(() => {
 			dispatch(actions.fetchMovieList({
 				count: movies.length,
@@ -189,9 +189,15 @@ class MovieList extends Component {
 				order: order,
 				query: query
 			})).then(() => {
-				// this.setState({isRefreshing: false});
+				this._androidRefreshIndicator(false);
 			});
 		});
+	}
+
+	_androidRefreshIndicator(flag: boolean) {
+		if (Platform.OS === 'android') {
+			this.setState({isRefreshing: flag});
+		}
 	}
 }
 

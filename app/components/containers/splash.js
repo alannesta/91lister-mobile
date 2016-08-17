@@ -18,6 +18,9 @@ class SplashScreen extends Component {
     dispatch(initAppStorage()).then(() => {
 			dispatch(loginStatusCheck()).then(() => {
 				this._navigateToHomepage();
+			}).catch((err) => {
+				console.log(err);
+				this._navigateToHomepage();
 			})
     }).catch((err) => {
 			// should never be catching an error here, already handled at action level
