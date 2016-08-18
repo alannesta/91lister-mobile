@@ -25,7 +25,8 @@ class Root extends Component {
 			{name: 'SplashScreen', index: 0},
 			{name: 'MovieList', index: 1},
 			{name: 'UserProfile', index: 2},
-			{name: 'DatePicker', index: 3}
+			{name: 'DatePicker', index: 3},
+			{name: 'NoConnection', index: 4}
 		];
 		this._getRouteMapper = this._getRouteMapper.bind(this);
 	}
@@ -59,6 +60,9 @@ class Root extends Component {
 		}
 		if (route.name === 'DatePicker') {
 			return <DatePicker navigator={navigator} />;
+		}
+		if (route.name === 'NoConnection') {
+			return <Text>Please Check your network connection!</Text>
 		}
 	}
 

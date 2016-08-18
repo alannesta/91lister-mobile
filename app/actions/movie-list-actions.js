@@ -24,13 +24,13 @@ export const fetchMovieList = (options: TMovieQueryParams) => {
 	return dispatch => {
 		return fetchMovie(options).then(function(result) {
 			// two dispatches here will cause two movie-list view renders, heavy?
-			dispatch({
+			return dispatch({
 				type: 'MOVIE_FETCHED',
 				movies: result.movies,
 				total: result.total
 			});
-			return true;
 		}).catch((err) => {
+			// TODO: extract general error handler
 			console.log(err);
 			if (err.code === 'SESSION_EXPIRED') {
 				dispatch({
@@ -49,10 +49,9 @@ export const fetchMovieList = (options: TMovieQueryParams) => {
 					ToastAndroid.show('Fail to fetch movie', ToastAndroid.SHORT);
 				}
 			}
-			dispatch({
+			return dispatch({
 				type: 'MOVIE_FETCH_FAIL'
 			});
-			return false;	// handle error here, no error handling in the view layer
 		});
 	}
 };
