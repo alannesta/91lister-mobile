@@ -49,6 +49,14 @@ export const fetchMovieList = (options: TMovieQueryParams) => {
 					ToastAndroid.show('Fail to fetch movie', ToastAndroid.SHORT);
 				}
 			}
+			// fetch error
+			if (err.message === 'Network request failed') {
+				if (Platform.OS === 'ios') {
+					AlertIOS.alert('Could not connect to server, please check if server is online');
+				} else {
+					ToastAndroid.show('Could not connect to server, please check if server is online', ToastAndroid.SHORT);
+				}
+			}
 			return dispatch({
 				type: 'MOVIE_FETCH_FAIL'
 			});

@@ -4,7 +4,8 @@ import {
 	View,
 	Text,
 	Image,
-	InteractionManager
+	InteractionManager,
+	AlertIOS
 } from 'react-native';
 
 import { connect } from 'react-redux'
@@ -64,10 +65,15 @@ class SplashScreen extends Component {
 		let { dispatch } = this.props;
 		if (connectionInfo !== 'none' && connectionHistory[0] === 'none') {
 			dispatch(updateNetworkStatus(connectionInfo));
-			this._navigateToPage({name: 'MovieList', index: 1});
+			this._navigateToPage({name: 'MovieList', index: 1});	// TODO: have to check if already on this page
 		}
 		if (connectionInfo === 'none') {
 			dispatch(updateNetworkStatus(connectionInfo));
+			AlertIOS.alert('No network connection');
+		}
+		if (connectionInfo === 'cell') {
+			dispatch(updateNetworkStatus(connectionInfo));
+			AlertIOS.alert('Start using mobile data');
 		}
 		connectionHistory.unshift(connectionInfo);
 	}
