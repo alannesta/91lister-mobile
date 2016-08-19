@@ -50,6 +50,11 @@ class MovieDetailModal extends Component {
               onPress={() => {this.props.enjoyMovie(this.props.movie)}}>
               <Text>Enjoy</Text>
             </TouchableOpacity>
+						<TouchableOpacity
+              style={styles.modalButton}
+              onPress={() => {this.props.shareMovie(this.props.movie)}}>
+              <Text>Share</Text>
+            </TouchableOpacity>
             <TouchableOpacity
               style={styles.modalButton}
               onPress={this.props.closeModal}>

@@ -20,7 +20,8 @@ import {
 	Modal,
 	ActivityIndicator,
 	Dimensions,
-	Platform
+	Platform,
+	ActionSheetIOS
 } from 'react-native';
 
 import type {TMovie} from '../../types/flowtypes'
@@ -33,6 +34,7 @@ class MovieList extends Component {
 	_renderRow:Function;
 	_selectMovie: Function;
 	_getMovieFileUrl: Function;
+	_shareMovie: Function;
 	state:{modalVisible: boolean, isRefreshing: boolean, loadingIndicator: boolean, IOSloadMore: boolean};
 
 	static defaultProps:{};
@@ -48,6 +50,7 @@ class MovieList extends Component {
 		this._renderRow = this._renderRow.bind(this);
 		this._selectMovie = this._selectMovie.bind(this);
 		this._getMovieFileUrl = this._getMovieFileUrl.bind(this);
+		this._shareMovie = this._shareMovie.bind(this);
 		// view state: modals, loading indicator, refreshing indicator
 		this.state = {
 			modalVisible: false,
@@ -58,6 +61,7 @@ class MovieList extends Component {
 	}
 
 	componentDidMount() {
+		console.log('movie list componenet mount');
 		let {dispatch, order, query, mSince} = this.props;	// dispatch is injected by connect() call
 		InteractionManager.runAfterInteractions(() => {
 			this.setState({isRefreshing: true});
@@ -72,6 +76,7 @@ class MovieList extends Component {
 	}
 
 	render() {
+		console.log('movie list componenet render');
 		let {movieData: {movies, total}, selectedMovieData: {selectedMovie, fileUrl}} = this.props;
 		return (
 			<View style={styles.container}>
@@ -105,6 +110,7 @@ class MovieList extends Component {
 					loadingIndicator={this.state.loadingIndicator}
 					closeModal={() => {	this.setState({ modalVisible: false, loadingIndicator: false})}}
 					enjoyMovie={this._getMovieFileUrl}
+					shareMovie={this._shareMovie}
 					movie={selectedMovie}
 					fileUrl={fileUrl}
 				 />
@@ -150,6 +156,25 @@ class MovieList extends Component {
 			dispatch(actions.getMovieFileUrl(movie)).then(() => {
 				this.setState({loadingIndicator: false});
 			});
+		});
+	}
+
+	_shareMovie(movie) {
+		ActionSheetIOS.showShareActionSheetWithOptions({
+			url: movie.url,
+			message: 'comments',
+			subject: 'comments',
+			excludedActivityTypes: [
+				'com.apple.UIKit.activity.PostToTwitter'
+			]
+		},
+		(error) => console.log(error),
+		(success, method) => {
+			if (success) {
+				console.log(`Shared via ${method}`);
+			} else {
+				console.log('cancel share');
+			}
 		});
 	}
 
