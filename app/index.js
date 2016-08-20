@@ -10,7 +10,7 @@ import appReducer from './reducers/app-reducer';
 import reducer from './reducers/movie-list-reducer';
 
 const logger = createLogger();
-const createStoreWithMiddleware = applyMiddleware(thunkMiddleware, logger)(createStore);
+const createStoreWithMiddleware = applyMiddleware(thunkMiddleware)(createStore);
 
 let store = createStoreWithMiddleware(appReducer);
 //let store = createStoreWithMiddleware(reducer);

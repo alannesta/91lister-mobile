@@ -17,14 +17,14 @@ export const fetchMovie = (options): Promise < Array < TMovie >> => {
 	// console.log('after encode: ' + encodeURIComponent(query));
 	let url = `${BASE_URL}/movies?count=${count}&since=${timestamp}&order=${order}&query=${encodeURIComponent(query)}`;
 
-	console.log('query url: ' + url);
-
+	// console.log('query url: ' + url);
 	return fetch(url, {
     headers: _getDefaultHeaders()
   }).then(_handleResponse)
 	.then(function(movieData) {
 		return movieData;
 	}).catch(function(err) {
+		// TypeError: Network request failed would be caught here, will be handled in actions
 		console.log(err);
     throw(err);
 	});

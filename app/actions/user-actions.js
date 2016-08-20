@@ -58,6 +58,7 @@ export const loginStatusCheck = () => {
 				username: 'alannesta'		// TODO: need a dedicated api which returns the username lol
 			});
 		}).catch((err) => {
+      // TODO: could be other err(network .etc)
 			dispatch({
 				type: 'USER_AUTHENTICATION_FAILED'
 			});
