@@ -5,7 +5,8 @@ import {
 	Text,
   InteractionManager,
   Dimensions,
-	DatePickerIOS
+	DatePickerIOS,
+	Switch
 } from 'react-native';
 
 import { connect } from 'react-redux'
@@ -16,9 +17,10 @@ class DatePicker extends Component {
   constructor(props) {
     super(props);
     this._onDateChange = this._onDateChange.bind(this);
-    let {mSince} = this.props;
+    let {mSince, likedFilter} = this.props;
     this.state = {
-      datePickerDate: mSince === 0? new Date() : new Date(mSince)
+      datePickerDate: mSince === 0? new Date() : new Date(mSince),
+			likedSwitch: false
     }
   }
 
@@ -27,7 +29,6 @@ class DatePicker extends Component {
   }
 
   componentWillUnmount() {
-
     let {dispatch, order, query, movieData: {movies}} = this.props;
     let movieQuery = {
       count: movies.length,
@@ -35,22 +36,30 @@ class DatePicker extends Component {
       query: query
     }
     dispatch(changeDate(this.state.datePickerDate, movieQuery));
-
-
   }
 
   render() {
     let {dispatch, mSince, order, query, movieData: {movies}} = this.props;
 
     return (
-      <View style={styles.datePickerContainer}>
-        <DatePickerIOS
-            date={this.state.datePickerDate}
-            mode="date"
-            // timeZoneOffsetInMinutes={this.state.timeZoneOffsetInHours * 60}
-            onDateChange={this._onDateChange}
-          />
-      </View>
+			<View>
+				<View style={styles.datePickerContainer}>
+					<DatePickerIOS
+							date={this.state.datePickerDate}
+							mode="date"
+							// timeZoneOffsetInMinutes={this.state.timeZoneOffsetInHours * 60}
+							onDateChange={this._onDateChange}
+						/>
+				</View>
+				<View style={styles.switchContainer}>
+					<View style={styles.optionRow}>
+						<Text style={styles.optionHint}>Only show liked movies?</Text>
+						<Switch
+							onValueChange={(value) => this.setState({likedSwitch: value})}
+							value={this.state.likedSwitch} />
+					</View>
+				</View>
+			</View>
     )
   }
 
@@ -65,10 +74,19 @@ const WINDOW_HEIGHT = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
   datePickerContainer: {
-		height: WINDOW_HEIGHT-60,
-		// flex: 1,
 		marginTop: 60
   },
+	switchContainer: {
+		marginTop: 20,
+		padding: 15,
+	},
+	optionHint: {
+		fontSize: 18
+	},
+	optionRow: {
+		flexDirection: 'row',
+		justifyContent: 'space-between'
+	}
 })
 
 function mapStateToProps(state) {
