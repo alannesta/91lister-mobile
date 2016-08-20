@@ -10,7 +10,8 @@ import {
 	Modal,
 	ActivityIndicator,
 	Linking,
-	Platform
+	Platform,
+	Dimensions
 } from 'react-native';
 
 class MovieDetailModal extends Component {
@@ -34,33 +35,42 @@ class MovieDetailModal extends Component {
        >
        <View style={styles.modalBackground}>
         <View style={styles.modalContainer}>
-          <Text>{this.props.movie.title}</Text>
-          {
-            this.props.loadingIndicator ?
-							<ActivityIndicator style={styles.loadingSpinner} size="small"/>
+					<View style= {styles.closeButtonContainer}>
+					{	/* Disable the close button when resolving file url */
+						this.props.loadingIndicator ?
+							null
 							:
 							<TouchableOpacity
-				        onPress={this._openLink}>
-								<Text style={styles.movieFileLink}>{this.props.fileUrl}</Text>
-				      </TouchableOpacity>
-          }
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={styles.modalButton}
-              onPress={() => {this.props.enjoyMovie(this.props.movie)}}>
-              <Text>Enjoy</Text>
-            </TouchableOpacity>
-						<TouchableOpacity
-              style={styles.modalButton}
-              onPress={() => {this.props.shareMovie(this.props.movie)}}>
-              <Text>Share</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.modalButton}
-              onPress={this.props.closeModal}>
-              <Text>Close</Text>
-            </TouchableOpacity>
-          </View>
+								style={styles.closeButton}
+								onPress={this.props.closeModal}>
+								<Text>x</Text>
+							</TouchableOpacity>
+					}
+					</View>
+					<View style={styles.modalContentContainer}>
+						<Text>{this.props.movie.title}</Text>
+						{
+							this.props.loadingIndicator ?
+								<ActivityIndicator style={styles.loadingSpinner} size="small"/>
+								:
+								<TouchableOpacity
+									onPress={this._openLink}>
+									<Text style={styles.movieFileLink}>{this.props.fileUrl}</Text>
+								</TouchableOpacity>
+						}
+						<View style={styles.buttonContainer}>
+							<TouchableOpacity
+								style={styles.actionButton}
+								onPress={() => {this.props.enjoyMovie(this.props.movie)}}>
+								<Text>Enjoy</Text>
+							</TouchableOpacity>
+							<TouchableOpacity
+								style={styles.actionButton}
+								onPress={() => {this.props.shareMovie(this.props.movie)}}>
+								<Text>Share</Text>
+							</TouchableOpacity>
+						</View>
+					</View>
         </View>
        </View>
      </Modal>
@@ -90,7 +100,19 @@ const styles = StyleSheet.create({
 		width: 300,
 		borderRadius: 10,
 		backgroundColor: '#fff',
-		padding: 5
+		padding: 5,
+		alignItems: 'center'
+	},
+	closeButtonContainer: {
+		width: 280,		// modal window width
+		flexDirection: 'row',
+		justifyContent: 'flex-end',
+		height: 25,
+		alignItems: 'flex-start'
+	},
+	modalContentContainer: {
+		height: 215,
+		justifyContent: 'space-around'
 	},
 	loadingSpinner: {
     marginTop: 10,
@@ -101,11 +123,13 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center'
 	},
-	modalButton: {
+	actionButton: {
 		width: 70,
 		padding: 5,
 		borderRadius: 3,
 		marginTop: 20
+	},
+	closeButton: {
 	}
 });
 
