@@ -27,4 +27,18 @@ const RN = React;
 // RN.TouchableHighlight = createComponent("TouchableHighlight");
 // RN.ScrollView = createComponent("ScrollView");
 
+// mock native components...
+export const AsyncStorage = {
+  init: function() {
+    return Promise.resolve('');
+  },
+  getItem: function() {
+    return Promise.resolve('');
+  },
+  setItem: function(key, item) {
+    this[key] = item;
+    return Promise.resolve('');
+  }
+}
+
 export default RN;
