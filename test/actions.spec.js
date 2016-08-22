@@ -1,5 +1,4 @@
 import * as AppActions from '../app/actions/app-actions'
-var expect = require('chai').expect;
 
 describe('app-actions test', () => {
   it('should update network status', () => {

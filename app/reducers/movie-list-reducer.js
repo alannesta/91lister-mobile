@@ -6,8 +6,7 @@ import {
 } from 'redux';
 import type {
 	TMovie,
-	TMovieState,
-	TMovieListState
+	TMovieState
 } from '../types/flowtypes'
 
 // sub state type declaration
@@ -27,7 +26,7 @@ const defaultMovieState: TMovieData = {
 };
 
 const defaultSelectedMovieState: TMovie = {
-	id: '',
+	id: 0,
 	title: '',
 	url: '',
 	viewCount: 0,
@@ -78,14 +77,6 @@ const selectedMovieReducer = (state = {selectedMovie: defaultSelectedMovieState,
 	}
 }
 
-const tabReducer = (state = 'all', action) => {
-	if (action.type === 'SWITCH_TAB') {
-		return action.tab;
-	} else {
-		return state;
-	}
-};
-
 // default time set to start of unix time
 const movieSinceReducer = (state = 0, action) => {
 	if (action.type === "MOVIE_TIMESINCE_CHANGED") {
@@ -121,7 +112,6 @@ function findMovieByID(movies, movie: TMovie) {
 const movieListReducer = combineReducers({
 	movieData: moviesReducer,
 	selectedMovieData: selectedMovieReducer,
-	tab: tabReducer,
 	query: queryReducer,
 	mSince: movieSinceReducer,
 	order: orderReducer
