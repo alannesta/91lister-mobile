@@ -7,6 +7,6 @@ describe('app-actions test', () => {
       type: 'CONNECTION_STATUS_CHANGED',
       connectionType: 'wifi'
     }
-    expect(AppActions.updateNetworkStatus('wifi')).to.equal(expectedAction);
+    expect(AppActions.updateNetworkStatus('wifi')).to.deep.equal(expectedAction);
   })
 })
