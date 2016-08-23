@@ -7,7 +7,7 @@ var stub;
 
 const store = configureMockStore([thunk])({movies: []});
 
-describe.only('movie-list-actions', () => {
+describe('movie-list-actions', () => {
 
   afterEach(function() {
     stub.restore();

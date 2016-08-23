@@ -4,17 +4,16 @@
 import type {TMovie, TMovieQueryParams} from './types/flowtypes'
 import AppStorage from './utils/app-storage'
 
-// const BASE_URL = 'http://localhost:4302'; // device
-// const BASE_URL = 'http://10.0.3.2:4302'; // simulator
-const BASE_URL = 'http://ec2-52-90-5-61.compute-1.amazonaws.com/movie-api';	// prod
+export const BASE_URL = 'http://localhost:4302'; // device
+// export const BASE_URL = 'http://10.0.3.2:4302'; // simulator
+// exprot const BASE_URL = 'http://ec2-52-90-5-61.compute-1.amazonaws.com/movie-api';	// prod
 
 export const fetchMovie = (options): Promise < Array < TMovie >> => {
-	let count = options.count ? (options.count < 10 ? 10: options.count): 10;
-	let timestamp = options.since? options.since/1000: 0;	// convert millisec to seconds for mysql to consume
-	let query = options.query? options.query: "";
-	let order = options.order? options.order: "trend";
+	let count = options && options.count ? (options.count < 10 ? 10: options.count): 10;
+	let timestamp = options && options.since ? options.since/1000: 0;	// convert millisec to seconds for mysql to consume
+	let query = options && options.query ? options.query: "";
+	let order = options && options.order? options.order: "trend";
 
-	// console.log('after encode: ' + encodeURIComponent(query));
 	let url = `${BASE_URL}/movies?count=${count}&since=${timestamp}&order=${order}&query=${encodeURIComponent(query)}`;
 
 	// console.log('query url: ' + url);
@@ -46,7 +45,6 @@ export const toogleLikeApi = (movie: TMovie): Promise < * > => {
 
 export const authenticateUser = (username: string, password: string): Promise < * > => {
 	let url = `${BASE_URL}/login`;
-	console.log('in:', url);
   let payload = {
     username: username,
     password: password
