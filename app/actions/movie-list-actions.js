@@ -31,17 +31,19 @@ export const fetchMovieList = (options: TMovieQueryParams) => {
 			});
 		}).catch((err) => {
 			// TODO: extract general error handler
-			console.log(err);
+
+			// User session expired, for now, no redirection to login page will happen
 			if (err.code === 'SESSION_EXPIRED') {
-				dispatch({
-          type: 'USER_AUTHENTICATION_FAILED'
-        });
 				if (Platform.OS === 'ios') {
 					AlertIOS.alert('Session Expired', 'Please Login Again');
 				} else {
 					ToastAndroid.show('Please login again', ToastAndroid.SHORT);
 				}
+				return dispatch({
+          type: 'USER_AUTHENTICATION_FAILED'
+        });
 			}
+			// could be 5xx server error
 			if (err.code === 'REQUEST_FAILED') {
 				if (Platform.OS === 'ios') {
 					AlertIOS.alert('Fail to fetch movie');
@@ -49,7 +51,7 @@ export const fetchMovieList = (options: TMovieQueryParams) => {
 					ToastAndroid.show('Fail to fetch movie', ToastAndroid.SHORT);
 				}
 			}
-			// fetch error
+			// fetch error, could
 			if (err.message === 'Network request failed') {
 				if (Platform.OS === 'ios') {
 					AlertIOS.alert('Could not connect to server, please check if server is online');

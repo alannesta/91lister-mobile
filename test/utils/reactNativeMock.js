@@ -41,4 +41,12 @@ export const AsyncStorage = {
   }
 }
 
+export const Platform = {
+  OS: 'ios'
+}
+
+export const AlertIOS = {
+  alert: function() {}
+}
+
 export default RN;

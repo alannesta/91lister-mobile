@@ -1,20 +1,9 @@
 import * as API from '../app/api'
 
-describe.only('api', () => {
+describe('api', () => {
   it('fetchmovie api should return the correct collection of movies', () => {
 
-    var expectedMovies = [{
-    	id: 1,
-    	name: "good movie0"
-    },
-    {
-    	id: 2,
-    	name: "good movie1"
-    },
-    {
-    	id: 3,
-    	name: "good movie2"
-    }];
+    var expectedMovies = MOCK_MOVIES
 
     var options = {
       count: 100,
@@ -31,7 +20,7 @@ describe.only('api', () => {
       order: 'trend',
       since: 123344/1000,
     })
-    .reply(200, expectedMovies);
+    .reply(200, MOCK_MOVIES);
 
     API.fetchMovie(options).then((movies) => {
       expect(movies).to.deep.equal(expectedMovies);
