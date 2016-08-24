@@ -62,7 +62,7 @@ class MovieList extends Component {
 	}
 
 	componentDidMount() {
-		console.log('movie list componenet mount');
+		// console.log('movie list componenet mount');
 		let {dispatch, movieQuery} = this.props;	// dispatch is injected by connect() call
 		InteractionManager.runAfterInteractions(() => {
 			this.setState({isRefreshing: true});
@@ -80,14 +80,14 @@ class MovieList extends Component {
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
-		console.log('movie list shoud update: ');
+		// console.log('movie list shoud update: ');
 		// console.log('next state: ', nextState);
-		console.log('next props: ', nextProps);
+		// console.log('next props: ', nextProps);
 		return true;
 	}
 
 	render() {
-		console.log('movie list componenet render');
+		// console.log('movie list componenet render');
 		let {movieData: {movies, total}, selectedMovieData: {selectedMovie, fileUrl}} = this.props;
 		return (
 			<View style={styles.container}>

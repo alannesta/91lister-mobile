@@ -33,18 +33,16 @@ export const updateMovieQuery = (movieQuery, refetchFlag: boolean) => {
 	return dispatch => {
 		// will refetch the movie list, then dispatch query update actions
 		if (refetchFlag) {
-			return dispatch(fetchMovieList(movieQuery)).then(function() {
-				return dispatch({
-					type: 'UPDATE_MOIVE_QUERY',
-					movieQuery: movieQuery
-				});
-			}).catch((err) => {
-				// NOOP
+			dispatch({
+				type: 'UPDATE_MOVIE_QUERY',
+				movieQuery: movieQuery
+			});
+			return dispatch(fetchMovieList(movieQuery)).catch((err) => {
 				console.log('err occured in update fetchMovieList: ', err)
-			})
+			});
 		} else {
 			return dispatch({
-				type: 'UPDATE_MOIVE_QUERY',
+				type: 'UPDATE_MOVIE_QUERY',
 				movieQuery: movieQuery
 			});
 		}

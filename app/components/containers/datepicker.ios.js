@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 
 import { connect } from 'react-redux'
-import {changeDate, changeLikedFilter, updateMovieQuery} from '../../actions/toolbar-actions'
+import {updateMovieQuery} from '../../actions/toolbar-actions'
 
 class DatePicker extends Component {
 
@@ -24,10 +24,12 @@ class DatePicker extends Component {
   constructor(props) {
     super(props);
     this._onDateChange = this._onDateChange.bind(this);
+		this._toggleLikedFilter = this._toggleLikedFilter.bind(this);
+
     let {mSince, liked} = this.props;
     this.state = {
       datePickerDate: mSince === 0? new Date() : new Date(mSince),
-			likedSwitch: false
+			likedSwitch: liked
     }
   }
 

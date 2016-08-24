@@ -10,11 +10,12 @@ export const BASE_URL = 'http://localhost:4302'; // device
 
 export const fetchMovie = (options): Promise < Array < TMovie >> => {
 	let count = options && options.count ? (options.count < 10 ? 10: options.count): 10;
-	let timestamp = options && options.since ? options.since/1000: 0;	// convert millisec to seconds for mysql to consume
+	let timestamp = options && options.mSince ? options.mSince/1000: 0;	// convert millisec to seconds for mysql to consume
 	let query = options && options.query ? options.query: "";
 	let order = options && options.order? options.order: "trend";
+	let liked = options && options.liked? options.liked: false;
 
-	let url = `${BASE_URL}/movies?count=${count}&since=${timestamp}&order=${order}&query=${encodeURIComponent(query)}`;
+	let url = `${BASE_URL}/movies?count=${count}&since=${timestamp}&order=${order}&query=${encodeURIComponent(query)}&liked=${liked.toString()}`;
 
 	// console.log('query url: ' + url);
 	return fetch(url, {
