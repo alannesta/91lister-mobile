@@ -31,6 +31,7 @@ export const fetchMovieList = (options:TMovieQueryState) => {
 			});
 		}).catch((err) => {
 			// TODO: extract general error handler
+			// TODO: "count" state will be out of sync if error occurs
 
 			// User session expired, for now, no redirection to login page will happen
 			if (err.code === 'SESSION_EXPIRED') {

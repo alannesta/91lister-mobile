@@ -83,8 +83,10 @@ class UserProfile extends Component {
 
 	_searchMovies(userQuery) {
 		let {dispatch, movieList: {movieQuery}, navigator} = this.props;
+		// reset display count to 10 on new searches
 		let newQuery = Object.assign({}, movieQuery, {
-			query: userQuery
+			query: userQuery,
+			count: 10
 		})
 		dispatch(updateMovieQuery(newQuery, true)).then(() => {
 			console.log(navigator.state.routeStack);
