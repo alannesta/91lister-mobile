@@ -92,6 +92,13 @@ const orderReducer = (state = 'trend', action) => {
 	return state;
 }
 
+const likedReducer = (state = false, action) => {
+	if (action.type === "CHANGE_LIKED_FILTER") {
+		return action.liked;
+	}
+	return state;
+}
+
 const queryReducer = (state='', action) => {
 	if (action.type === "UPDATE_QUERY") {
 		return action.query;
@@ -112,9 +119,12 @@ function findMovieByID(movies, movie: TMovie) {
 const movieListReducer = combineReducers({
 	movieData: moviesReducer,
 	selectedMovieData: selectedMovieReducer,
-	query: queryReducer,
-	mSince: movieSinceReducer,
-	order: orderReducer
+	movieQuery: {
+		query: queryReducer,
+		mSince: movieSinceReducer,
+		order: orderReducer,
+		liked: likedReducer
+	}
 });
 
 export default movieListReducer

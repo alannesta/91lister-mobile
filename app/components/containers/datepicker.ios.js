@@ -1,3 +1,6 @@
+/*
+	@flow weak
+*/
 import React, {Component} from 'react';
 import {
 	StyleSheet,
@@ -10,9 +13,13 @@ import {
 } from 'react-native';
 
 import { connect } from 'react-redux'
-import {changeDate} from '../../actions/toolbar-actions'
+import {changeDate, changeLikedFilter, updateMovieQuery} from '../../actions/toolbar-actions'
 
 class DatePicker extends Component {
+
+	state: {datePickerDate: Date, likedSwitch: boolean};
+	_onDateChange: Function;
+	_toggleLikedFilter: Function;
 
   constructor(props) {
     super(props);
@@ -29,13 +36,15 @@ class DatePicker extends Component {
   }
 
   componentWillUnmount() {
-    let {dispatch, order, query, movieData: {movies}} = this.props;
+    let {dispatch, movieQuery: {order, query, liked, count}, movieData: {movies}} = this.props;
     let movieQuery = {
-      count: movies.length,
+      count: count,
       order: order,
-      query: query
+      query: query,
+			liked: liked
     }
-    dispatch(changeDate(this.state.datePickerDate, movieQuery));
+    // dispatch(changeDate(this.state.datePickerDate, movieQuery));
+		dispatch(updateMovieQuery("mSince", this.state.datePickerDate));
   }
 
   render() {
@@ -55,13 +64,21 @@ class DatePicker extends Component {
 					<View style={styles.optionRow}>
 						<Text style={styles.optionHint}>Only show liked movies?</Text>
 						<Switch
-							onValueChange={(value) => this.setState({likedSwitch: value})}
+							onValueChange={this._toggleLikedFilter}
 							value={this.state.likedSwitch} />
 					</View>
 				</View>
 			</View>
     )
   }
+
+	_toggleLikedFilter(flag: boolean) {
+		let {dispatch} = this.props;
+		this.setState({
+			likedSwitch: flag
+		});
+		dispatch(changeLikedFilter(flag));
+	}
 
   _onDateChange(date) {
     this.setState({
