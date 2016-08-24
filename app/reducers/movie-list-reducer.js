@@ -6,7 +6,8 @@ import {
 } from 'redux';
 import type {
 	TMovie,
-	TMovieState
+	TMovieState,
+	TMovieQueryState
 } from '../types/flowtypes'
 
 // sub state type declaration
@@ -35,6 +36,14 @@ const defaultSelectedMovieState: TMovie = {
 	thumbnail: '',
 	favourite: 0
 }
+
+const defaultMovieQueryState: TMovieQueryState = {
+	count: 10,
+	mSince: 0,
+	query: "",
+	liked: false,
+	order: "trend"
+};
 
 const moviesReducer = (state = defaultMovieState, action) => {
 	switch (action.type) {
@@ -77,38 +86,9 @@ const selectedMovieReducer = (state = {selectedMovie: defaultSelectedMovieState,
 	}
 }
 
-// default time set to start of unix time
-const movieSinceReducer = (state = 0, action) => {
-	if (action.type === "MOVIE_TIMESINCE_CHANGED") {
-		return action.date;
-	}
-	return state;
-}
-
-const orderReducer = (state = 'trend', action) => {
-	if (action.type === "CHANGE_MOVIE_ORDER") {
-		return action.order
-	}
-	return state;
-}
-
-const likedReducer = (state = false, action) => {
-	if (action.type === "CHANGE_LIKED_FILTER") {
-		return action.liked;
-	}
-	return state;
-}
-
-const countReducer = (state = 10, action) => {
-	if (action.type === "UPDATE_MOVIE_COUNT") {
-		return action.count;
-	}
-	return state;
-}
-
-const queryReducer = (state='', action) => {
-	if (action.type === "UPDATE_QUERY") {
-		return action.query;
+const movieQueryReducer = (state = defaultMovieQueryState, action) => {
+	if (action.type === "UPDATE_MOVIE_QUERY") {
+		return Object.assign({}, state, action.movieQuery);
 	}
 	return state;
 }
@@ -126,13 +106,7 @@ function findMovieByID(movies, movie: TMovie) {
 const movieListReducer = combineReducers({
 	movieData: moviesReducer,
 	selectedMovieData: selectedMovieReducer,
-	movieQuery: {
-		query: queryReducer,
-		mSince: movieSinceReducer,
-		order: orderReducer,
-		liked: likedReducer,
-		count: countReducer
-	}
+	movieQuery: movieQueryReducer
 });
 
 export default movieListReducer

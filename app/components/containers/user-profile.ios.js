@@ -17,10 +17,14 @@ import SearchWidget from '../presentationals/search-widget'
 
 import { updateNetworkStatus } from '../../actions/app-actions'
 import {fetchMovieList} from '../../actions/movie-list-actions'
+import {updateMovieQuery} from '../../actions/toolbar-actions'
+
 import { authenticate } from '../../actions/user-actions';
 
-
 class UserProfile extends Component {
+
+	_login: Function;
+	_searchMovies: Function;
 
 	constructor(props) {
 		super(props);
@@ -75,45 +79,50 @@ class UserProfile extends Component {
 				</View>
 			)
 		}
-
 	}
 
 	_searchMovies(userQuery) {
-		let {dispatch, movieList: {mSince, order}, navigator} = this.props;
-		return dispatch(fetchMovieList({
-			query: userQuery,
-			since: mSince,
-			order: order
-		})).then(() => {
-			// update the query in redux store
-			dispatch({
-				type: "UPDATE_QUERY",
-				query: userQuery
-			});
-			// console.log(navigator.state.routeStack);
+		let {dispatch, movieList: {movieQuery}, navigator} = this.props;
+		let newQuery = Object.assign({}, movieQuery, {
+			query: userQuery
+		})
+		dispatch(updateMovieQuery(newQuery, true)).then(() => {
+			console.log(navigator.state.routeStack);
 			if (navigator.state.routeStack.length>1) {
 				navigator.pop();
 			} else {
 				navigator.replace({name: 'MovieList', index: 1})
 			}
-		})
+		});
+		// return dispatch(fetchMovieList({
+		// 	query: userQuery,
+		// 	since: mSince,
+		// 	order: order
+		// })).then(() => {
+		// 	// update the query in redux store
+		// 	dispatch({
+		// 		type: "UPDATE_QUERY",
+		// 		query: userQuery
+		// 	});
+		// 	// console.log(navigator.state.routeStack);
+		// 	if (navigator.state.routeStack.length>1) {
+		// 		navigator.pop();
+		// 	} else {
+		// 		navigator.replace({name: 'MovieList', index: 1})
+		// 	}
+		// })
 	}
 
 	_login(username, password) {
-		let {dispatch, movieList: {mSince, order, query}, navigator} = this.props;
+		let {dispatch, movieList: {movieQuery}, navigator} = this.props;
 		InteractionManager.runAfterInteractions(() => {
 			dispatch(authenticate(username, password)).then(() => {
-				dispatch(fetchMovieList({
-						since: mSince,
-						order: order,
-						query: query
-				})).then(() => {
+				dispatch(fetchMovieList(movieQuery)).then(() => {
 					// navigate to list page on login success
 					navigator.replace({name: 'MovieList', index: 1})
 				});
-
 			}).catch((err) => {
-				// NO-OP?
+				// err handled at fetchMovieList action level
 			});
 		});
 	}

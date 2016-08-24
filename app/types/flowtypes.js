@@ -17,10 +17,10 @@ export type TMovieState ={
 	total: number
 }
 
-export type TMovieQueryParams = {
-	count?: number,
-	order?: string,
-	query?: string,
-	since?: number,
-	liked?: boolean
+export type TMovieQueryState = {
+	count: number,
+	order: string,
+	query: string,
+	mSince: number,
+	liked: boolean
 }

@@ -38,14 +38,14 @@ class DatePicker extends Component {
   componentWillUnmount() {
 		let {dispatch, mSince, count, liked, query, order} = this.props;
     // dispatch(changeDate(this.state.datePickerDate, movieQuery));
-		let currentQuery = {
+		let newQuery = {
 			liked,
-			count,
 			query,
 			order,
+			count: 10,	// reset count to 10 every time mSince is changed
 			mSince: this.state.datePickerDate.getTime()	// convert to number?
 		}
-		dispatch(updateMovieQuery(currentQuery, 'mSince', true));
+		dispatch(updateMovieQuery(newQuery, true));
   }
 
   render() {
@@ -78,14 +78,14 @@ class DatePicker extends Component {
 		this.setState({
 			likedSwitch: flag
 		});
-		let currentQuery = {
+		let newQuery = {
 			liked: flag,
 			count,
 			query,
 			order,
 			mSince
 		}
-		dispatch(updateMovieQuery(currentQuery, 'liked', false));
+		dispatch(updateMovieQuery(newQuery, false));
 	}
 
   _onDateChange(date) {

@@ -1,7 +1,7 @@
 /*
  * @flow weak
  */
-import type {TMovie, TMovieQueryParams} from './types/flowtypes'
+import type {TMovie, TMovieQueryState} from './types/flowtypes'
 import AppStorage from './utils/app-storage'
 
 export const BASE_URL = 'http://localhost:4302'; // device

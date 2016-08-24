@@ -79,6 +79,13 @@ class MovieList extends Component {
 		});
 	}
 
+	shouldComponentUpdate(nextProps, nextState) {
+		console.log('movie list shoud update: ');
+		// console.log('next state: ', nextState);
+		console.log('next props: ', nextProps);
+		return true;
+	}
+
 	render() {
 		console.log('movie list componenet render');
 		let {movieData: {movies, total}, selectedMovieData: {selectedMovie, fileUrl}} = this.props;
@@ -197,7 +204,7 @@ class MovieList extends Component {
 				// 	this._androidRefreshIndicator(false);
 				// 	this.setState({IOSloadMore: false});
 				// });
-				dispatch(updateMovieQuery(newQuery, 'count', true)).then(() => {
+				dispatch(updateMovieQuery(newQuery, true)).then(() => {
 					this._androidRefreshIndicator(false);
 					this.setState({IOSloadMore: false});
 				})

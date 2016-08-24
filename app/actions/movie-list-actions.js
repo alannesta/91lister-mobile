@@ -11,7 +11,7 @@ import AppStorage from '../utils/app-storage'
 import type {
 	TMovie,
 	TMovieState,
-	TMovieQueryParams
+	TMovieQueryState
 } from '../types/flowtypes'
 
 import {
@@ -20,7 +20,7 @@ import {
 	AlertIOS
 } from 'react-native'
 
-export const fetchMovieList = (options: TMovieQueryParams) => {
+export const fetchMovieList = (options:TMovieQueryState) => {
 	return dispatch => {
 		return fetchMovie(options).then(function(result) {
 			// two dispatches here will cause two movie-list view renders, heavy?
