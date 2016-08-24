@@ -5,7 +5,14 @@ var API = require('../app/api');
 var sinon = require('sinon');
 var stub;
 
-const store = configureMockStore([thunk])({movies: []});
+const store = configureMockStore([thunk])({});
+const defaultMovieQuery = {
+	count: 10,
+	mSince: 0,
+	query: "",
+	likedFilter: false,
+	order: "trend"
+};
 
 describe('movie-list-actions', () => {
 
@@ -19,8 +26,9 @@ describe('movie-list-actions', () => {
       total: 3
     }
     stub = sinon.stub(API, 'fetchMovie');
-    stub.returns(Promise.resolve(expectedResult));
-    store.dispatch(MovieListActions.fetchMovieList()).then(function(actionDispatched) {
+    stub.withArgs(defaultMovieQuery).returns(Promise.resolve(expectedResult));
+
+    store.dispatch(MovieListActions.fetchMovieList(defaultMovieQuery)).then(function(actionDispatched) {
       expect(actionDispatched).to.deep.equal({
         type: "MOVIE_FETCHED",
         movies: MOCK_MOVIES,
@@ -33,8 +41,9 @@ describe('movie-list-actions', () => {
     stub = sinon.stub(API, 'fetchMovie');
     var sessionExpireError = new Error('session expired');
     sessionExpireError.code = 'SESSION_EXPIRED';
-    stub.returns(Promise.reject(sessionExpireError));
-    store.dispatch(MovieListActions.fetchMovieList()).then(function(actionDispatched) {
+    stub.withArgs(defaultMovieQuery).returns(Promise.reject(sessionExpireError));
+
+    store.dispatch(MovieListActions.fetchMovieList(defaultMovieQuery)).then(function(actionDispatched) {
       expect(actionDispatched).to.deep.equal({
         type: "USER_AUTHENTICATION_FAILED"
       })

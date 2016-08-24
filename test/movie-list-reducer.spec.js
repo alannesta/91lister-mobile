@@ -18,9 +18,13 @@ const INITIAL_STATE = {
     },
     fileUrl: ''
   },
-  query: '',
-  mSince: 0,
-  order: 'trend'
+  movieQuery: {
+    query: '',
+    mSince: 0,
+    order: 'trend',
+    count: 10,
+    likedFilter: false
+  }
 }
 
 const mockedMovies = [...MOCK_MOVIES];
@@ -69,6 +73,29 @@ describe('movie-list-reducer', () => {
       movieData: {
         movies: mockedMovies,
         total: 3
+      }
+    }));
+  });
+
+  it('should update movieQuery state correctly', () => {
+    const updatedState = reducer(INITIAL_STATE, {
+      type: 'UPDATE_MOVIE_QUERY',
+      movieQuery: {
+        query: '3some',
+        mSince: 0,
+        order: 'trend',
+        count: 20,
+        likedFilter: true
+      }
+    });
+
+    expect(updatedState).to.deep.equal(Object.assign({}, INITIAL_STATE, {
+      movieQuery: {
+        query: '3some',
+        mSince: 0,
+        order: 'trend',
+        count: 20,
+        likedFilter: true
       }
     }));
   });

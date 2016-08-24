@@ -37,9 +37,7 @@ export const updateMovieQuery = (movieQuery, refetchFlag: boolean) => {
 				type: 'UPDATE_MOVIE_QUERY',
 				movieQuery: movieQuery
 			});
-			return dispatch(fetchMovieList(movieQuery)).catch((err) => {
-				console.log('err occured in update fetchMovieList: ', err)
-			});
+			return dispatch(fetchMovieList(movieQuery));
 		} else {
 			return dispatch({
 				type: 'UPDATE_MOVIE_QUERY',

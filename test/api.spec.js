@@ -7,7 +7,8 @@ describe('api', () => {
       count: 10,
       order: 'trend',
       since: 0,
-      query: ""
+      query: "",
+      likedFilter: false
     }
 
     var fecthMovieMock = nock(API.BASE_URL)
@@ -27,7 +28,8 @@ describe('api', () => {
       count: 100,
     	order: 'trend',
     	query: 'good',
-      since: 123344
+      mSince: 123344,
+      likedFilter: true
     }
     var fecthMovieMock = nock(API.BASE_URL)
     .get('/movies')
@@ -36,6 +38,7 @@ describe('api', () => {
       query: 'good',
       order: 'trend',
       since: 123344/1000,
+      likedFilter: true
     })
     .reply(200, MOCK_MOVIES);
 
@@ -49,7 +52,8 @@ describe('api', () => {
       count: 100,
     	order: 'trend',
     	query: 'good',
-      since: 123344
+      mSince: 123344,
+      likedFilter: false
     }
     var fecthMovieMock = nock(API.BASE_URL)
     .get('/movies')
@@ -58,6 +62,7 @@ describe('api', () => {
       query: 'good',
       order: 'trend',
       since: 123344/1000,
+      likedFilter: false
     })
     .reply(401);
 
