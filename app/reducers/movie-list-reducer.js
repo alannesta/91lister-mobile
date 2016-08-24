@@ -99,6 +99,13 @@ const likedReducer = (state = false, action) => {
 	return state;
 }
 
+const countReducer = (state = 10, action) => {
+	if (action.type === "UPDATE_MOVIE_COUNT") {
+		return action.count;
+	}
+	return state;
+}
+
 const queryReducer = (state='', action) => {
 	if (action.type === "UPDATE_QUERY") {
 		return action.query;
@@ -123,7 +130,8 @@ const movieListReducer = combineReducers({
 		query: queryReducer,
 		mSince: movieSinceReducer,
 		order: orderReducer,
-		liked: likedReducer
+		liked: likedReducer,
+		count: countReducer
 	}
 });
 

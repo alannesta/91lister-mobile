@@ -4,6 +4,7 @@
  */
 import React, {Component} from 'react';
 import * as actions from '../../actions/movie-list-actions';
+import {updateMovieQuery} from '../../actions/toolbar-actions'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux';
 import Movie from '../presentationals/movie';
@@ -62,14 +63,17 @@ class MovieList extends Component {
 
 	componentDidMount() {
 		console.log('movie list componenet mount');
-		let {dispatch, order, query, mSince} = this.props;	// dispatch is injected by connect() call
+		let {dispatch, movieQuery} = this.props;	// dispatch is injected by connect() call
 		InteractionManager.runAfterInteractions(() => {
 			this.setState({isRefreshing: true});
-			dispatch(actions.fetchMovieList({
-				since: mSince,
-				order: order,
-				query: query
-			})).then(() => {
+			// dispatch(actions.fetchMovieList({
+			// 	since: mSince,
+			// 	order: order,
+			// 	query: query
+			// })).then(() => {
+			// 	this.setState({isRefreshing: false});
+			// });
+			dispatch(actions.fetchMovieList(movieQuery)).then(() => {
 				this.setState({isRefreshing: false});
 			});
 		});
@@ -183,20 +187,20 @@ class MovieList extends Component {
 	 * @private
 	 */
 	_loadMoreMovies() {
-		let {dispatch, movieData: {movies, total}, mSince, order, query} = this.props;	// TODO: refactor order reducer
+		let {dispatch, movieData: {movies, total}, movieQuery: {count}} = this.props;
 		if (movies.length < total) {
 			this._androidRefreshIndicator(true);
 			this.setState({IOSloadMore: true});
 			InteractionManager.runAfterInteractions(() => {
-				dispatch(actions.fetchMovieList({
-					count: movies.length + 10,
-					since: mSince,
-					order: order,
-					query: query
-				})).then(() => {
+				let newQuery = Object.assign({}, this.props.movieQuery, {count: count + 10})
+				// dispatch(actions.fetchMovieList(newQuery)).then(() => {
+				// 	this._androidRefreshIndicator(false);
+				// 	this.setState({IOSloadMore: false});
+				// });
+				dispatch(updateMovieQuery(newQuery, 'count', true)).then(() => {
 					this._androidRefreshIndicator(false);
 					this.setState({IOSloadMore: false});
-				});
+				})
 			});
 		}
 	}
@@ -206,15 +210,10 @@ class MovieList extends Component {
 	 * @private
 	 */
 	_onRefresh() {
-		let {dispatch, movieData: {movies}, mSince, order, query} = this.props;
+		let {dispatch, movieData: {movies}, movieQuery} = this.props;
 		this._androidRefreshIndicator(true);
 		InteractionManager.runAfterInteractions(() => {
-			dispatch(actions.fetchMovieList({
-				count: movies.length,
-				since: mSince,
-				order: order,
-				query: query
-			})).then(() => {
+			dispatch(actions.fetchMovieList(movieQuery)).then(() => {
 				this._androidRefreshIndicator(false);
 			});
 		});

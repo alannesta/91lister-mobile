@@ -24,7 +24,7 @@ class DatePicker extends Component {
   constructor(props) {
     super(props);
     this._onDateChange = this._onDateChange.bind(this);
-    let {mSince, likedFilter} = this.props;
+    let {mSince, liked} = this.props;
     this.state = {
       datePickerDate: mSince === 0? new Date() : new Date(mSince),
 			likedSwitch: false
@@ -36,19 +36,20 @@ class DatePicker extends Component {
   }
 
   componentWillUnmount() {
-    let {dispatch, movieQuery: {order, query, liked, count}, movieData: {movies}} = this.props;
-    let movieQuery = {
-      count: count,
-      order: order,
-      query: query,
-			liked: liked
-    }
+		let {dispatch, mSince, count, liked, query, order} = this.props;
     // dispatch(changeDate(this.state.datePickerDate, movieQuery));
-		dispatch(updateMovieQuery("mSince", this.state.datePickerDate));
+		let currentQuery = {
+			liked,
+			count,
+			query,
+			order,
+			mSince: this.state.datePickerDate.getTime()	// convert to number?
+		}
+		dispatch(updateMovieQuery(currentQuery, 'mSince', true));
   }
 
   render() {
-    let {dispatch, mSince, order, query, movieData: {movies}} = this.props;
+    let {dispatch, mSince, liked} = this.props;
 
     return (
 			<View>
@@ -73,11 +74,18 @@ class DatePicker extends Component {
   }
 
 	_toggleLikedFilter(flag: boolean) {
-		let {dispatch} = this.props;
+		let {dispatch, mSince, count, liked, query, order} = this.props;
 		this.setState({
 			likedSwitch: flag
 		});
-		dispatch(changeLikedFilter(flag));
+		let currentQuery = {
+			liked: flag,
+			count,
+			query,
+			order,
+			mSince
+		}
+		dispatch(updateMovieQuery(currentQuery, 'liked', false));
 	}
 
   _onDateChange(date) {
@@ -107,7 +115,7 @@ const styles = StyleSheet.create({
 })
 
 function mapStateToProps(state) {
-  return state.movieList;
+  return state.movieList.movieQuery;
 }
 
 export default connect(mapStateToProps)(DatePicker);

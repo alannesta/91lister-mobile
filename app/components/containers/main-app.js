@@ -125,12 +125,8 @@ class MainApp extends Component {
 	}
 
 	_searchMovies(userQuery) {
-		let {dispatch, movieList: {mSince, order}} = this.props;
-		return dispatch(fetchMovieList({
-			query: userQuery,
-			since: mSince,
-			order: order
-		})).then(() => {
+		let {dispatch, movieList: {movieQuery}} = this.props;
+		return dispatch(fetchMovieList(movieQuery)).then(() => {
 			this.drawer.closeDrawer();
 			// update the query in redux store
 			dispatch({
@@ -141,15 +137,11 @@ class MainApp extends Component {
 	}
 
 	_login(username, password) {
-		let {dispatch, movieList: {mSince, order, query}} = this.props;
+		let {dispatch, movieList: {movieQuery}} = this.props;
 		InteractionManager.runAfterInteractions(() => {
 			dispatch(authenticate(username, password)).then(() => {
 				this.drawer.closeDrawer();
-				dispatch(fetchMovieList({
-						since: mSince,
-						order: order,
-						query: query
-				}));
+				dispatch(fetchMovieList(movieQuery));
 			}).catch((err) => {
 				// NO-OP?
 			});

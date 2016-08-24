@@ -21,5 +21,6 @@ export type TMovieQueryParams = {
 	count?: number,
 	order?: string,
 	query?: string,
-	since?: number
+	since?: number,
+	liked?: boolean
 }

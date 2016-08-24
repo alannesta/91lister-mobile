@@ -36,29 +36,37 @@ export const changeLikedFilter = (liked: boolean) => {
 	}
 }
 
-export const updateMovieQuery = (key: string, value) => {
+export const updateMovieQuery = (query, updatedField: string,refetchFlag: boolean) => {
 	return dispatch => {
-		switch (key) {
-			case "mSince":
-				return dispatch(fetchMovieList({
-						mSince: value
-					})).then(() => {
-						return dispatch({
-							type: "MOVIE_TIMESINCE_CHANGED",
-							date: value
-						});
-					}).catch((err) => {
-						// NOOP
-					});
-
-			case "liked":
-				return dispatch({
-					type: "CHANGE_LIKED_FILTER",
-					liked: value
-				});
-
-			default:
-				break;
+		// will refetch the movie list, then dispatch query update actions
+		if (refetchFlag) {
+			dispatch(fetchMovieList(query)).then(function() {
+				dispatch(_getQuertAction(query, updatedField));
+			}).catch((err) => {
+				// NOOP
+				console.log('err occured in update fetchMovieList: ', err)
+			})
+		} else {
+			dispatch(_getQuertAction(query, updatedField));
 		}
+	}
+}
+
+function _getQuertAction(query, updatedField) {
+	if (updatedField === 'mSince') {
+		return {
+			type: "MOVIE_TIMESINCE_CHANGED",
+			date: query.mSince
+		}
+	} else if (updatedField === 'count'){
+		return {
+			type: "UPDATE_MOVIE_COUNT",
+			date: query.count
+		}
+	} else if (updatedField === 'liked') {
+		return {
+			type: "CHANGE_LIKED_FILTER",
+			liked: query.liked
+		};
 	}
 }

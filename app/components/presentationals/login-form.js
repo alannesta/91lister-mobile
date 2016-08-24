@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import { redux } from 'redux'
 import { authenticate } from '../../actions/user-actions';
-import { fetchMovieList } from '../../actions/movie-list-actions'
 
 import {
 	StyleSheet,
