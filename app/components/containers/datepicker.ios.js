@@ -26,10 +26,10 @@ class DatePicker extends Component {
     this._onDateChange = this._onDateChange.bind(this);
 		this._toggleLikedFilter = this._toggleLikedFilter.bind(this);
 
-    let {mSince, liked} = this.props;
+    let {mSince, likedFilter} = this.props;
     this.state = {
       datePickerDate: mSince === 0? new Date() : new Date(mSince),
-			likedSwitch: liked
+			likedSwitch: likedFilter
     }
   }
 
@@ -38,10 +38,10 @@ class DatePicker extends Component {
   }
 
   componentWillUnmount() {
-		let {dispatch, mSince, count, liked, query, order} = this.props;
+		let {dispatch, mSince, count, likedFilter, query, order} = this.props;
     // dispatch(changeDate(this.state.datePickerDate, movieQuery));
 		let newQuery = {
-			liked,
+			likedFilter,
 			query,
 			order,
 			count: 10,	// reset count to 10 every time mSince is changed
@@ -76,12 +76,12 @@ class DatePicker extends Component {
   }
 
 	_toggleLikedFilter(flag: boolean) {
-		let {dispatch, mSince, count, liked, query, order} = this.props;
+		let {dispatch, mSince, count, likedFilter, query, order} = this.props;
 		this.setState({
 			likedSwitch: flag
 		});
 		let newQuery = {
-			liked: flag,
+			likedFilter: flag,
 			count,
 			query,
 			order,

@@ -96,23 +96,6 @@ class UserProfile extends Component {
 				navigator.replace({name: 'MovieList', index: 1})
 			}
 		});
-		// return dispatch(fetchMovieList({
-		// 	query: userQuery,
-		// 	since: mSince,
-		// 	order: order
-		// })).then(() => {
-		// 	// update the query in redux store
-		// 	dispatch({
-		// 		type: "UPDATE_QUERY",
-		// 		query: userQuery
-		// 	});
-		// 	// console.log(navigator.state.routeStack);
-		// 	if (navigator.state.routeStack.length>1) {
-		// 		navigator.pop();
-		// 	} else {
-		// 		navigator.replace({name: 'MovieList', index: 1})
-		// 	}
-		// })
 	}
 
 	_login(username, password) {

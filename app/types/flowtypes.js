@@ -22,5 +22,5 @@ export type TMovieQueryState = {
 	order: string,
 	query: string,
 	mSince: number,
-	liked: boolean
+	likedFilter: boolean
 }
