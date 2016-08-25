@@ -3,6 +3,7 @@ import thunk from 'redux-thunk'
 import * as ToolbarActions from '../app/actions/toolbar-actions'
 var MovieListActions = require('../app/actions/movie-list-actions'); // less ES6 in test to reduce noise
 var sinon = require('sinon');
+var stub;
 
 const store = configureMockStore([thunk])({});
 const newMovieQuery = {
@@ -13,7 +14,13 @@ const newMovieQuery = {
 	order: "trend"
 };
 
-describe.only('Toolbar actions', function() {
+describe('Toolbar actions', function() {
+
+	afterEach(function() {
+		if (stub) {
+			stub.restore();
+		}
+	})
 
   it('should updateMovieQuery correctly without refetch movies', function() {
     expect(store.dispatch(ToolbarActions.updateMovieQuery(newMovieQuery, false))).to.deep.equal(
@@ -25,9 +32,8 @@ describe.only('Toolbar actions', function() {
   });
 
   it('should updateMovieQuery correctly and then refetch movies', function(done) {
-    var stub = sinon.stub(MovieListActions, 'fetchMovieList');
+  	stub = sinon.stub(MovieListActions, 'fetchMovieList');
     stub.withArgs(newMovieQuery).returns(mockFetchMovieAction);
-    
     function mockFetchMovieAction() {
       return Promise.resolve({
           type: 'ANY_ACTION'  // for redux-thunk middleware
