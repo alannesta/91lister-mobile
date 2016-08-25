@@ -28,7 +28,7 @@ describe('movie-list-actions', () => {
     stub = sinon.stub(API, 'fetchMovie');
     stub.withArgs(defaultMovieQuery).returns(Promise.resolve(expectedResult));
 
-    store.dispatch(MovieListActions.fetchMovieList(defaultMovieQuery)).then(function(actionDispatched) {
+    return store.dispatch(MovieListActions.fetchMovieList(defaultMovieQuery)).then(function(actionDispatched) {
       expect(actionDispatched).to.deep.equal({
         type: "MOVIE_FETCHED",
         movies: MOCK_MOVIES,
@@ -43,7 +43,7 @@ describe('movie-list-actions', () => {
     sessionExpireError.code = 'SESSION_EXPIRED';
     stub.withArgs(defaultMovieQuery).returns(Promise.reject(sessionExpireError));
 
-    store.dispatch(MovieListActions.fetchMovieList(defaultMovieQuery)).then(function(actionDispatched) {
+    return store.dispatch(MovieListActions.fetchMovieList(defaultMovieQuery)).then(function(actionDispatched) {
       expect(actionDispatched).to.deep.equal({
         type: "USER_AUTHENTICATION_FAILED"
       })

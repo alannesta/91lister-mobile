@@ -1,6 +1,18 @@
 import * as API from '../app/api'
+var expect = require('chai').expect;
 
 describe('api', () => {
+  var fetchSpy;
+
+  beforeEach(function() {
+    fetchSpy = sinon.spy(global, 'fetch');
+  });
+
+  afterEach(function() {
+    global.fetch.restore();
+  })
+
+
   it('fetchmovie api should use defualt params and return a collection of movies', () => {
     var expectedMovies = MOCK_MOVIES;
     var defaultFetchParams = {
@@ -17,8 +29,9 @@ describe('api', () => {
     .reply(200, MOCK_MOVIES);
 
     // not providing any query params, will call fetch using default params
-    API.fetchMovie().then((movies) => {
-      expect(movies).to.deep.equal(expectedMovies);
+    return API.fetchMovie().then((movies) => {
+      expect(fetchSpy.calledWith(API.BASE_URL+'/movies?count=10&since=0&order=trend&query=&likedFilter=false')).to.be.true;
+      expect(movies).to.deep.equal(MOCK_MOVIES);
     });
   });
 
@@ -42,12 +55,13 @@ describe('api', () => {
     })
     .reply(200, MOCK_MOVIES);
 
-    API.fetchMovie(options).then((movies) => {
+    return API.fetchMovie(options).then((movies) => {
+      expect(fetchSpy.calledWith(API.BASE_URL+'/movies?count=100&since=123.344&order=trend&query=good&likedFilter=true')).to.be.true;
       expect(movies).to.deep.equal(expectedMovies);
     });
   });
 
-  it('should throw correct error when fetch fails', function(done) {
+  it('should throw correct error when fetch fails', function() {
     var options = {
       count: 100,
     	order: 'trend',
@@ -67,9 +81,8 @@ describe('api', () => {
     .reply(401);
 
     // asset that the correct error will eventually be thrown
-    API.fetchMovie(options).catch(function(err) {
+    return API.fetchMovie(options).catch(function(err) {
       expect(err.code).to.equal('SESSION_EXPIRED');
-      done();
     });
   })
 })

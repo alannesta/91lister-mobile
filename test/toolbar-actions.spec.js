@@ -31,7 +31,7 @@ describe('Toolbar actions', function() {
     )
   });
 
-  it('should updateMovieQuery correctly and then refetch movies', function(done) {
+  it('should updateMovieQuery correctly and then refetch movies', function() {
   	stub = sinon.stub(MovieListActions, 'fetchMovieList');
     stub.withArgs(newMovieQuery).returns(mockFetchMovieAction);
     function mockFetchMovieAction() {
@@ -42,7 +42,6 @@ describe('Toolbar actions', function() {
 
     store.dispatch(ToolbarActions.updateMovieQuery(newMovieQuery, true)).then(() => {
       console.log('refetch success with correct args');
-      done();
     });
   });
 });
