@@ -15,7 +15,7 @@ import {
 import { connect } from 'react-redux'
 import {updateMovieQuery} from '../../actions/toolbar-actions'
 
-class DatePicker extends Component {
+class Settings extends Component {
 
 	state: {startDate: Date, endDate: Date, likedSwitch: boolean, endDateFilterSwitch: boolean};
 	_onStartDateChange: Function;
@@ -153,4 +153,4 @@ function mapStateToProps(state) {
   return state.movieList.movieQuery;
 }
 
-export default connect(mapStateToProps)(DatePicker);
+export default connect(mapStateToProps)(Settings);

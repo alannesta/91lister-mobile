@@ -15,7 +15,7 @@ import { connect } from 'react-redux';
 import MovieList from './containers/movie-list'
 import Splash from './containers/splash'
 import UserProfile from './containers/user-profile'
-import DatePicker from './containers/datepicker'
+import Settings from './containers/settings'
 
 class Root extends Component {
 
@@ -25,7 +25,7 @@ class Root extends Component {
 			{name: 'SplashScreen', index: 0},
 			{name: 'MovieList', index: 1},
 			{name: 'UserProfile', index: 2},
-			{name: 'DatePicker', index: 3},
+			{name: 'Settings', index: 3},
 			{name: 'NoConnection', index: 4}
 		];
 		this._getRouteMapper = this._getRouteMapper.bind(this);
@@ -58,8 +58,8 @@ class Root extends Component {
 		if (route.name === 'UserProfile') {
 			return <UserProfile navigator={navigator} />;
 		}
-		if (route.name === 'DatePicker') {
-			return <DatePicker navigator={navigator} />;
+		if (route.name === 'Settings') {
+			return <Settings navigator={navigator} />;
 		}
 		if (route.name === 'NoConnection') {
 			return <Text>Please Check your network connection!</Text>
@@ -98,7 +98,7 @@ class Root extends Component {
 									<Text>Settings</Text>
 								</TouchableOpacity>
 							)
-						case 'DatePicker':
+						case 'Settings':
 							return (
 								<TouchableOpacity
 									onPress={() => navigator.pop()}
