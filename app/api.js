@@ -10,23 +10,25 @@ export const BASE_URL = 'http://localhost:4302'; // device
 
 export const fetchMovie = (options): Promise < Array < TMovie >> => {
 	let count = options && options.count ? (options.count < 10 ? 10: options.count): 10;
-	let timestamp = options && options.startDate ? options.startDate/1000: 0;	// convert millisec to seconds for mysql to consume
+	let startDate = options && options.startDate ? options.startDate/1000: 0;	// convert millisec to seconds for mysql to consume
+	let endDate = options && options.endDate ? options.endDate/1000: new Date().getTime()/1000;
 	let query = options && options.query ? options.query: "";
 	let order = options && options.order? options.order: "trend";
 	let likedFilter = options && options.likedFilter? options.likedFilter: false;
 
-	let url = `${BASE_URL}/movies?count=${count}&since=${timestamp}&order=${order}&query=${encodeURIComponent(query)}&likedFilter=${likedFilter.toString()}`;
+	let url = `${BASE_URL}/movies?count=${count}&since=${startDate}&to=${endDate}&order=${order}&query=${encodeURIComponent(query)}&likedFilter=${likedFilter.toString()}`;
 
 	// console.log('query url: ' + url);
 	return fetch(url, {
-    headers: _getDefaultHeaders()
-  }).then(_handleResponse)
+		headers: _getDefaultHeaders()
+	})
+	.then(_handleResponse)
 	.then(function(movieData) {
 		return movieData;
 	}).catch(function(err) {
 		// TypeError: Network request failed would be caught here, will be handled in actions
 		console.log(err);
-    throw(err);
+		throw(err);
 	});
 };
 
@@ -40,37 +42,37 @@ export const toogleLikeApi = (movie: TMovie): Promise < * > => {
 		return movie;
 	}).catch(function(err) {
 		console.log(err);
-    throw(err);
+		throw(err);
 	});
 };
 
 export const authenticateUser = (username: string, password: string): Promise < * > => {
 	let url = `${BASE_URL}/login`;
-  let payload = {
-    username: username,
-    password: password
-  };
+	let payload = {
+		username: username,
+		password: password
+	};
 	return fetch(url, {
 		method: 'POST',
-    headers: {
+		headers: {
 			'Accept': 'application/json',
 			'Content-Type': 'application/json'
 		},
 		body: JSON.stringify(payload)
 	}).then(function(res) {
-    if (res.status === 200) {
-      return res.json();
-    }
-    if (res.status === 401) {
-      // invalid credentials
-      throw new Error('Authentication failed due to invalid credentials');
-    }
-    throw new Error('Authentication failed due to internal error');
-  }).then(function(response) {
-    return response;
-  }).catch(function(err){
-    throw(err);	// throw error to actions, handle error there
-  });
+		if (res.status === 200) {
+			return res.json();
+		}
+		if (res.status === 401) {
+			// invalid credentials
+			throw new Error('Authentication failed due to invalid credentials');
+		}
+		throw new Error('Authentication failed due to internal error');
+	}).then(function(response) {
+		return response;
+	}).catch(function(err) {
+		throw(err);	// throw error to actions, handle error there
+	});
 }
 
 export const getMovieFileUrl = (movie: TMovie): Promise<*> => {

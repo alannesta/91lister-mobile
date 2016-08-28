@@ -35,11 +35,12 @@ const defaultSelectedMovieState: TMovie = {
 	liked: false,
 	thumbnail: '',
 	favourite: 0
-}
+};
 
 const defaultMovieQueryState: TMovieQueryState = {
 	count: 10,
 	startDate: 0,
+	endDate: new Date().getTime(),	//TODO: time compare
 	query: "",
 	likedFilter: false,
 	order: "trend"
