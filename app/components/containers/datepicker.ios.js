@@ -17,19 +17,25 @@ import {updateMovieQuery} from '../../actions/toolbar-actions'
 
 class DatePicker extends Component {
 
-	state: {datePickerDate: Date, likedSwitch: boolean};
-	_onDateChange: Function;
+	state: {startDate: Date, endDate: Date, likedSwitch: boolean, endDateFilterSwitch: boolean};
+	_onStartDateChange: Function;
+	_onEndDateChange: Function;
 	_toggleLikedFilter: Function;
+	_toggleEndDateFilter: Function;
 
   constructor(props) {
     super(props);
-    this._onDateChange = this._onDateChange.bind(this);
+    this._onStartDateChange = this._onStartDateChange.bind(this);
+		this._onEndDateChange = this._onEndDateChange.bind(this);
 		this._toggleLikedFilter = this._toggleLikedFilter.bind(this);
+		this._toggleEndDateFilter = this._toggleEndDateFilter.bind(this);
 
     let {mSince, likedFilter} = this.props;
     this.state = {
-      datePickerDate: mSince === 0? new Date() : new Date(mSince),
-			likedSwitch: likedFilter
+      startDate: mSince === 0? new Date() : new Date(mSince),
+			endDate: new Date(),
+			likedSwitch: likedFilter,
+			endDateFilterSwitch: false
     }
   }
 
@@ -39,13 +45,13 @@ class DatePicker extends Component {
 
   componentWillUnmount() {
 		let {dispatch, mSince, count, likedFilter, query, order} = this.props;
-    // dispatch(changeDate(this.state.datePickerDate, movieQuery));
+    // dispatch(changeDate(this.state.startDate, movieQuery));
 		let newQuery = {
 			likedFilter,
 			query,
 			order,
 			count: 10,	// reset count to 10 every time mSince is changed
-			mSince: this.state.datePickerDate.getTime()	// convert to number?
+			mSince: this.state.startDate.getTime()	// convert to number?
 		}
 		dispatch(updateMovieQuery(newQuery, true));
   }
@@ -57,13 +63,28 @@ class DatePicker extends Component {
 			<View>
 				<View style={styles.datePickerContainer}>
 					<DatePickerIOS
-							date={this.state.datePickerDate}
+							date={this.state.startDate}
 							mode="date"
-							// timeZoneOffsetInMinutes={this.state.timeZoneOffsetInHours * 60}
-							onDateChange={this._onDateChange}
+							onDateChange={this._onStartDateChange}
 						/>
+					{
+						this.state.endDateFilterSwitch ?
+						<DatePickerIOS
+								date={this.state.endDate}
+								mode="date"
+								onDateChange={this._onEndDateChange}
+							/>
+						:
+						null
+					}
 				</View>
 				<View style={styles.switchContainer}>
+					<View style={styles.optionRow}>
+						<Text style={styles.optionHint}>Show end date filter?</Text>
+						<Switch
+							onValueChange={this._toggleEndDateFilter}
+							value={this.state.endDateFilterSwitch} />
+					</View>
 					<View style={styles.optionRow}>
 						<Text style={styles.optionHint}>Only show liked movies?</Text>
 						<Switch
@@ -74,6 +95,12 @@ class DatePicker extends Component {
 			</View>
     )
   }
+
+	_toggleEndDateFilter(flag: boolean) {
+		this.setState({
+			endDateFilterSwitch: flag
+		});
+	}
 
 	_toggleLikedFilter(flag: boolean) {
 		let {dispatch, mSince, count, likedFilter, query, order} = this.props;
@@ -90,11 +117,16 @@ class DatePicker extends Component {
 		dispatch(updateMovieQuery(newQuery, false));
 	}
 
-  _onDateChange(date) {
+  _onStartDateChange(date) {
     this.setState({
-      datePickerDate: date
+      startDate: date
     });
   }
+	_onEndDateChange(date) {
+		this.setState({
+			endDate: date
+		});
+	}
 }
 
 const WINDOW_HEIGHT = Dimensions.get('window').height;
@@ -111,6 +143,7 @@ const styles = StyleSheet.create({
 		fontSize: 18
 	},
 	optionRow: {
+		marginTop: 5,
 		flexDirection: 'row',
 		justifyContent: 'space-between'
 	}

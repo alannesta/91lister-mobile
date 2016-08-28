@@ -33,7 +33,7 @@ class UserProfile extends Component {
 	}
 
 	render() {
-    let {user: {status: {loggedIn, username}}, movieList: {query}} = this.props;
+    let {user: {status: {loggedIn, username}}, movieList: {movieQuery: {query}}} = this.props;
 
 		if (loggedIn) {
 			return (
@@ -60,7 +60,7 @@ class UserProfile extends Component {
 	}
 
 	_renderDrawerContent() {
-		let {user: {status: {loggedIn, username}}, movieList: {query}} = this.props;
+		let {user: {status: {loggedIn, username}}, movieList: {movieQuery: {query}}} = this.props;
 
 		if (loggedIn) {
 			return (

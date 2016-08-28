@@ -43,7 +43,7 @@ class MovieDetailModal extends Component {
 							<TouchableOpacity
 								style={styles.closeButton}
 								onPress={this.props.closeModal}>
-								<Text>x</Text>
+								<Text style={{fontSize: 22}}>x</Text>
 							</TouchableOpacity>
 					}
 					</View>
@@ -129,7 +129,9 @@ const styles = StyleSheet.create({
 		borderRadius: 3,
 		marginTop: 20
 	},
+	// larger click area
 	closeButton: {
+		height: 30
 	}
 });
 
