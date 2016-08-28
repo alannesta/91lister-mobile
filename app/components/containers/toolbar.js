@@ -19,49 +19,49 @@ import {
 } from 'react-native';
 
 class Toolbar extends Component {
-  constructor(props) {
-    super(props)
-  }
+	constructor(props) {
+		super(props)
+	}
 
-  render() {
-    return (
-      <ToolbarAndroid
-        navIcon={require('../../images/ic_menu_black_24dp.png')}
-        onIconClicked={() => this.props.drawer.openDrawer()}
-        actions={[
+	render() {
+		return (
+			<ToolbarAndroid
+				navIcon={require('../../images/ic_menu_black_24dp.png')}
+				onIconClicked={() => this.props.drawer.openDrawer()}
+				actions={[
 					{title: 'Date', icon: require('../../images/ic_settings_black_48dp.png'), show: 'always'}
 				]}
-        onActionSelected={this._onActionSelected.bind(this)}
-        style={styles.toolbar}
-        title={'91 lister'}
-      />
-    )
-  }
+				onActionSelected={this._onActionSelected.bind(this)}
+				style={styles.toolbar}
+				title={'91 lister'}
+			/>
+		)
+	}
 
 	componentDidMount() {
 	}
 
-  _onActionSelected(index) {
-    if (index === 0) {
-      this._showPicker()
-    }
+	_onActionSelected(index) {
+		if (index === 0) {
+			this._showPicker();
+		}
 	}
 
-  async _showPicker() {
-    let {dispatch, startDate, order, query, movieData: {movies}} = this.props;
+	async _showPicker() {
+		let {dispatch, startDate, order, query, movieData: {movies}} = this.props;
 		let today = new Date();
-    try {
+		try {
 			// if initial date is untouched, open datepicker with starting date set as today
-			let initialDate = startDate === 0? today : new Date(startDate);
-      const {action, year, month, day} = await DatePickerAndroid.open({date: initialDate});
-      if (action === DatePickerAndroid.dismissedAction) {
+			let initialDate = startDate === 0 ? today : new Date(startDate);
+			const {action, year, month, day} = await DatePickerAndroid.open({date: initialDate});
+			if (action === DatePickerAndroid.dismissedAction) {
 				// action canceled;
-      } else {
+			} else {
 				let date = new Date(year, month, day).getTime();
 				// if (today.getDay() === day && today.getMonth() === month && today.getFullYear() === year) {
 				// 	date = 0;
 				// }
-
+				//TODO: update to new movieQuery data structure
 				let currentMovieState = {
 					count: movies.length,
 					order: order,
@@ -70,22 +70,22 @@ class Toolbar extends Component {
 				InteractionManager.runAfterInteractions(() => {
 					dispatch(changeDate(date, currentMovieState));
 				});
-      }
-    } catch (err)  {
-      console.warn(err);
-    }
-  }
+			}
+		} catch (err) {
+			console.warn(err);
+		}
+	}
 }
 
 const styles = StyleSheet.create({
-  toolbar: {
-    backgroundColor: '#E9EAED',
-    height: 56,
-  }
+	toolbar: {
+		backgroundColor: '#E9EAED',
+		height: 56,
+	}
 });
 
 function mapStateToProps(state) {
-  return state.movieList;
+	return state.movieList;
 }
 
 export default connect(mapStateToProps)(Toolbar);

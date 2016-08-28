@@ -66,13 +66,6 @@ class MovieList extends Component {
 		let {dispatch, movieQuery} = this.props;	// dispatch is injected by connect() call
 		InteractionManager.runAfterInteractions(() => {
 			this.setState({isRefreshing: true});
-			// dispatch(actions.fetchMovieList({
-			// 	since: startDate,
-			// 	order: order,
-			// 	query: query
-			// })).then(() => {
-			// 	this.setState({isRefreshing: false});
-			// });
 			dispatch(actions.fetchMovieList(movieQuery)).then(() => {
 				this.setState({isRefreshing: false});
 			});
