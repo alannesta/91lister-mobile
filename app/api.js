@@ -6,11 +6,11 @@ import AppStorage from './utils/app-storage'
 
 export const BASE_URL = 'http://localhost:4302'; // device
 // export const BASE_URL = 'http://10.0.3.2:4302'; // simulator
-// exprot const BASE_URL = 'http://ec2-52-90-5-61.compute-1.amazonaws.com/movie-api';	// prod
+// export const BASE_URL = 'http://ec2-52-90-5-61.compute-1.amazonaws.com/movie-api';	// prod
 
 export const fetchMovie = (options): Promise < Array < TMovie >> => {
 	let count = options && options.count ? (options.count < 10 ? 10: options.count): 10;
-	let timestamp = options && options.mSince ? options.mSince/1000: 0;	// convert millisec to seconds for mysql to consume
+	let timestamp = options && options.startDate ? options.startDate/1000: 0;	// convert millisec to seconds for mysql to consume
 	let query = options && options.query ? options.query: "";
 	let order = options && options.order? options.order: "trend";
 	let likedFilter = options && options.likedFilter? options.likedFilter: false;
@@ -31,7 +31,7 @@ export const fetchMovie = (options): Promise < Array < TMovie >> => {
 };
 
 export const toogleLikeApi = (movie: TMovie): Promise < * > => {
-	let url = `${BASE_URL}/movie/${movie.id}`
+	let url = `${BASE_URL}/movie/${movie.id}`;
 	return fetch(url, {
 		method: 'POST',
 		headers: _getDefaultHeaders(),

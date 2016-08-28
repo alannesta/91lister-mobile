@@ -30,9 +30,9 @@ class Settings extends Component {
 		this._toggleLikedFilter = this._toggleLikedFilter.bind(this);
 		this._toggleEndDateFilter = this._toggleEndDateFilter.bind(this);
 
-    let {mSince, likedFilter} = this.props;
+    let {startDate, likedFilter} = this.props;
     this.state = {
-      startDate: mSince === 0? new Date() : new Date(mSince),
+      startDate: startDate === 0? new Date() : new Date(startDate),
 			endDate: new Date(),
 			likedSwitch: likedFilter,
 			endDateFilterSwitch: false
@@ -40,24 +40,25 @@ class Settings extends Component {
   }
 
   componentDidMount() {
-    console.log('date picker mount');
+
   }
 
   componentWillUnmount() {
-		let {dispatch, mSince, count, likedFilter, query, order} = this.props;
+		let {dispatch, startDate, count, likedFilter, query, order} = this.props;
     // dispatch(changeDate(this.state.startDate, movieQuery));
 		let newQuery = {
 			likedFilter,
 			query,
 			order,
-			count: 10,	// reset count to 10 every time mSince is changed
-			mSince: this.state.startDate.getTime()	// convert to number?
+			count: 10,	// reset count to 10 every time startDate is changed
+			startDate: this.state.startDate.getTime()	// convert to number?
 		}
+		console.log(newQuery);
 		dispatch(updateMovieQuery(newQuery, true));
   }
 
   render() {
-    let {dispatch, mSince, liked} = this.props;
+    let {dispatch, startDate, liked} = this.props;
 
     return (
 			<View>
@@ -103,7 +104,7 @@ class Settings extends Component {
 	}
 
 	_toggleLikedFilter(flag: boolean) {
-		let {dispatch, mSince, count, likedFilter, query, order} = this.props;
+		let {dispatch, startDate, count, likedFilter, query, order} = this.props;
 		this.setState({
 			likedSwitch: flag
 		});
@@ -112,8 +113,8 @@ class Settings extends Component {
 			count,
 			query,
 			order,
-			mSince
-		}
+			startDate
+		};
 		dispatch(updateMovieQuery(newQuery, false));
 	}
 

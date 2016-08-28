@@ -39,7 +39,7 @@ const defaultSelectedMovieState: TMovie = {
 
 const defaultMovieQueryState: TMovieQueryState = {
 	count: 10,
-	mSince: 0,
+	startDate: 0,
 	query: "",
 	likedFilter: false,
 	order: "trend"

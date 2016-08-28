@@ -21,6 +21,6 @@ export type TMovieQueryState = {
 	count: number,
 	order: string,
 	query: string,
-	mSince: number,
+	startDate: number,
 	likedFilter: boolean
 }

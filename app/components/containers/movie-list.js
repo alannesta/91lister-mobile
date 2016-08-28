@@ -67,7 +67,7 @@ class MovieList extends Component {
 		InteractionManager.runAfterInteractions(() => {
 			this.setState({isRefreshing: true});
 			// dispatch(actions.fetchMovieList({
-			// 	since: mSince,
+			// 	since: startDate,
 			// 	order: order,
 			// 	query: query
 			// })).then(() => {

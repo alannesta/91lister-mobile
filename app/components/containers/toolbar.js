@@ -48,11 +48,11 @@ class Toolbar extends Component {
 	}
 
   async _showPicker() {
-    let {dispatch, mSince, order, query, movieData: {movies}} = this.props;
+    let {dispatch, startDate, order, query, movieData: {movies}} = this.props;
 		let today = new Date();
     try {
 			// if initial date is untouched, open datepicker with starting date set as today
-			let initialDate = mSince === 0? today : new Date(mSince);
+			let initialDate = startDate === 0? today : new Date(startDate);
       const {action, year, month, day} = await DatePickerAndroid.open({date: initialDate});
       if (action === DatePickerAndroid.dismissedAction) {
 				// action canceled;
