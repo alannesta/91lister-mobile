@@ -14,6 +14,7 @@ import {
 
 import { connect } from 'react-redux'
 import {updateMovieQuery} from '../../actions/toolbar-actions'
+import {isToday} from '../../utils/utils'
 
 class Settings extends Component {
 
@@ -32,7 +33,7 @@ class Settings extends Component {
 
 		let {startDate, endDate, likedFilter} = this.props;
 		this.state = {
-			startDate: startDate === 0 ? new Date() : new Date(startDate),
+			startDate: startDate === 0 ? new Date() : new Date(startDate),	// if there is not startDate set, display today's date
 			endDate: new Date(endDate),
 			likedSwitch: likedFilter,
 			endDateFilterSwitch: false
@@ -42,12 +43,17 @@ class Settings extends Component {
 	componentDidMount() {
 		// TODO: set endDateFilterSwitch state based on date comparison
 		console.log('settings component mount');
-
+		if (!isToday(this.state.endDate)) {
+			this.setState({
+				endDateFilterSwitch: true
+			})
+		}
 	}
 
 	componentWillUnmount() {
 		let {dispatch, startDate, count, likedFilter, query, order} = this.props;
 		// dispatch(changeDate(this.state.startDate, movieQuery));
+		console.log(this.state.endDate);
 		let newQuery = {
 			likedFilter,
 			query,
@@ -100,7 +106,8 @@ class Settings extends Component {
 
 	_toggleEndDateFilter(flag: boolean) {
 		this.setState({
-			endDateFilterSwitch: flag
+			endDateFilterSwitch: flag,
+			endDate: new Date()	// reset endDate to today
 		});
 	}
 

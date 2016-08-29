@@ -10,6 +10,8 @@ import type {
 	TMovieQueryState
 } from '../types/flowtypes'
 
+import {startOfTodayTimestamp} from '../utils/utils'
+
 // sub state type declaration
 type TMovieData = {
 	movies: Array<TMovie>,
@@ -40,7 +42,7 @@ const defaultSelectedMovieState: TMovie = {
 const defaultMovieQueryState: TMovieQueryState = {
 	count: 10,
 	startDate: 0,
-	endDate: new Date().getTime(),	//TODO: time compare
+	endDate: startOfTodayTimestamp(),	//TODO:  use ms of start of today for time compare
 	query: "",
 	likedFilter: false,
 	order: "trend"

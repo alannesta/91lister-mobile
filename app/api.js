@@ -3,6 +3,7 @@
  */
 import type {TMovie, TMovieQueryState} from './types/flowtypes'
 import AppStorage from './utils/app-storage'
+import {startOfTodayTimestamp} from './utils/utils'
 
 export const BASE_URL = 'http://localhost:4302'; // device
 // export const BASE_URL = 'http://10.0.3.2:4302'; // simulator
@@ -11,7 +12,7 @@ export const BASE_URL = 'http://localhost:4302'; // device
 export const fetchMovie = (options): Promise < Array < TMovie >> => {
 	let count = options && options.count ? (options.count < 10 ? 10: options.count): 10;
 	let startDate = options && options.startDate ? options.startDate/1000: 0;	// convert millisec to seconds for mysql to consume
-	let endDate = options && options.endDate ? options.endDate/1000: new Date().getTime()/1000;
+	let endDate = options && options.endDate ? options.endDate/1000: startOfTodayTimestamp()/1000;
 	let query = options && options.query ? options.query: "";
 	let order = options && options.order? options.order: "trend";
 	let likedFilter = options && options.likedFilter? options.likedFilter: false;

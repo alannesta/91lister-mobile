@@ -8,7 +8,7 @@ var stub;
 const store = configureMockStore([thunk])({});
 const defaultMovieQuery = {
 	count: 10,
-	mSince: 0,
+	startDate: 0,
 	query: "",
 	likedFilter: false,
 	order: "trend"
